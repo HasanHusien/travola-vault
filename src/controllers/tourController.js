@@ -1,11 +1,19 @@
 const Tour = require('../models/tourModel');
 
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = 'ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     // req.query is an obj of query item {duration:5 ,price:1000 }
     // {...req.query} equals { query: { gte|gt|lte|lt : value } }
     const queryObject = { ...req.query };
-    const excludeFields = ['page', 'limit', 'sort', 'filed'];
+    const excludeFields = ['page', 'limit', 'sort', 'fields'];
 
     // ignore excludeFields from the query
     excludeFields.forEach(el => delete queryObject[el]);
@@ -17,7 +25,7 @@ exports.getAllTours = async (req, res) => {
     const finalQueryStr = JSON.parse(queryStr);
 
     // const query = Tour.find(queryObject);
-    const query = Tour.find(finalQueryStr);
+    let query = Tour.find(finalQueryStr);
 
     // 2. sorting
     if (req.query.sort) {
