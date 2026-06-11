@@ -1,6 +1,5 @@
 const Tour = require('../models/tourModel');
 
-
 exports.getAllTours = async (req, res) => {
   try {
     // req.query is an obj of query item {duration:5 ,price:1000 }
