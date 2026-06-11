@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: path.join(`${__dirname}../../../../.env` )});
 
-const Tour = require('./../../models/tourModel');
+const Tour = require('../../models/tourModel');
 const DB = process.env.DATABASE;
 
 
