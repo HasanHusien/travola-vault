@@ -1,5 +1,5 @@
 const Tour = require('../models/tourModel');
-const APIFeatures = require('../utils/ApiFearures');
+const APIFeatures = require('../utils/ApiFeatures');
 
 exports.getAllTours = async (req, res) => {
   try {
@@ -121,12 +121,15 @@ exports.deleteTour = async (req, res) => {
   }
 };
 
-// aggregation pipeline: syntax {{}}
+// aggregation pipeline: syntax {{}} wired!
+// match => group => sort => result
 exports.getTourStats = async (req, res) => {
   try {
     const stats = await Tour.aggregate([
+      // any items
       { $match: { ratingsAverage: { $gte: 4.5 } } },
       {
+        // i need items be these
         $group: {
           _id: '$difficulty',
           numTours: { $sum: 1 },
@@ -138,6 +141,7 @@ exports.getTourStats = async (req, res) => {
         }
       },
       {
+        // sort items
         $sort: { avgPrice: 1 } // 1 eq aces
       }
     ]);
@@ -146,6 +150,54 @@ exports.getTourStats = async (req, res) => {
       status: 'success',
       data: {
         stats
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      message: err.message
+    });
+  }
+};
+
+exports.getMonthlyPlan = async (req, res) => {
+  try {
+    const year = Number(req.params.year); // 2021
+    const plan = await Tour.aggregate([
+      {
+        $unwind: '$startDates'
+      },
+      {
+        $match: {
+          startDates: {
+            $gte: new Date(`${year}-01-01`),
+            $lte: new Date(`${year}-12-31`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: '$startDates' },
+          numToursStarts: { $sum: 1 },
+          tours: { $push: '$name' }
+        }
+      },
+      {
+        $addFields: { month: '$_id' }
+      },
+      {
+        $project: { _id: 0 }
+      },
+      {
+        $sort: { numToursStarts: -1 }
+      },
+      { $limit: 12 }
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        plan
       }
     });
   } catch (err) {

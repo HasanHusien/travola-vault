@@ -8,7 +8,8 @@ const {
   getTour,
   updateTour,
   deleteTour,
-  getTourStats
+  getTourStats,
+  getMonthlyPlan
 } = require('../controllers/tourController');
 
 // topTours router & add alias top tours middleware
@@ -16,6 +17,9 @@ router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
 
 // sats router
 router.route('/tour-stats').get(getTourStats);
+
+// monthly plan router
+router.route('/monthly-plan/:year').get(getMonthlyPlan);
 
 // CRUD routers
 router
