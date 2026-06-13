@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { default: slugify } = require('slugify');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -72,14 +73,20 @@ const tourSchema = new mongoose.Schema(
     startDates: [Date]
   },
   {
-    toJSON: { virtuals: true }, // make virtual properties appear
+    // make virtual properties appear in my data
+    toJSON: { virtuals: true },
     toObject: { virtuals: true }
   }
 );
-// set virtual properties into data
-// using regular fn cause using this keyword
+// set virtual properties into data & using regular fn cause using this keyword
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
+});
+
+// document middleware runs before save() and crete()
+tourSchema.pre('save', function(next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 const Tour = mongoose.model('Tour', tourSchema);
