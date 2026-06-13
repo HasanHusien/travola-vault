@@ -105,6 +105,12 @@ tourSchema.pre('find').get(function(doc, next) {
   next();
 });
 
+// AGGREGATION MIDDLEWARE
+tourSchema.pre('aggregate').get(function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  next()
+});
+
 const Tour = mongoose.model('Tour', tourSchema);
 
 // const newtour = new Tour({
