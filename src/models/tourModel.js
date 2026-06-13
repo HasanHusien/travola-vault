@@ -70,7 +70,8 @@ const tourSchema = new mongoose.Schema(
       default: Date.now,
       select: false
     },
-    startDates: [Date]
+    startDates: [Date],
+    secretTour: Boolean
   },
   {
     // make virtual properties appear in my data
@@ -83,9 +84,24 @@ tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
-// document middleware runs before save() and crete()
+// DOCUMENT MIDDLEWARE runs before save() and crete()
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// QUERY MIDDLEWARE %% pre eq previous %% ^find any word starts with find (regex)
+tourSchema.pre(/^find/).get(function(next) {
+  this.find({ secretTour: false });
+  this.start = Date.now();
+
+  next();
+});
+
+// if we need knew query time
+tourSchema.pre('find').get(function(doc, next) {
+  console.log(`Query took ${Date.now() - this.start} milliseconds`);
+  console.log(doc);
   next();
 });
 
