@@ -8,6 +8,7 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
+      // mongoose validation %% [validate, err message]
       maxlength: [40, 'A tour name must have less or equal then 40 characters'],
       minlength: [10, 'A tour name must have more or equal then 10 characters']
     },
@@ -23,6 +24,7 @@ const tourSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty'],
+      // mongoose validation
       enum: {
         values: ['easy', 'medium', 'difficult'],
         message: 'Difficulty is either: easy, medium, difficult'
@@ -31,6 +33,7 @@ const tourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      // mongoose validation
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 5.0']
     },
@@ -44,10 +47,12 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
+      // custom validator
       validate: {
         validator: function(val) {
           return val < this.price;
         },
+        // access to the value using ({VALUE})
         message: 'Discount price ({VALUE}) should be below regular price'
       }
     },
@@ -91,7 +96,7 @@ tourSchema.pre('save', function(next) {
 });
 
 // QUERY MIDDLEWARE %% pre eq previous %% ^find any word starts with find (regex)
-tourSchema.pre(/^find/).get(function(next) {
+tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: false });
   this.start = Date.now();
 
@@ -99,16 +104,16 @@ tourSchema.pre(/^find/).get(function(next) {
 });
 
 // if we need knew query time
-tourSchema.pre('find').get(function(doc, next) {
+tourSchema.post('find', function(doc, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
   console.log(doc);
   next();
 });
 
 // AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate').get(function(next) {
+tourSchema.pre('aggregate', function(next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  next()
+  next();
 });
 
 const Tour = mongoose.model('Tour', tourSchema);
