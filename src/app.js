@@ -3,9 +3,10 @@ const morgan = require('morgan');
 
 const app = express();
 
+const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-const { urlIssue } = require('./middleware/UrlIssue');
+const globalErrorHandler = require('./controllers/globalErrorHandler');
 
 // json parser middleware
 app.use(express.json());
@@ -19,6 +20,11 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
 // all eq all http method & '*' eq all not declared route
-app.all('*', urlIssue);
+app.all('*', (req, res, next) => {
+  next(new AppError(`cannot find ${req.originalUrl} at this server`, 404));
+});
+
+// global error handler
+app.use(globalErrorHandler);
 
 module.exports = app;
