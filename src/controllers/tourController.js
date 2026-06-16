@@ -1,7 +1,8 @@
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 
-const APIFeatures = require('../utils/ApiFeatures');
+const APIFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/appError');
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
   // execute the query, filter w query i wrote
@@ -26,10 +27,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
 
   if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No tour found with that ID'
-    });
+    return next(new AppError('this tour not found', 404));
   }
 
   res.status(200).json({
@@ -58,11 +56,9 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   });
 
   if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No tour found with that ID'
-    });
+    return next(new AppError('this tour not found', 404));
   }
+
 
   res.status(200).json({
     status: 'success',
@@ -75,12 +71,10 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 exports.deleteTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndDelete(req.params.id);
 
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'No tour found with that ID'
-    });
-  }
+   if (!tour) {
+     return next(new AppError('this tour not found', 404));
+   }
+
 
   res.status(204).json({
     status: 'success',
