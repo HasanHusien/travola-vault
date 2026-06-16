@@ -24,5 +24,5 @@ mongoose
   });
 
 app.listen(port, () => {
-  console.log(`Running on port ${port}`, ' 127.0.0.1:8000/api/v1/tours');
+  console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api/v1/tours');
 });
