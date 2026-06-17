@@ -5,6 +5,15 @@ const handleCastErrorDB = err => {
   return new AppError(message, 400);
 };
 
+// when create tour with exist
+const handleDuplicateNameDB = err => {
+  // get the duplicate name from error (regex for get name from quotes)
+  const value = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/)[0];
+  const message = `Duplicate field value: ${value}. please try another value`;
+
+  return new AppError(message, 400);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -34,7 +43,7 @@ const sendErrorProd = (err, res) => {
 };
 
 module.exports = (err, req, res, next) => {
-  // console.log(err.stack); see call stack
+  // console.log(err.stack); see all call stack
 
   err.statusCode = err.statusCode || 500;
   err.status = 'fail' || 'error';
@@ -43,8 +52,14 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     // send friendly message to the client
-    let error = { ...err };
+    let error = {
+      ...err
+    };
+    // that property from err object name castError mean not found tout id you search for
     if (error.name === 'CastError') error = handleCastErrorDB(error);
+
+    // that property from err object code 11000 mean you try create name is exist before
+    if (error.code === 11000) error = handleDuplicateNameDB(error);
 
     sendErrorProd(error, res);
   }
