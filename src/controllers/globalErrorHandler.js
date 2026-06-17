@@ -14,6 +14,13 @@ const handleDuplicateNameDB = err => {
   return new AppError(message, 400);
 };
 
+const handleValidationErrDB = err => {
+  const errors = Object.values(err.errors.map(el => el.message));
+  const message = `Invalid input data. ${errors.join('. ')}`;
+
+  return new AppError(message, 400);
+};
+
 const sendErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -55,11 +62,16 @@ module.exports = (err, req, res, next) => {
     let error = {
       ...err
     };
+
+    // note: these errors created by mongoose!
     // that property from err object name castError mean not found tout id you search for
     if (error.name === 'CastError') error = handleCastErrorDB(error);
 
     // that property from err object code 11000 mean you try create name is exist before
     if (error.code === 11000) error = handleDuplicateNameDB(error);
+
+    // for validation errors
+    if (error.name === 'ValidationError') error = handleValidationErrDB(error);
 
     sendErrorProd(error, res);
   }
