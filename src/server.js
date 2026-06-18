@@ -2,6 +2,14 @@ const path = require('path');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
+// catch sync code, should be in first of call stack
+process.on('uncaughtException', err => {
+  console.log('Uncaught Exception shuting down...');
+  console.log(err.name, err.message);
+
+  process.exit(1);
+});
+
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = require('./app');
@@ -27,7 +35,7 @@ const server = app.listen(port, () => {
   console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api/v1/tours');
 });
 
-// catch uncached promise error
+// catch async code, uncached promise error
 process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   console.log('unhandled rejection shuting down...');
