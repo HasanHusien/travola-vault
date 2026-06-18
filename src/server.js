@@ -23,6 +23,16 @@ mongoose
     process.exit(1);
   });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api/v1/tours');
+});
+
+// catch uncached promise error
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message);
+  console.log('unhandled rejection shuting down...');
+
+  server.close(() => {
+    process.exit(1);
+  });
 });
