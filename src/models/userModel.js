@@ -1,50 +1,31 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+// Inputs: name, email, photo, password, confirmPassword
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please tell us your name!']
+    required: [true, 'name is required']
   },
   email: {
     type: String,
-    required: [true, 'Please provide your email'],
+    required: [true, 'email is required'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email']
+    validate: [validator.isEmail, 'please provide a correct email']
   },
   photo: String,
-  role: {
-    type: String,
-    enum: ['user', 'guide', 'lead-guide', 'admin'],
-    default: 'user'
-  },
   password: {
     type: String,
-    required: [true, 'Please provide a password'],
-    minlength: 8,
-    select: false
+    required: [true, 'please provide a password!'],
+    minlength: 8
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'Please confirm your password'],
-    validate: {
-      validator: function(el) {
-        return el === this.password;
-      },
-      message: 'Passwords are not the same!'
-    }
-  },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false
+    required: [true, 'please provide a password confirm correctly']
   }
 });
 
-const User = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = UserModel;
