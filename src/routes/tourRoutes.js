@@ -12,6 +12,7 @@ const {
   getMonthlyPlan
 } = require('../controllers/tourController');
 
+
 // topTours router & add alias top tours middleware
 router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
 
