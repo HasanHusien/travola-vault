@@ -52,7 +52,16 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Incorrect email or password', 401));
   }
 
-  const token = '@@';
+  // 3. if everything os ok, send token to client
+  const token = jwt.sign(
+    {
+      name: user.name
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRESIN
+    }
+  );
   res.status(200).json({
     status: 'success',
     token
