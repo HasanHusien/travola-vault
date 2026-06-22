@@ -36,6 +36,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+// encrypt password by bcrypt
 userSchema.pre('save', async function(next) {
   // only execute if password modifying
   if (!this.isModified('password')) return next();
@@ -44,6 +45,14 @@ userSchema.pre('save', async function(next) {
   this.password = await bcrypt.hash(this.password, 12);
 
   this.passwordConfirm = undefined;
+});
+
+// compare user password with db password when login (bcrypt)
+userSchema.methods.correctPassword(async function(
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
 });
 
 const UserModel = mongoose.model('User', userSchema);
