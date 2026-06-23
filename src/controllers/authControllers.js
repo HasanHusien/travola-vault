@@ -53,17 +53,39 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // 3. if everything os ok, send token to client
-  const token = jwt.sign(
-    {
-      name: user.name
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRESIN
-    }
-  );
+  const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRESIN
+  });
+
   res.status(200).json({
     status: 'success',
     token
   });
+});
+
+// protect routes for only logged in users
+exports.protect = catchAsync(async (req, res, next) => {
+  // 1) getting token and check if it's exist
+  let token;
+
+  // very standard way in this process to set in header {authorization : Bearer token...}
+  // its call these names in this process and send in header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(
+      new AppError('user not logged in please log in to access', 401)
+    );
+  }
+  // 2) verification token
+
+  // 3) check if user still exists
+
+  // 4) check if user changed password after token was issued
+  next();
 });
