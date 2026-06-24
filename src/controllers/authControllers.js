@@ -9,7 +9,6 @@ const AppError = require('../utils/appError');
 exports.signup = catchAsync(async (req, res, next) => {
   // make it like this for don't add other prop as role
   // more secure then req.body
-
   const newUser = await UserModel.create({
     name: req.body.name,
     email: req.body.email,
@@ -18,8 +17,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  // const jwtSecret =  process.env.JWT_SECRET,
-  // const jwtExpiresIn = process.env.JWT_EXPIRESIN
 
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
   // this is the sigature or jtw for the user
@@ -35,13 +32,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
   });
 });
-
-// const correctPassword = async function(
-//   candidatePassword,
-//   userPassword
-// ) {
-//   return await bcrypt.compare(candidatePassword, userPassword);
-// };
 
 // login
 exports.login = catchAsync(async (req, res, next) => {
