@@ -1,3 +1,5 @@
+const { promisify } = require('util');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -34,6 +36,13 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 });
 
+// const correctPassword = async function(
+//   candidatePassword,
+//   userPassword
+// ) {
+//   return await bcrypt.compare(candidatePassword, userPassword);
+// };
+
 // login
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -46,7 +55,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2.check if user exist & and password correct
   // the way to get password
   const user = await UserModel.findOne({ email }).select('+password');
-  const checkCorrect = await user.correctPassword(password, user.password);
+  const checkCorrect = await user?.correctPassword(password, user.password);
 
   if (!user || !checkCorrect) {
     return next(new AppError('Incorrect email or password', 401));
@@ -63,7 +72,7 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
-// protect routes for only logged in users
+// protect routes for only logged in users allow access to data
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) getting token and check if it's exist
   let token;
@@ -83,6 +92,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   // 2) verification token
+  // promisify: for convert to promise
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) check if user still exists
 
