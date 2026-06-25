@@ -1,65 +1,42 @@
-# Travola Vault
+# travola-vault
 
-## Overview
+> A secure and production-inspired authentication and hotel management backend built with **Node.js**, **Express.js**, and **MongoDB**.
 
-**Travola Vault** is a secure hotel management and authentication backend built with **Node.js**, **Express.js**, and **MongoDB**. The project focuses on implementing modern authentication and authorization techniques while following backend development best practices and security standards.
+Travola Vault is designed as a practical reference project for learning modern backend development, authentication workflows, secure data handling, and scalable API architecture.
 
-## Features
+Built with security-first principles and clean code practices, this project demonstrates how real-world applications handle users, authentication, authorization, and database operations.
 
-### Authentication & Authorization
+---
 
-* User Registration (**Sign Up**)
-* User Authentication (**Login**)
-* JWT-based Authentication
-* Protected Routes
-* Role-Based Authorization
-* Secure Logout Flow
-* Password Update Functionality
-* Password Reset Workflow
-* Token Expiration Handling
+## Highlights
 
-### Security
-
-* Password Hashing using `bcrypt`
-* JWT Token Verification
-* Environment Variables for Sensitive Data
-* Request Validation using `validator`
-* Protection against invalid data insertion
-* Password fields excluded from query results
-* Centralized Error Handling Middleware
-* Secure MongoDB Schema Validation
-
-### Database Management
-
-* MongoDB Integration
-* Mongoose Models and Schemas
-* CRUD Operations
-* Data Validation
-* Middleware Hooks
-* Query Optimization
-
-### Additional Features
-
-* Human-friendly URLs using `slugify`
-* Modular MVC Architecture
-* Reusable Utility Functions
-* Clean Project Structure
-* Production-ready Coding Practices
+- JWT Authentication
+- Secure Password Hashing with `bcrypt`
+- User Registration and Login
+- Protected Routes
+- Role-Based Authorization
+- MongoDB Integration with Mongoose
+- Request Validation
+- SEO-Friendly Slugs with `slugify`
+- Async Error Handling
+- Modular MVC Architecture
+- Environment Variable Support
+- Production-Oriented Structure
 
 ---
 
 ## Tech Stack
 
-| Technology   | Purpose               |
-| ------------ | --------------------- |
-| Node.js      | Runtime Environment   |
-| Express.js   | Backend Framework     |
-| MongoDB      | NoSQL Database        |
-| Mongoose     | ODM for MongoDB       |
-| bcrypt       | Password Hashing      |
-| jsonwebtoken | Authentication Tokens |
-| validator    | Data Validation       |
-| slugify      | URL Friendly Slugs    |
+| Layer             | Technology     |
+| ----------------- | -------------- |
+| Runtime           | Node.js        |
+| Framework         | Express.js     |
+| Database          | MongoDB        |
+| ODM               | Mongoose       |
+| Authentication    | JSON Web Token |
+| Password Security | bcrypt         |
+| Validation        | validator      |
+| Slugs             | slugify        |
 
 ---
 
@@ -69,171 +46,142 @@
 travola-vault/
 │
 ├── controllers/
-│   ├── authController.js
-│   ├── userController.js
-│   └── hotelController.js
-│
 ├── models/
-│   ├── userModel.js
-│   └── hotelModel.js
-│
 ├── routes/
-│   ├── authRoutes.js
-│   ├── userRoutes.js
-│   └── hotelRoutes.js
-│
 ├── middleware/
-│   ├── protect.js
-│   └── errorHandler.js
-│
 ├── utils/
-│   ├── appError.js
-│   ├── catchAsync.js
-│   └── apiFeatures.js
-│
+├── services/
 ├── config/
-│   └── database.js
 │
 ├── app.js
 ├── server.js
-├── .env
 ├── package.json
+├── .env
 └── README.md
 ```
+
+The project follows a modular architecture to improve maintainability, scalability, and code organization.
+
+---
+
+## Authentication Features
+
+Travola Vault implements a complete authentication workflow commonly used in modern production applications.
+
+### User Registration
+
+- Validate incoming data
+- Verify email uniqueness
+- Hash passwords using `bcrypt`
+- Store users securely in MongoDB
+
+### Login
+
+- Verify user credentials
+- Compare hashed passwords securely
+- Generate JWT access tokens
+- Return authentication tokens to the client
+
+### Protected Routes
+
+Only authenticated users can access protected resources.
+
+### Authorization
+
+Restrict actions based on user roles such as:
+
+- User
+- Hotel Manager
+- Admin
+
+### Password Management
+
+- Update Password
+- Change Password
+- Reset Password
+- Forgot Password Workflow
 
 ---
 
 ## Authentication Flow
 
-The authentication system follows the following workflow:
-
-1. User sends a **signup request**.
-2. Input data is validated.
-3. Password is hashed using `bcrypt`.
-4. User information is stored in MongoDB.
-5. User logs in using email and password.
-6. Credentials are verified.
-7. A JWT token is generated and returned.
-8. The client stores the token securely.
-9. Protected routes verify the token before granting access.
-
----
-
-## Database Management
-
-### Creating Documents
-
-New records are inserted using Mongoose models after passing all validation rules.
-
-### Reading Documents
-
-Data is retrieved using Mongoose queries with filtering, sorting, and pagination support.
-
-### Updating Documents
-
-Updates are validated before being written to the database to maintain consistency.
-
-### Deleting Documents
-
-Deletion operations are protected by authorization rules to prevent unauthorized access.
+```text
+User Signup
+    ↓
+Validate Request Data
+    ↓
+Hash Password using bcrypt
+    ↓
+Save User to MongoDB
+    ↓
+User Login
+    ↓
+Generate JWT Token
+    ↓
+Client Stores Token
+    ↓
+Protected API Requests
+    ↓
+JWT Verification Middleware
+```
 
 ---
 
-## Authentication Operations
+## Database Operations
 
-### Sign Up
+The project demonstrates best practices for working with MongoDB and Mongoose.
 
-Creates a new user account after validating user information and hashing the password.
+### Create
 
-### Login
+Insert new documents safely after validation.
 
-Authenticates the user and generates a JWT token for future requests.
+### Read
 
-### Protect Routes
+Retrieve data efficiently using Mongoose queries.
 
-Ensures that only authenticated users can access specific endpoints.
+### Update
 
-### Restrict Access
+Update records while preserving validation rules.
 
-Limits certain operations to specific roles such as:
+### Delete
 
-* User
-* Manager
-* Admin
-
-### Update Password
-
-Allows authenticated users to change their password securely.
-
-### Forgot Password
-
-Generates a secure reset token and allows users to create a new password.
-
-### Logout
-
-Invalidates user sessions on the client side by removing stored tokens.
-
----
-
-## MongoDB and Mongoose
-
-This project demonstrates:
-
-* Creating schemas and models.
-* Defining field validations.
-* Using middleware hooks.
-* Creating indexes.
-* Running queries efficiently.
-* Populating referenced documents.
-* Handling database errors gracefully.
+Remove resources securely with authorization checks.
 
 ---
 
 ## Security Practices
 
-Security is one of the main goals of this project.
+Security is one of the primary goals of Travola Vault.
 
-Implemented security features include:
+Implemented protections include:
 
-* Password hashing using `bcrypt`.
-* JWT expiration times.
-* Environment variable protection.
-* Validation of incoming requests.
-* Sensitive field exclusion.
-* Secure error handling.
-* Schema validation.
-* Authentication middleware.
-* Authorization middleware.
-* Protection against unauthorized data modification.
-
----
-
-## Learning Objectives
-
-This repository is designed to help developers understand:
-
-* Authentication systems.
-* Authorization mechanisms.
-* JWT implementation.
-* Password hashing techniques.
-* MongoDB fundamentals.
-* Mongoose best practices.
-* Express.js architecture.
-* Backend security principles.
-* Production-ready API design.
+- Password Hashing with bcrypt
+- JWT Expiration
+- Sensitive Data Protection
+- Environment Variables
+- Input Validation
+- Centralized Error Handling
+- Secure Schema Validation
+- Password Exclusion from Queries
+- Authentication Middleware
+- Authorization Middleware
 
 ---
 
-## Ideal For
+## What You'll Learn
 
-This project is suitable for developers who want to learn:
+This project covers many important backend concepts including:
 
-* Backend Development
-* REST APIs
-* Authentication Systems
-* MongoDB and Mongoose
-* Secure API Design
-* Express.js Best Practices
+- Authentication
+- Authorization
+- JWT
+- Password Hashing
+- Express Middleware
+- MongoDB Fundamentals
+- Mongoose Best Practices
+- Secure API Design
+- Error Handling Patterns
+- Scalable Project Architecture
 
 ---
 
@@ -241,23 +189,40 @@ This project is suitable for developers who want to learn:
 
 Potential future enhancements include:
 
-* Email Verification
-* Refresh Tokens
-* Two-Factor Authentication (2FA)
-* Rate Limiting
-* API Documentation
-* Docker Support
-* Automated Testing
-* CI/CD Pipelines
+- Email Verification
+- Refresh Tokens
+- Two-Factor Authentication (2FA)
+- Rate Limiting
+- API Documentation
+- Docker Support
+- Unit Testing
+- CI/CD Pipelines
+- Caching Layer
+- File Upload Support
+
+---
+
+## Project Goals
+
+Travola Vault aims to provide:
+
+- Clean Architecture
+- Secure Authentication
+- Production-Level Practices
+- Scalable Code Structure
+- Maintainable Codebase
+- Real-World Backend Experience
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License**.
+Distributed under the MIT License.
 
 ---
 
-## Author
+<div align="center">
 
-Developed as a secure authentication and hotel backend reference project focused on clean architecture, scalability, and backend best practices.
+Built with Node.js, Express.js, MongoDB, and security-first development practices.
+
+</div>
