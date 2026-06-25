@@ -17,7 +17,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
   // this is the sigature or jtw for the user
   const token = jwt.sign({ name: newUser.name }, process.env.JWT_SECRET, {
@@ -81,8 +80,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError('user not logged in please log in to access', 401)
     );
   }
-  // 2) verification token
-  // promisify: for convert to promise
+  // 2) verification token %% promisify: for convert to promise
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   console.log(decoded);
 
