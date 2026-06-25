@@ -168,7 +168,7 @@ Implemented protections include:
 
 ---
 
-## What You'll Learn
+## Key Backend Concepts
 
 This project covers many important backend concepts including:
 

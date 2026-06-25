@@ -19,7 +19,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
   // this is the sigature or jtw for the user
-  const token = jwt.sign({ name: newUser.name }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRESIN
   });
 
@@ -51,7 +51,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // 3. if everything os ok, send token to client
-  const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRESIN
   });
 
@@ -85,6 +85,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   console.log(decoded);
 
   // 3) check if user still exists
+  const freshUser = await UserModel.findById(decoded.id);
+  if (!freshUser)
+    return next(
+      new AppError('the user belonging to this token does no longer  exist')
+    );
 
   // 4) check if user changed password after token was issued
   next();
