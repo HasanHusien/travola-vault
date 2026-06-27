@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { aliasTopTours } = require('../middleware/aliasTopTours');
-const { protect } = require('../controllers/authControllers');
+const { protect, restrictTo } = require('../controllers/authControllers');
 const {
   getAllTours,
   createTour,
@@ -23,7 +23,7 @@ router
   .route('/:id')
   .get(getTour)
   .patch(updateTour)
-  .delete(deleteTour);
+  .delete(protect, restrictTo('admin'), deleteTour);
 
 // topTours router & add alias top tours middleware
 router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
