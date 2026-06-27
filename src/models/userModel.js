@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, 'please provide a correct email']
   },
   photo: String,
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user'
+  },
   password: {
     type: String,
     required: [true, 'please provide a password!'],
@@ -34,7 +39,7 @@ const userSchema = new mongoose.Schema({
       message: 'passwords are not matched' // err msg
     }
   },
-  passwordChangedAt: DAte
+  passwordChangedAt: Date
 });
 
 // encrypt password by bcrypt
@@ -65,7 +70,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
     );
     // console.log(this.passwordChangedAt, JWTTimestamp);
 
-    return JWTTimestamp < changedTimestamp; 
+    return JWTTimestamp < changedTimestamp;
   }
 
   // return false if nothing changed
@@ -74,3 +79,12 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
 
 const UserModel = mongoose.model('User', userSchema);
 module.exports = UserModel;
+
+
+// {
+//   "name":"hassan hussien",
+//   "email":"dev.@test.io",
+//   "role":"admin",
+//   "password":"pass12345",
+//   "passwordConfirm":"pass12345"
+// }
