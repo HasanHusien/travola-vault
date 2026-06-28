@@ -23,7 +23,7 @@ router
   .route('/:id')
   .get(getTour)
   .patch(updateTour)
-  .delete(protect, restrictTo('admin'), deleteTour);
+  .delete(protect, restrictTo('admin','lead-guide'), deleteTour);
 
 // topTours router & add alias top tours middleware
 router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
