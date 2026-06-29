@@ -119,3 +119,17 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgetPassword = catchAsync(async (req, res, next) => {
+  // 1. get user based on posted email
+  const user = await UserModel.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new AppError('please provide an correct email address', 404));
+  }
+
+  // 2. generate the random rest token
+  const restToken = user.createPasswordRestToken();
+  // for saving to DB
+  await user.save({ validateBeforeSave: false });
+});
