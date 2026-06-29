@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const validator = require('validator');
 
 // Inputs: name, email, photo, password, confirmPassword
 const userSchema = new mongoose.Schema({
@@ -39,7 +40,9 @@ const userSchema = new mongoose.Schema({
       message: 'passwords are not matched' // err msg
     }
   },
-  passwordChangedAt: Date
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordRestExpires: Date
 });
 
 // encrypt password by bcrypt
@@ -77,9 +80,26 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   return false;
 };
 
+userSchema.methods.createPasswordRestToken = function() {
+  // build in module for encrypt and security
+  const restToken = crypto.randomBytes(32).toString('hex');
+
+  // create hash for token by (sha256) algorithm and convert buffers to string
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(restToken)
+    .digest('hex');
+
+  console.log({ restToken }, this.passwordResetToken);
+
+  // 10 minutes
+  this.passwordRestExpires = Date.now() + 10 * 60 * 1000;
+
+  return restToken;
+};
+
 const UserModel = mongoose.model('User', userSchema);
 module.exports = UserModel;
-
 
 // {
 //   "name":"hassan hussien",
