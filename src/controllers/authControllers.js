@@ -165,3 +165,5 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
+
+exports.restPassword = catchAsync(async (req, res, next) => {});
