@@ -106,7 +106,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-// authorization
+// authorization %% ...role eq unlimited params
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     // roles ['admin, lead-guide]. role = user
