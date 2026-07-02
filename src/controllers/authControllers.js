@@ -194,5 +194,16 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordRestExpires = undefined;
 
-  
+  await user.save();
+
+  // 3)
+  // 4)log user in, send token
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRESIN
+  });
+
+  res.status(201).json({
+    status: 'success',
+    token
+  });
 });
