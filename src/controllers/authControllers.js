@@ -182,4 +182,17 @@ exports.restPassword = catchAsync(async (req, res, next) => {
     passwordResetToken: hashedToken,
     passwordRestExpires: { $gt: Date.now() }
   });
+
+  // 1) if token has not expired, and there is a user, set the new password
+  if (!user) {
+    return next(new AppError('Token is invalid or token has Expired', 400));
+  }
+
+  // rest password and modify restToken and restExpired
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordRestExpires = undefined;
+
+  
 });
