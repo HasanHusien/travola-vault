@@ -1,10 +1,13 @@
-const { promisify } = require('util');
+const crypto = require('crypto');
+const AppError = require('../utils/appError');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+
 const sendEmail = require('../utils/email');
+const { promisify } = require('util');
 
 // signup
 exports.signup = catchAsync(async (req, res, next) => {
@@ -166,4 +169,17 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.restPassword = catchAsync(async (req, res, next) => {});
+exports.restPassword = catchAsync(async (req, res, next) => {
+  // 1) get user based on the token
+  // note: req.params.token cause in route /:token
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  // check user password and expired time
+  const user = await UserModel.findOne({
+    passwordResetToken: hashedToken,
+    passwordRestExpires: { $gt: Date.now() }
+  });
+});
