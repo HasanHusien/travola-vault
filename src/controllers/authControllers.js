@@ -180,7 +180,9 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   // check user password and expired time
   const user = await UserModel.findOne({
     passwordResetToken: hashedToken,
-    passwordRestExpires: { $gt: Date.now() }
+    passwordRestExpires: {
+      $gt: Date.now()
+    }
   });
 
   // 1) if token has not expired, and there is a user, set the new password
@@ -196,13 +198,20 @@ exports.restPassword = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-  // 3)
-  // 4)log user in, send token
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN
-  });
+  // 3)update passwordChangedAt for the user
 
-  res.status(201).json({
+  // 4)log user in, send token
+  const token = jwt.sign(
+    {
+      id: user._id
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRESIN
+    }
+  );
+
+  res.status(200).json({
     status: 'success',
     token
   });

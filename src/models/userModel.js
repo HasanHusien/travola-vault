@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
   passwordRestExpires: Date
 });
 
-// encrypt password by bcrypt
+// encrypt password by bcrypt (middleware)
 userSchema.pre('save', async function(next) {
   // only execute if password modifying
   if (!this.isModified('password')) return next();
@@ -54,6 +54,14 @@ userSchema.pre('save', async function(next) {
   this.password = await bcrypt.hash(this.password, 12);
 
   this.passwordConfirm = undefined;
+});
+
+//update passwordChangedAt for the user (middleware)
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+  next();
 });
 
 // compare user password with db password when login (bcrypt)
