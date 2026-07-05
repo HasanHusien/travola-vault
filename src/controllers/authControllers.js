@@ -123,12 +123,8 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
-console.log(process.env.EMAIL_HOST);
-console.log(process.env.EMAIL_PORT);
-console.log(process.env.EMAIL_USERNAME);
-
 exports.forgetPassword = catchAsync(async (req, res, next) => {
-    console.log('forgetPassword called');
+  console.log('forgetPassword called');
 
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });
@@ -163,7 +159,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
       message: 'token send to email!'
     });
   } catch (err) {
-    console.error(err)
+    console.error(err);
     user.passwordResetToken = undefined;
     user.passwordRestExpires = undefined;
     // to save
@@ -221,4 +217,32 @@ exports.restPassword = catchAsync(async (req, res, next) => {
     status: 'success',
     token
   });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  console.log('update password called');
+  // const {password} = req.body
+
+  // 1) getting user from collection
+  const user = await UserModel.findOne({ password: req.body.password });
+
+  if (!user) {
+    return next(
+      new AppError(
+        'No  users match this password, please send the correct password',
+        403
+      )
+    );
+  }
+
+  // 2)checking if posted password is correct
+  if (!user.checkPasswordForUpdate(req.body.password)) {
+    return next(
+      new AppError('Incorrect password, please send the correct password', 403)
+    );
+  }
+
+  // 3) it so, update password
+
+  // 4)log user in, send token
 });

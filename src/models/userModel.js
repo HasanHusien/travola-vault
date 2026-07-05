@@ -87,6 +87,7 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
   return false;
 };
 
+// creating encrypted token
 userSchema.methods.createPasswordRestToken = function() {
   // build in module for encrypt and security
   const restToken = crypto.randomBytes(32).toString('hex');
@@ -103,6 +104,17 @@ userSchema.methods.createPasswordRestToken = function() {
   this.passwordRestExpires = Date.now() + 10 * 60 * 1000;
 
   return restToken;
+};
+
+userSchema.methods.checkPasswordForUpdate = function(password) {
+  if (this.password === password) {
+    return true;
+  } else return false;
+};
+
+userSchema.methods.updatePassword = function(password) {
+  this.password = password;
+  this.passwordConfirm = password;
 };
 
 const UserModel = mongoose.model('User', userSchema);
