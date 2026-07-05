@@ -15,8 +15,8 @@ router.route('/').get(getAllUsers);
 router.route('/signup').post(signup);
 router.route('/login').post(login);
 
-router.route('/forgetPassword').post(restPassword);
-router.route('/restPassword/:token').patch(forgetPassword);
+router.route('/forgetPassword').post(forgetPassword);
+router.route('/restPassword/:token').patch(restPassword);
 
 //   .post(userController.createUser);
 

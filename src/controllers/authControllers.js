@@ -123,8 +123,13 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+console.log(process.env.EMAIL_HOST);
+console.log(process.env.EMAIL_PORT);
+console.log(process.env.EMAIL_USERNAME);
 
 exports.forgetPassword = catchAsync(async (req, res, next) => {
+    console.log('forgetPassword called');
+
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });
 
@@ -158,6 +163,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
       message: 'token send to email!'
     });
   } catch (err) {
+    console.error(err)
     user.passwordResetToken = undefined;
     user.passwordRestExpires = undefined;
     // to save

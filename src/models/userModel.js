@@ -44,7 +44,6 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordRestExpires: Date
 });
-
 // encrypt password by bcrypt (middleware)
 userSchema.pre('save', async function(next) {
   // only execute if password modifying
