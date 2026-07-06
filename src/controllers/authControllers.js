@@ -48,8 +48,8 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2.check if user exist & and password correct
   // the way to get password
   const user = await UserModel.findOne({ email }).select('+password');
-  // const checkCorrect = await user.correctPassword(password, user.password);
 
+  // const checkCorrect = await user.correctPassword(password, user.password);
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
@@ -173,13 +173,14 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
 
 exports.restPassword = catchAsync(async (req, res, next) => {
   // 1) get user based on the token
+
   // note: req.params.token cause in route /:token
   const hashedToken = crypto
     .createHash('sha256')
     .update(req.params.token)
     .digest('hex');
 
-  // check user password and expired time
+  // password and expired time
   const user = await UserModel.findOne({
     passwordResetToken: hashedToken,
     passwordRestExpires: {
@@ -203,15 +204,9 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   // 3)update passwordChangedAt for the user
 
   // 4)log user in, send token
-  const token = jwt.sign(
-    {
-      id: user._id
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRESIN
-    }
-  );
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRESIN
+  });
 
   res.status(200).json({
     status: 'success',
@@ -221,10 +216,19 @@ exports.restPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
-  // const {password} = req.body
 
   // 1) getting user from collection
-  const user = await UserModel.findOne({ password: req.body.password });
+  const hashedToken = crypto
+    .createHash('sh256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await UserModel.findOne({
+    passwordResetToken: hashedToken,
+    passwordRestExpires: {
+      $gt: Date.now()
+    }
+  });
 
   if (!user) {
     return next(
@@ -241,8 +245,26 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
       new AppError('Incorrect password, please send the correct password', 403)
     );
   }
+  console.log(checkPasswordForUpdate());
 
+  if (!req.body.newPassword || !req.body.newPasswordConform) {
+    return next(new AppError('please write your new password, and confirm it'));
+  }
   // 3) it so, update password
+  user.password = req.body.newPassword;
+  user.passwordConfirm = req.body.newPasswordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordRestExpires = undefined;
+
+  await user.save();
 
   // 4)log user in, send token
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRESIN
+  });
+
+  res.status(200).json({
+    status: 'success',
+    token
+  });
 });
