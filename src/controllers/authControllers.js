@@ -37,7 +37,9 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
-  // this is the sigature or jtw for the user
+  // this is the signature or jtw for the user
+
+  // createSendToken(newUser, 201, res);
   const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRESIN
   });
@@ -70,14 +72,15 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // 3. if everything os ok, send token to client
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN
-  });
+  createSendToken(user, 200, res);
+  // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+  //   expiresIn: process.env.JWT_EXPIRESIN
+  // });
 
-  res.status(200).json({
-    status: 'success',
-    token
-  });
+  // res.status(200).json({
+  //   status: 'success',
+  //   token
+  // });
 });
 
 // protect routes for only logged in users allow access to data
@@ -219,25 +222,25 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   // 3)update passwordChangedAt for the user
 
   // 4)log user in, send token
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN
-  });
+  createSendToken(user, 200, res);
+  // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+  //   expiresIn: process.env.JWT_EXPIRESIN
+  // });
 
-  res.status(200).json({
-    status: 'success',
-    token
-  });
+  // res.status(200).json({
+  //   status: 'success',
+  //   token
+  // });
 });
-
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
 
   // 1) getting user from collection
-  const user = await UserModel.findById(req.body.id).select('+password');
+  const user = await UserModel.findById(req.user.id).select('+password');
 
   // 2)checking if posted password is correct
-  if (await !user.correctPassword(req.body.passwordCurrent, user.password)) {
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError('Your current password is wrong', 401));
   }
 
