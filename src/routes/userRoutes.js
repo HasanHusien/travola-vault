@@ -17,8 +17,9 @@ router.route('/signup').post(signup);
 router.route('/login').post(login);
 
 router.route('/forgetPassword').post(forgetPassword);
-router.route('/updatePassword:token').post(updatePassword);
 router.route('/restPassword/:token').patch(restPassword);
+
+router.route('/updatePassword').patch(protect, updatePassword);
 
 //   .post(userController.createUser);
 

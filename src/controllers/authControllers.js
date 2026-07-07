@@ -9,6 +9,21 @@ const catchAsync = require('../utils/catchAsync');
 const sendEmail = require('../utils/email');
 const { promisify } = require('util');
 
+const signToken = id => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRESIN
+  });
+};
+
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.status(statusCode).json({
+    status: 'success',
+    token
+  });
+};
+
 // signup
 exports.signup = catchAsync(async (req, res, next) => {
   // make it like this for don't add other prop as role
@@ -214,14 +229,15 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   });
 });
 
+
 exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
 
   // 1) getting user from collection
-  const user = await UserModel.findById(req.body.id);
+  const user = await UserModel.findById(req.body.id).select('+password');
 
   // 2)checking if posted password is correct
-  if (await !user.correctPassword(req.body.passwordConfirm, user.password)) {
+  if (await !user.correctPassword(req.body.passwordCurrent, user.password)) {
     return next(new AppError('Your current password is wrong', 401));
   }
 
@@ -230,14 +246,8 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
 
   await user.save();
+  // User.findByIdAndUpdate will NOT work as intended!
 
   // 4)log user in, send token
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN
-  });
-
-  res.status(200).json({
-    status: 'success',
-    token
-  });
+  createSendToken(user, 200, res);
 });
