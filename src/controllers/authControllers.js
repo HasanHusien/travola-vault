@@ -218,43 +218,16 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
 
   // 1) getting user from collection
-  const hashedToken = crypto
-    .createHash('sh256')
-    .update(req.params.token)
-    .digest('hex');
-
-  const user = await UserModel.findOne({
-    passwordResetToken: hashedToken,
-    passwordRestExpires: {
-      $gt: Date.now()
-    }
-  });
-
-  if (!user) {
-    return next(
-      new AppError(
-        'No  users match this password, please send the correct password',
-        403
-      )
-    );
-  }
+  const user = await UserModel.findById(req.body.id);
 
   // 2)checking if posted password is correct
-  if (!user.checkPasswordForUpdate(req.body.password)) {
-    return next(
-      new AppError('Incorrect password, please send the correct password', 403)
-    );
+  if (await !user.correctPassword(req.body.passwordConfirm, user.password)) {
+    return next(new AppError('Your current password is wrong', 401));
   }
-  console.log(checkPasswordForUpdate());
 
-  if (!req.body.newPassword || !req.body.newPasswordConform) {
-    return next(new AppError('please write your new password, and confirm it'));
-  }
   // 3) it so, update password
-  user.password = req.body.newPassword;
-  user.passwordConfirm = req.body.newPasswordConfirm;
-  user.passwordResetToken = undefined;
-  user.passwordRestExpires = undefined;
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
 
   await user.save();
 
