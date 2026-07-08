@@ -23,7 +23,7 @@ router.route('/restPassword/:token').patch(restPassword);
 router.route('/updatePassword').patch(protect, updatePassword);
 
 // updating user data for logged in users
-router.route('/updateMe').patch(protect, updatePassword);
+router.route('/updateMe').patch(protect, updateMe);
 
 //   .post(userController.createUser);
 

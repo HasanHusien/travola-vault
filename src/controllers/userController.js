@@ -2,6 +2,17 @@ const UserModel = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
+// filter obj for doing update for only name & email
+const filterObj = (body, ...allowedFields) => {
+  const newObj = {};
+
+  Object.keys(body).forEach(el => {
+    if (allowedFields.includes(el)) newObj[el] = body[el]
+  });
+
+  return newObj;
+};
+
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await UserModel.find();
 
@@ -12,7 +23,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateMe = (req, res, next) => {
+exports.updateMe = catchAsync(async (req, res, next) => {
   //1) if user sending password create an error
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -22,8 +33,25 @@ exports.updateMe = (req, res, next) => {
     );
   }
 
+  // 2) filter unwanted fields names there are not allowed to be update
+  const filteredBody = filterObj(req.body, 'email', 'name');
 
-};
+  // 3) update user document (not password)
+  // note:using findByIdAndUpdate cause we handling not sensitive date
+  const updatedUser = await UserModel.findByIdAndUpdate(req.user.id,filteredBody,{
+      new: true,
+      runValidators: true
+    }
+  );
+
+  // 4) send response
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: { updatedUser }
+    }
+  });
+});
 
 exports.getUser = (req, res) => {
   res.status(500).json({
@@ -43,6 +71,7 @@ exports.updateUser = (req, res) => {
     message: 'This route is not yet defined!'
   });
 };
+
 exports.deleteUser = (req, res) => {
   res.status(500).json({
     status: 'error',

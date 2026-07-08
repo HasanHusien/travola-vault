@@ -83,7 +83,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // });
 });
 
-// protect routes for only logged in users allow access to data
+// protect routes for only logged in users allow access to data (middleware)
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) getting token and check if it's exist
   let token;
