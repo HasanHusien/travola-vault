@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllUsers, updateMe } = require('../controllers/userController');
+const {
+  getAllUsers,
+  updateMe,
+  deleteMe
+} = require('../controllers/userController');
 const {
   signup,
   login,
@@ -24,6 +28,8 @@ router.route('/updatePassword').patch(protect, updatePassword);
 
 // updating user data for logged in users
 router.route('/updateMe').patch(protect, updateMe);
+
+router.route('/deleteMe').delete(protect, deleteMe);
 
 //   .post(userController.createUser);
 

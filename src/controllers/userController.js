@@ -7,7 +7,7 @@ const filterObj = (body, ...allowedFields) => {
   const newObj = {};
 
   Object.keys(body).forEach(el => {
-    if (allowedFields.includes(el)) newObj[el] = body[el]
+    if (allowedFields.includes(el)) newObj[el] = body[el];
   });
 
   return newObj;
@@ -38,7 +38,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   // 3) update user document (not password)
   // note:using findByIdAndUpdate cause we handling not sensitive date
-  const updatedUser = await UserModel.findByIdAndUpdate(req.user.id,filteredBody,{
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    req.user.id,
+    filteredBody,
+    {
       new: true,
       runValidators: true
     }
@@ -50,6 +53,19 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     data: {
       user: { updatedUser }
     }
+  });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  // note: only can use findByIdAndUpdate with already existing user or logged in users
+  await UserModel.findByIdAndUpdate(req.user.id, {
+    active: false
+  });
+
+  // 204 (deleted)
+  res.status(204).json({
+    status: 'success',
+    data: null
   });
 });
 

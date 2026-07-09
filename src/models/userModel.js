@@ -42,7 +42,12 @@ const userSchema = new mongoose.Schema({
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordRestExpires: Date
+  passwordRestExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
+  }
 });
 // encrypt password by bcrypt (middleware)
 userSchema.pre('save', async function(next) {
@@ -70,6 +75,13 @@ userSchema.methods.correctPassword = async function(
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+// query middleware for query only active users 
+userSchema.pre(/^find/, function(next) {
+  this.find({ active: { $ne: false } });
+
+  next();
+});
 
 //more instance for checking if password has been changed %% return false or true
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
