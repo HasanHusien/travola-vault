@@ -18,6 +18,10 @@ const signToken = id => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
+  res.cookie()
+
+
+
   res.status(statusCode).json({
     status: 'success',
     token
