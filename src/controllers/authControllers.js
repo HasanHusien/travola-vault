@@ -15,16 +15,32 @@ const signToken = id => {
   });
 };
 
+// send token and cookies
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
+  const convertToDays = 24 * 60 * 60 * 1000;
 
-  res.cookie()
+  // cookie name, data, options
+  res.cookie('jwt', token, {
+    // time for allowing access
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRSIN * convertToDays
+    ),
+    // more safe for not modify from browser
+    httpOnly: true,
+    // only send cookie when using https no http
+    secure: process.env.NODE_ENV === 'production' ? true : false
+  });
 
-
+  // hide password data when send res
+  user.password = undefined;
 
   res.status(statusCode).json({
     status: 'success',
-    token
+    token,
+    data: {
+      user
+    }
   });
 };
 
@@ -40,21 +56,23 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
+  
+  createSendToken(newUser,201,res);
+  
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
   // this is the signature or jtw for the user
 
-  // createSendToken(newUser, 201, res);
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN
-  });
+//   const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+//     expiresIn: process.env.JWT_EXPIRESIN
+//   });
 
-  res.status(201).json({
-    status: 'success',
-    token,
-    data: {
-      user: newUser
-    }
-  });
+//   res.status(201).json({
+//     status: 'success',
+//     token,
+//     data: {
+//       user: newUser
+//     }
+//   });
 });
 
 // login
