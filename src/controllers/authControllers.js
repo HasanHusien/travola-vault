@@ -56,23 +56,22 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
 
-  
-  createSendToken(newUser,201,res);
-  
+  createSendToken(newUser, 201, res);
+
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
   // this is the signature or jtw for the user
 
-//   const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-//     expiresIn: process.env.JWT_EXPIRESIN
-//   });
+  //   const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+  //     expiresIn: process.env.JWT_EXPIRESIN
+  //   });
 
-//   res.status(201).json({
-//     status: 'success',
-//     token,
-//     data: {
-//       user: newUser
-//     }
-//   });
+  //   res.status(201).json({
+  //     status: 'success',
+  //     token,
+  //     data: {
+  //       user: newUser
+  //     }
+  //   });
 });
 
 // login
