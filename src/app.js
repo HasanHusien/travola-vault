@@ -3,8 +3,12 @@ const express = require('express');
 const morgan = require('morgan');
 
 const app = express();
+
+// security packages
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
@@ -13,7 +17,7 @@ const globalErrorHandler = require('./controllers/errorController');
 // setting HTTP Headers
 app.use(helmet());
 
-// json parser middleware && setting limit for body data
+// json parser middleware && setting limit for req.body data
 app.use(express.json({ limit: '10kb' }));
 
 // morgan middleware
@@ -21,12 +25,18 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// data sanitization against NOSQL query injection attacks
+app.use(mongoSanitize());
+
+// data sanitization against XSS attacks
+app.use(xss());
+
 // using express-rate-limit package
 // rate limiting algorithm (middleware) for protect from attacks
 const limier = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 80, // 80 try
-  message: 'Too many requests from this IP, please try again in an hour!'
+  message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
 app.use('/api', limiter);
