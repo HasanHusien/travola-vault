@@ -33,7 +33,7 @@ app.use(xss());
 
 // using express-rate-limit package
 // rate limiting algorithm (middleware) for protect from attacks
-const limier = rateLimit({
+const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 80, // 80 try
   message: 'Too many requests from this IP, Please try again in an hour!'

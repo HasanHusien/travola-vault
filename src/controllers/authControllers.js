@@ -210,6 +210,9 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   }
 });
 
+
+
+
 exports.restPassword = catchAsync(async (req, res, next) => {
   // 1) get user based on the token
 
@@ -254,8 +257,11 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   // });
 });
 
+
 exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
+
+  
 
   // 1) getting user from collection
   const user = await UserModel.findById(req.user.id).select('+password');
