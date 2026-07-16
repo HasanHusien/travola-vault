@@ -129,7 +129,6 @@ tourSchema.pre('save', function(next) {
 
 // save guide automatic when run tour by this middleware
 tourSchema.pre('save', async function(next) {
-
   // const guidesPromises = this.guides.map(
   //   async id => await UserModel.findById(id)
   // );
@@ -140,6 +139,14 @@ tourSchema.pre('save', async function(next) {
   next();
 });
 
+// build query middleware instead duplicate populate code
+tourSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt'
+  });
+  next();
+});
 
 // QUERY MIDDLEWARE %% pre eq previous %% ^find any word starts with find (regex)
 tourSchema.pre(/^find/, function(next) {
