@@ -76,8 +76,33 @@ const tourSchema = new mongoose.Schema(
       select: false
     },
     startDates: [Date],
-    secretTour: Boolean
+    secretTour: Boolean,
+    startLocation: {
+      // geoJson it's standard for storage location data in mongoDB 
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'] // allowed fields 
+      },
+      coordinates: [Number],
+      address: String,
+      description: String
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point']
+        },
+        coordinates: [Number], // [lang, lat]
+        address: String,
+        description: String,
+        day: Number
+      }
+    ]
   },
+
   {
     // make virtual properties appear in my data
     toJSON: { virtuals: true },

@@ -17,7 +17,6 @@ const globalErrorHandler = require('./controllers/errorController');
 
 // setting HTTP Headers
 app.use(helmet());
-
 // add more secure for sorting (using hpp middleware)
 app.use(
   hpp({
@@ -27,7 +26,7 @@ app.use(
       'ratingsAverage',
       'ratingsQuantity',
       'price',
-      'difficulty'
+      'difficulty' 
     ]
   })
 );
@@ -65,7 +64,7 @@ app.all('*', (req, res, next) => {
   next(new AppError(`cannot find ${req.originalUrl} at this server`, 404));
 });
 
-// global error handler
+// global error handler 
 app.use(globalErrorHandler);
 
 module.exports = app;

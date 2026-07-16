@@ -21,7 +21,7 @@ const createSendToken = (user, statusCode, res) => {
   const convertToDays = 24 * 60 * 60 * 1000;
 
   // cookie name, data, options
-  res.cookie('jwt', token, {
+  res.cookie('jwt', token, { 
     // time for allowing access
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRSIN * convertToDays
