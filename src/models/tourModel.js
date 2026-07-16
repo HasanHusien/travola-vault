@@ -102,7 +102,12 @@ const tourSchema = new mongoose.Schema(
         day: Number
       }
     ],
-    guides: Array
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
 
   {
@@ -124,15 +129,17 @@ tourSchema.pre('save', function(next) {
 
 // save guide automatic when run tour by this middleware
 tourSchema.pre('save', async function(next) {
-  const guidesPromises = this.guides.map(
-    async id => await UserModel.findById(id)
-  );
 
-  // using promise.all() cause it returned promises (change hire)
-  this.guides = await Promise.all(guidesPromises);
+  // const guidesPromises = this.guides.map(
+  //   async id => await UserModel.findById(id)
+  // );
+
+  // // using promise.all() cause it returned promises (change hire)
+  // this.guides = await Promise.all(guidesPromises);
 
   next();
 });
+
 
 // QUERY MIDDLEWARE %% pre eq previous %% ^find any word starts with find (regex)
 tourSchema.pre(/^find/, function(next) {
