@@ -13,6 +13,8 @@ const hpp = require('hpp');
 
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes')
+
 const globalErrorHandler = require('./controllers/errorController');
 
 // setting HTTP Headers
@@ -58,6 +60,7 @@ app.use('/api', limiter);
 // rotes
 app.use('/api/tours', tourRouter);
 app.use('/api/users', userRouter);
+app.use('/api/reviews',reviewRouter)
 
 // all eq all http method & '*' eq all not declared route
 app.all('*', (req, res, next) => {
