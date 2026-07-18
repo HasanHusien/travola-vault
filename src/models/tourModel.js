@@ -10,8 +10,14 @@ const tourSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       // mongoose validation %% [validate, err message]
-      maxlength: [40, 'A tour name must have less or equal then 40 characters'],
-      minlength: [10, 'A tour name must have more or equal then 10 characters']
+      maxlength: [
+        40,
+        'A tour name must have less or equal then 40 characters'
+      ],
+      minlength: [
+        10,
+        'A tour name must have more or equal then 10 characters'
+      ]
     },
     slug: String,
     duration: {
@@ -54,7 +60,8 @@ const tourSchema = new mongoose.Schema(
           return val < this.price;
         },
         // access to the value using ({VALUE})
-        message: 'Discount price ({VALUE}) should be below regular price'
+        message:
+          'Discount price ({VALUE}) should be below regular price'
       }
     },
     summary: {
@@ -108,6 +115,14 @@ const tourSchema = new mongoose.Schema(
         ref: 'User'
       }
     ]
+
+    // how implement child referencing
+    // review: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'Review'
+    //   }
+    // ]
   },
 
   {
@@ -119,6 +134,13 @@ const tourSchema = new mongoose.Schema(
 // set virtual properties into data & using regular fn cause using this keyword
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
+});
+
+// virtual populate
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
 });
 
 // DOCUMENT MIDDLEWARE runs before save() and crete()
