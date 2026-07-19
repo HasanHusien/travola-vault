@@ -1,12 +1,13 @@
-const Tour = require('../models/tourModel');
+const TourModel = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
+const factory = require('../controllers/handlerFactory');
 
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
   // execute the query, filter w query i wrote
-  const features = new APIFeatures(Tour.find(), req.query)
+  const features = new APIFeatures(TourModel.find(), req.query)
     .filter()
     .sort()
     .limit()
@@ -24,7 +25,9 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews')
+  const tour = await TourModel.findById(req.params.id).populate(
+    'reviews'
+  );
   if (!tour) {
     return next(new AppError('this tour not found', 404));
   }
@@ -38,7 +41,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
 });
 
 exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
+  const newTour = await TourModel.create(req.body);
 
   res.status(201).json({
     status: 'success',
@@ -49,10 +52,14 @@ exports.createTour = catchAsync(async (req, res, next) => {
 });
 
 exports.updateTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+  const tour = await TourModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true
+    }
+  );
 
   if (!tour) {
     return next(new AppError('this tour not found', 404));
@@ -66,23 +73,24 @@ exports.updateTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findByIdAndDelete(req.params.id);
+// exports.deleteTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findByIdAndDelete(req.params.id);
 
-  if (!tour) {
-    return next(new AppError('this tour not found', 404));
-  }
+//   if (!tour) {
+//     return next(new AppError('this tour not found', 404));
+//   }
 
-  res.status(204).json({
-    status: 'success',
-    data: null
-  });
-});
+//   res.status(204).json({
+//     status: 'success',
+//     data: null
+//   });
+// });
+exports.deleteTour = factory.deleteOne(TourModel);
 
 // aggregation pipeline: syntax {{}} wired!
 // match => group => sort => result
 exports.getTourStats = catchAsync(async (req, res, next) => {
-  const stats = await Tour.aggregate([
+  const stats = await TourModel.aggregate([
     // any items
     { $match: { ratingsAverage: { $gte: 4.5 } } },
     {
@@ -113,7 +121,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   const year = Number(req.params.year); // 2021
-  const plan = await Tour.aggregate([
+  const plan = await TourModel.aggregate([
     {
       $unwind: '$startDates'
     },

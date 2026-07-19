@@ -5,7 +5,8 @@ const router = express.Router({mergeParams:true});
 
 const {
   getReviews,
-  createReview
+  createReview,
+  deleteReview
 } = require('../controllers/reviewControllers');
 const {
   protect,
@@ -16,5 +17,10 @@ router.route('/').get(getReviews);
 router
   .route('/newReview')
   .post(protect, restrictTo('user'), createReview);
+
+
+
+router.route('/:id').delete(deleteReview)  
+
 
 module.exports = router;
