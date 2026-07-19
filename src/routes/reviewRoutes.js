@@ -1,5 +1,6 @@
 const express = require('express');
-const router = express.Router();
+// for accept more then her params %% set in Router margParams : true
+const router = express.Router({mergeParams:true});
 
 const {
   getReviews,
