@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
 const reviewRouter = require('../routes/reviewRoutes');
+
 const { aliasTopTours } = require('../middleware/aliasTopTours');
 // const { createReview } = require('../controllers/reviewControllers');
 const {
@@ -27,8 +27,8 @@ const {
 //   .route('/:tourId/reviews')
 //   .post(protect, restrictTo('user'), createReview);
 
-// more organize from prev code 
-app.use('/:tourId/reviews', reviewRouter);
+// more organize from prev code
+router.use('/:tourId/reviews', reviewRouter);
 
 // CRUD routers
 router
