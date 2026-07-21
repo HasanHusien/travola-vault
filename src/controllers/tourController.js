@@ -40,19 +40,9 @@ exports.getTour = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createTour = catchAsync(async (req, res, next) => {
-  const newTour = await TourModel.create(req.body);
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      tour: newTour
-    }
-  });
-});
-
-// not update password
+exports.createTour = factory.createOne(TourModel);
 exports.updateTour = factory.updateOne(TourModel);
+exports.deleteTour = factory.deleteOne(TourModel);
 
 // exports.deleteTour = catchAsync(async (req, res, next) => {
 //   const tour = await Tour.findByIdAndDelete(req.params.id);
@@ -66,7 +56,6 @@ exports.updateTour = factory.updateOne(TourModel);
 //     data: null
 //   });
 // });
-exports.deleteTour = factory.deleteOne(TourModel);
 
 // aggregation pipeline: syntax {{}} wired!
 // match => group => sort => result
