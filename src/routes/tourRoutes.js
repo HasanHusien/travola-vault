@@ -34,7 +34,7 @@ router.use('/:tourId/reviews', reviewRouter);
 router
   .route('/')
   .get(protect, getAllTours)
-  .post(createTour);
+  .post(protect, createTour);
 
 router
   .route('/:id')

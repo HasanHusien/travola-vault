@@ -171,12 +171,13 @@ tourSchema.pre(/^find/, function(next) {
 });
 
 // QUERY MIDDLEWARE %% pre eq previous %% ^find any word starts with find (regex)
-tourSchema.pre(/^find/, function(next) {
-  this.find({ secretTour: false });
-  this.start = Date.now();
 
-  next();
-});
+// tourSchema.pre(/^find/, function(next) {
+//   this.find({ secretTour: false });
+//   this.start = Date.now();
+
+//   next();
+// });
 
 // if we need knew query time
 tourSchema.post('find', function(doc, next) {

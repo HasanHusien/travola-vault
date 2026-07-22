@@ -1,8 +1,7 @@
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
-const factory = require('../controllers/handlerFactory'); 
+const factory = require('../controllers/handlerFactory');
 const AppError = require('../utils/appError');
-
 
 // filter obj for doing update for only name & email
 const filterObj = (body, ...allowedFields) => {
@@ -71,17 +70,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
+
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'This route is not yet defined!'
+    message:
+    'This route is not yet defined, please uen /signup instead'
   });
 };
-exports.updateUser = factory.updateOne(UserModel)
-exports.deleteUser = factory.deleteOne(UserModel)
+exports.getUser = factory.getOne(UserModel);
+exports.updateUser = factory.updateOne(UserModel);
+exports.deleteUser = factory.deleteOne(UserModel);

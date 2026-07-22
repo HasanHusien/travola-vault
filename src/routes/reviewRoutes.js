@@ -8,7 +8,8 @@ const {
   createReview,
   deleteReview,
   updateReview,
-  setTourAndUserIds
+  setTourAndUserIds,
+  getReview
 } = require('../controllers/reviewControllers');
 const {
   protect,
@@ -22,6 +23,7 @@ router
 
 router
   .route('/:id')
+  .get(getReview)
   .patch(updateReview)
   .delete(deleteReview);
 
