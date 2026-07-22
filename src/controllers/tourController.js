@@ -2,45 +2,17 @@ const TourModel = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('../controllers/handlerFactory');
 
-const APIFeatures = require('../utils/apiFeatures');
-const AppError = require('../utils/appError');
+// const APIFeatures = require('../utils/apiFeatures');
+// const AppError = require('../utils/appError');
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  // execute the query, filter w query i wrote
-  const features = new APIFeatures(TourModel.find(), req.query)
-    .filter()
-    .sort()
-    .limit()
-    .paginate();
 
-  const tours = await features.query;
-
-  res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
-  });
-});
-
+exports.getAllTours = factory.getAll(TourModel);
 exports.getTour = factory.getOne(TourModel, { path: 'reviews' });
+
 exports.createTour = factory.createOne(TourModel);
 exports.updateTour = factory.updateOne(TourModel);
 exports.deleteTour = factory.deleteOne(TourModel);
 
-// exports.deleteTour = catchAsync(async (req, res, next) => {
-//   const tour = await Tour.findByIdAndDelete(req.params.id);
-
-//   if (!tour) {
-//     return next(new AppError('this tour not found', 404));
-//   }
-
-//   res.status(204).json({
-//     status: 'success',
-//     data: null
-//   });
-// });
 
 // aggregation pipeline: syntax {{}} wired!
 // match => group => sort => result
