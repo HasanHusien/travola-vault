@@ -4,7 +4,9 @@ const router = express.Router();
 const {
   getAllUsers,
   updateMe,
-  deleteMe
+  deleteMe,
+  getMe,
+  getUser
 } = require('../controllers/userController');
 const {
   signup,
@@ -25,6 +27,8 @@ router.route('/restPassword/:token').patch(restPassword);
 
 // updating password for logged in users
 router.route('/updatePassword').patch(protect, updatePassword);
+
+router.route('/me').get(protect, getMe, getUser);
 
 // updating user data for logged in users
 router.route('/updateMe').patch(protect, updateMe);
