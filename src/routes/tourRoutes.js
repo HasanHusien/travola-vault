@@ -9,11 +9,11 @@ const {
   restrictTo
 } = require('../controllers/authControllers');
 const {
-  getAllTours,
-  createTour,
   getTour,
+  createTour,
   updateTour,
   deleteTour,
+  getAllTours,
   getTourStats,
   getMonthlyPlan
 } = require('../controllers/tourController');

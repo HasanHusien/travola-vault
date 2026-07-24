@@ -1,30 +1,32 @@
 const express = require('express');
-
-// for accept more then her params %% set in Router margParams : true
 const router = express.Router({ mergeParams: true });
+// for accept more then her params %% set in Router margParams : true
 
 const {
+  getReview,
   getReviews,
   createReview,
   deleteReview,
   updateReview,
-  setTourAndUserIds,
-  getReview
+  setTourAndUserIds
 } = require('../controllers/reviewControllers');
+
 const {
   protect,
   restrictTo
 } = require('../controllers/authControllers');
 
-router.route('/').get(getReviews);
+router.use(protect);
+
 router
-  .route('/newReview')
-  .post(protect, restrictTo('user'), setTourAndUserIds, createReview);
+  .route('/')
+  .get(getReviews)
+  .post(restrictTo('user'), setTourAndUserIds, createReview);
 
 router
   .route('/:id')
   .get(getReview)
-  .patch(updateReview)
-  .delete(deleteReview);
+  .patch(restrictTo('user', 'admin'), updateReview)
+  .delete(restrictTo('user', 'admin'), deleteReview);
 
 module.exports = router;

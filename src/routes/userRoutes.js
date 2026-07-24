@@ -2,20 +2,22 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  getAllUsers,
-  updateMe,
-  deleteMe,
   getMe,
   getUser,
-  createUser
+  updateMe,
+  deleteMe,
+  createUser,
+  updateUser,
+  deleteUser,
+  getAllUsers
 } = require('../controllers/userController');
 const {
-  signup,
   login,
+  signup,
   protect,
-  forgetPassword,
   restPassword,
-  updatePassword
+  forgetPassword,
+  updatePassword,
 } = require('../controllers/authControllers');
 
 // instead of adding protect middleware for all routes
@@ -35,6 +37,8 @@ router.route('/deleteMe').delete(deleteMe);
 // updating password for logged in users
 router.route('/updatePassword').patch(updatePassword);
 
+router.use(resizeTo('admin'));
+
 router
   .route('/')
   .get(getAllUsers)
@@ -42,8 +46,8 @@ router
 
 router
   .route('/:id')
-  .get(userController.getUser)
-  .patch(userController.updateUser)
-  .delete(userController.deleteUser);
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;
