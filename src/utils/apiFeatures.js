@@ -1,3 +1,5 @@
+// this is a classes made for features like sort & filter & pagination etc...
+// its too important and a bit hard for reading 
 class APIFeatures {
   constructor(query, queryString) {
     

@@ -1,3 +1,5 @@
+// of the most smart class for handle error message 
+// this was soo helpful, please read good
 class AppError extends Error {
   constructor(message, statusCode) {
     super(message); // call parent

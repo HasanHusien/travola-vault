@@ -1,3 +1,4 @@
+// using nodemailer with mailtrap to send messages to email (not gmail)
 const nodemailer = require('nodemailer');
 const catchAsync = require('./catchAsync');
 

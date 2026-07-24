@@ -5,15 +5,6 @@ const factory = require('../controllers/handlerFactory');
 // const APIFeatures = require('../utils/apiFeatures');
 // const AppError = require('../utils/appError');
 
-
-exports.getAllTours = factory.getAll(TourModel);
-exports.getTour = factory.getOne(TourModel, { path: 'reviews' });
-
-exports.createTour = factory.createOne(TourModel);
-exports.updateTour = factory.updateOne(TourModel);
-exports.deleteTour = factory.deleteOne(TourModel);
-
-
 // aggregation pipeline: syntax {{}} wired!
 // match => group => sort => result
 exports.getTourStats = catchAsync(async (req, res, next) => {
@@ -46,6 +37,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
   });
 });
 
+// aggregation pile core && examples almost every operator is exist
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   const year = Number(req.params.year); // 2021
   const plan = await TourModel.aggregate([
@@ -86,3 +78,13 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+exports.getAllTours = factory.getAll(TourModel);
+exports.getTour = factory.getOne(TourModel, { path: 'reviews' });
+
+
+
+
+exports.createTour = factory.createOne(TourModel);
+exports.updateTour = factory.updateOne(TourModel);
+exports.deleteTour = factory.deleteOne(TourModel);

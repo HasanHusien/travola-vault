@@ -9,19 +9,20 @@ const catchAsync = require('../utils/catchAsync');
 const sendEmail = require('../utils/email');
 const { promisify } = require('util');
 
+// build fn by calling it will send the token easy
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRESIN
   });
 };
 
-// send token and cookies
+// send token and cookies. %% very fun one to write please read very good
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const convertToDays = 24 * 60 * 60 * 1000;
 
   // cookie name, data, options
-  res.cookie('jwt', token, { 
+  res.cookie('jwt', token, {
     // time for allowing access
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRSIN * convertToDays
@@ -80,7 +81,9 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 1. check if email and password exist
   if (!password || !email) {
-    return next(new AppError('please provide email and password', 400));
+    return next(
+      new AppError('please provide email and password', 400)
+    );
   }
 
   // 2.check if user exist & and password correct
@@ -88,7 +91,10 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await UserModel.findOne({ email }).select('+password');
 
   // const checkCorrect = await user.correctPassword(password, user.password);
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  if (
+    !user ||
+    !(await user.correctPassword(password, user.password))
+  ) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -124,7 +130,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   // 2) verification token %% promisify: for convert to promise
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decoded = await promisify(jwt.verify)(
+    token,
+    process.env.JWT_SECRET
+  );
   console.log(decoded);
 
   // 3) check if user still exists
@@ -140,7 +149,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 4) check if user changed password after token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError('password has been changed, please login again', 401)
+      new AppError(
+        'password has been changed, please login again',
+        401
+      )
     );
   }
 
@@ -156,7 +168,10 @@ exports.restrictTo = (...roles) => {
 
     if (!roles.includes(req.user.role)) {
       return next(
-        new AppError('You do not have permission to perform this action', 403)
+        new AppError(
+          'You do not have permission to perform this action',
+          403
+        )
       );
     }
     next();
@@ -169,7 +184,9 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   const user = await UserModel.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new AppError('please provide an correct email address', 404));
+    return next(
+      new AppError('please provide an correct email address', 404)
+    );
   }
 
   // 2. generate the random rest token
@@ -205,13 +222,13 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     return next(
-      new AppError('there was error sending email. please try again later', 500)
+      new AppError(
+        'there was error sending email. please try again later',
+        500
+      )
     );
   }
 });
-
-
-
 
 exports.restPassword = catchAsync(async (req, res, next) => {
   // 1) get user based on the token
@@ -232,7 +249,9 @@ exports.restPassword = catchAsync(async (req, res, next) => {
 
   // 1) if token has not expired, and there is a user, set the new password
   if (!user) {
-    return next(new AppError('Token is invalid or token has Expired', 400));
+    return next(
+      new AppError('Token is invalid or token has Expired', 400)
+    );
   }
 
   // rest password and modify restToken and restExpired
@@ -257,17 +276,21 @@ exports.restPassword = catchAsync(async (req, res, next) => {
   // });
 });
 
-
 exports.updatePassword = catchAsync(async (req, res, next) => {
   console.log('update password called');
 
-  
-
   // 1) getting user from collection
-  const user = await UserModel.findById(req.user.id).select('+password');
+  const user = await UserModel.findById(req.user.id).select(
+    '+password'
+  );
 
   // 2)checking if posted password is correct
-  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+  if (
+    !(await user.correctPassword(
+      req.body.passwordCurrent,
+      user.password
+    ))
+  ) {
     return next(new AppError('Your current password is wrong', 401));
   }
 
