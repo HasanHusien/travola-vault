@@ -33,13 +33,13 @@ router.use('/:tourId/reviews', reviewRouter);
 // CRUD routers
 router
   .route('/')
-  .get(protect, getAllTours)
-  .post(protect, createTour);
+  .get(getAllTours)
+  .post(protect, restrictTo('admin', 'lead-guide'), createTour);
 
 router
   .route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
 // topTours router & add alias top tours middleware
@@ -49,6 +49,12 @@ router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
 router.route('/tour-stats').get(getTourStats);
 
 // monthly plan router
-router.route('/monthly-plan/:year').get(getMonthlyPlan);
+router
+  .route('/monthly-plan/:year')
+  .get(
+    protect,
+    restrictTo('admin', 'lead-guide', 'guide'),
+    getMonthlyPlan
+  );
 
 module.exports = router;

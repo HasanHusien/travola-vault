@@ -6,7 +6,8 @@ const {
   updateMe,
   deleteMe,
   getMe,
-  getUser
+  getUser,
+  createUser
 } = require('../controllers/userController');
 const {
   signup,
@@ -17,30 +18,32 @@ const {
   updatePassword
 } = require('../controllers/authControllers');
 
-router.route('/').get(getAllUsers);
+// instead of adding protect middleware for all routes
+router.use(protect);
 
 router.route('/signup').post(signup);
 router.route('/login').post(login);
-
 router.route('/forgetPassword').post(forgetPassword);
 router.route('/restPassword/:token').patch(restPassword);
-
-// updating password for logged in users
-router.route('/updatePassword').patch(protect, updatePassword);
 
 router.route('/me').get(protect, getMe, getUser);
 
 // updating user data for logged in users
-router.route('/updateMe').patch(protect, updateMe);
+router.route('/updateMe').patch(updateMe);
+router.route('/deleteMe').delete(deleteMe);
 
-router.route('/deleteMe').delete(protect, deleteMe);
+// updating password for logged in users
+router.route('/updatePassword').patch(updatePassword);
 
-//   .post(userController.createUser);
+router
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser);
 
-// router
-//   .route('/:id')
-//   .get(userController.getUser)
-//   .patch(userController.updateUser)
-//   .delete(userController.deleteUser);
+router
+  .route('/:id')
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;
