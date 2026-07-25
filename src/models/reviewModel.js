@@ -1,3 +1,4 @@
+// very simple schema fpr build && read (reviews schema)
 const mongoose = require('mongoose');
 
 const reviewSchema = mongoose.Schema(

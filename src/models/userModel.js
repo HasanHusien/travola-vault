@@ -1,3 +1,8 @@
+// please later fix these comments
+// do not forget for import all data at import-dev-data.js
+// fix it before continue the course
+// very important notes to read
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -50,23 +55,23 @@ const userSchema = new mongoose.Schema({
   }
 });
 // encrypt password by bcrypt (middleware)
-userSchema.pre('save', async function(next) {
-  // only execute if password modifying
-  if (!this.isModified('password')) return next();
+// userSchema.pre('save', async function(next) {
+//   // only execute if password modifying
+//   if (!this.isModified('password')) return next();
 
-  // crypt the password by bcrypt package
-  this.password = await bcrypt.hash(this.password, 12);
+//   // crypt the password by bcrypt package
+//   this.password = await bcrypt.hash(this.password, 12);
 
-  this.passwordConfirm = undefined;
-});
+//   this.passwordConfirm = undefined;
+// });
 
-//update passwordChangedAt for the user (middleware)
-userSchema.pre('save', function(next) {
-  if (!this.isModified('password') || this.isNew) return next();
+// //update passwordChangedAt for the user (middleware)
+// userSchema.pre('save', function(next) {
+//   if (!this.isModified('password') || this.isNew) return next();
 
-  this.passwordChangedAt = Date.now() - 1000;
-  next();
-});
+//   this.passwordChangedAt = Date.now() - 1000;
+//   next();
+// });
 
 // compare user password with db password when login (bcrypt)
 userSchema.methods.correctPassword = async function(
@@ -76,7 +81,7 @@ userSchema.methods.correctPassword = async function(
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-// query middleware for query only active users 
+// query middleware for query only active users
 userSchema.pre(/^find/, function(next) {
   this.find({ active: { $ne: false } });
 

@@ -1,3 +1,5 @@
+// most important model and schema, please figure out every line of code
+// it has all mongoose process and operator, please read every line of code good
 const mongoose = require('mongoose');
 const { default: slugify } = require('slugify');
 const UserModel = require('./userModel');
