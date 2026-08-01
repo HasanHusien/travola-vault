@@ -133,6 +133,12 @@ const tourSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+// search for index in mongoDb & mongoose
+// tourSchema.index({ price: 1 });
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 // set virtual properties into data & using regular fn cause using this keyword
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
