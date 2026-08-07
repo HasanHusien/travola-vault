@@ -70,7 +70,8 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
       }
     }
   ]);
-  console.log(stats);
+
+  // console.log(stats);
 
   await TourModel.findByIdAndUpdate(tourId, {
     ratingsQuantity: stats[0].nRating,
@@ -78,10 +79,24 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
   });
 };
 
-reviewSchema.pre('save', function(next) {
+reviewSchema.post('save', function(next) {
   // this points to current review
 
   this.constructor.calcAverageRatings(this.tour);
+  next();
+});
+
+//findByIdAndUpdate
+//findByIdAndDelete
+reviewSchema.pre(/^findOneAnd/, async function(next) {
+  this.r = await this.findOne();
+
+  console.log(this.r);
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function(next) {
+  await this.r.constructor.calcAverageRatings(this.r.tour);
   next();
 });
 
