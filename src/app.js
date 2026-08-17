@@ -14,6 +14,7 @@ const hpp = require("hpp");
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
+const viewRouter = require("./routes/viewRoutes");
 
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -58,25 +59,7 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // rotes
-app.get("/", (req, res) => {
-  res.status(200).render("base", {
-    tour: "the forest hiker",
-    user: "hassan",
-  });
-});
-
-app.get("/overview", (req, res) => {
-  res.status(200).render("overview", {
-    title: "all tours",
-  });
-});
-
-app.get("/tour", (req, res) => {
-  res.status(200).render("tour", {
-    title: "the forest hiker tour",
-  });
-});
-
+app.use("/", viewRouter);
 app.use("/api/tours", tourRouter);
 app.use("/api/users", userRouter);
 app.use("/api/reviews", reviewRouter);
