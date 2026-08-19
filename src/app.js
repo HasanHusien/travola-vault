@@ -1,3 +1,4 @@
+const path = require("path");
 const AppError = require("./utils/appError");
 const express = require("express");
 const morgan = require("morgan");
@@ -17,6 +18,13 @@ const reviewRouter = require("./routes/reviewRoutes");
 const viewRouter = require("./routes/viewRoutes");
 
 const globalErrorHandler = require("./controllers/errorController");
+
+// fro pug
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+
+// for paths
+app.use(express.static(path.join(__dirname, "public")));
 
 // setting HTTP Headers
 app.use(helmet());
