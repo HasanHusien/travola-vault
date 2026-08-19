@@ -19,11 +19,11 @@ const viewRouter = require("./routes/viewRoutes");
 
 const globalErrorHandler = require("./controllers/errorController");
 
-// fro pug
+// fro pug path
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
-// for paths
+// for public path
 app.use(express.static(path.join(__dirname, "public")));
 
 // setting HTTP Headers

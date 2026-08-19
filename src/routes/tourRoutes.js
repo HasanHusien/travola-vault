@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { aliasTopTours } = require('../middleware/aliasTopTours');
-const { protect, restrictTo } = require('../controllers/authControllers');
+const { aliasTopTours } = require("../middleware/aliasTopTours");
+const { protect, restrictTo } = require("../controllers/authControllers");
 const {
   getAllTours,
   createTour,
@@ -10,27 +10,27 @@ const {
   updateTour,
   deleteTour,
   getTourStats,
-  getMonthlyPlan
-} = require('../controllers/tourController');
+  getMonthlyPlan,
+} = require("../controllers/tourController");
 
 // CRUD routers
 router
-  .route('/')
+  .route("/")
   .get(protect, getAllTours)
   .post(createTour);
 
 router
-  .route('/:id')
+  .route("/:id")
   .get(getTour)
   .patch(updateTour)
-  .delete(protect, restrictTo('admin','lead-guide'), deleteTour);
+  .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 
 // topTours router & add alias top tours middleware
-router.route('/top-5-cheep').get(aliasTopTours, getAllTours);
+router.route("/top-5-cheep").get(aliasTopTours, getAllTours);
 
 // sats router
-router.route('/tour-stats').get(getTourStats);
+router.route("/tour-stats").get(getTourStats);
 
 // monthly plan router
-router.route('/monthly-plan/:year').get(getMonthlyPlan);
+router.route("/monthly-plan/:year").get(getMonthlyPlan);
 module.exports = router;
