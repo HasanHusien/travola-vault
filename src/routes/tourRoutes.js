@@ -1,36 +1,52 @@
 const express = require("express");
-const router = express.Router();
-
-const { aliasTopTours } = require("../middleware/aliasTopTours");
-const { protect, restrictTo } = require("../controllers/authControllers");
+const reviewRouter = require("./../routes/reviewRoutes");
 const {
+  aliasTopTours,
   getAllTours,
-  createTour,
-  getTour,
-  updateTour,
-  deleteTour,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin,
+  getDistances,
+  createTour,
+  getTour,
+  deleteTour,
+  updateTour,
 } = require("../controllers/tourController");
+const { protect, restrictTo } = require("../controllers/authControllers");
 
-// CRUD routers
+const router = express.Router();
+
+// router.param('id', tourController.checkID);
+
+// POST /tour/234fad4/reviews
+// GET /tour/234fad4/reviews
+
+router.use("/:tourId/reviews", reviewRouter);
+
+router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
+
+router.route("/tour-stats").get(getTourStats);
+router
+  .route("/monthly-plan/:year")
+  .get(protect, restrictTo("admin", "lead-guide", "guide"), getMonthlyPlan);
+
+router
+  .route("/tours-within/:distance/center/:latlng/unit/:unit")
+  .get(getToursWithin);
+// /tours-within?distance=233&center=-40,45&unit=mi
+// /tours-within/233/center/-40,45/unit/mi
+
+router.route("/distances/:latlng/unit/:unit").get(getDistances);
+
 router
   .route("/")
-  .get(protect, getAllTours)
-  .post(createTour);
+  .get(getAllTours)
+  .post(protect, restrictTo("admin", "lead-guide"), createTour);
 
 router
   .route("/:id")
   .get(getTour)
-  .patch(updateTour)
+  .patch(protect, restrictTo("admin", "lead-guide"), updateTour)
   .delete(protect, restrictTo("admin", "lead-guide"), deleteTour);
 
-// topTours router & add alias top tours middleware
-router.route("/top-5-cheep").get(aliasTopTours, getAllTours);
-
-// sats router
-router.route("/tour-stats").get(getTourStats);
-
-// monthly plan router
-router.route("/monthly-plan/:year").get(getMonthlyPlan);
 module.exports = router;

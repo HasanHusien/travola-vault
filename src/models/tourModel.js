@@ -116,10 +116,26 @@ const tourSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+// tourSchema.index({ price: 1 });
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
+
+
 // set virtual properties into data & using regular fn cause using this keyword
 tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
+
+// Virtual populate
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
+
+
 
 // DOCUMENT MIDDLEWARE runs before save() and crete()
 tourSchema.pre('save', function(next) {

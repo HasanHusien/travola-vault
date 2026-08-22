@@ -1,96 +1,68 @@
-const UserModel = require('../models/userModel');
-const AppError = require('../utils/appError');
-const catchAsync = require('../utils/catchAsync');
+const User = require("./../models/userModel");
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
+const factory = require("./handlerFactory");
 
-// filter obj for doing update for only name & email
-const filterObj = (body, ...allowedFields) => {
+const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
-
-  Object.keys(body).forEach(el => {
-    if (allowedFields.includes(el)) newObj[el] = body[el];
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
-
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await UserModel.find();
-
-  res.status(200).json({
-    status: 'success',
-    result: users.length,
-    data: users
-  });
-});
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-  //1) if user sending password create an error
+  // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
-        'this route not for update password, please use /updatePassword.'
-      )
+        "This route is not for password updates. Please use /updateMyPassword.",
+        400,
+      ),
     );
   }
 
-  // 2) filter unwanted fields names there are not allowed to be update
-  const filteredBody = filterObj(req.body, 'email', 'name');
+  // 2) Filtered out unwanted fields names that are not allowed to be updated
+  const filteredBody = filterObj(req.body, "name", "email");
 
-  // 3) update user document (not password)
-  // note:using findByIdAndUpdate cause we handling not sensitive date
-  const updatedUser = await UserModel.findByIdAndUpdate(
-    req.user.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true
-    }
-  );
+  // 3) Update user document
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true,
+  });
 
-  // 4) send response
   res.status(200).json({
-    status: 'success',
+    status: "success",
     data: {
-      user: { updatedUser }
-    }
+      user: updatedUser,
+    },
   });
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
-  // note: only can use findByIdAndUpdate with already existing user or logged in users
-  await UserModel.findByIdAndUpdate(req.user.id, {
-    active: false
-  });
+  await User.findByIdAndUpdate(req.user.id, { active: false });
 
-  // 204 (deleted)
   res.status(204).json({
-    status: 'success',
-    data: null
+    status: "success",
+    data: null,
   });
 });
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
 exports.createUser = (req, res) => {
   res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
+    status: "error",
+    message: "This route is not defined! Please use /signup instead",
   });
 };
 
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!'
-  });
-};
+exports.getUser = factory.getOne(User);
+exports.getAllUsers = factory.getAll(User);
+
+// Do NOT update passwords with this!
+exports.updateUser = factory.updateOne(User);
+exports.deleteUser = factory.deleteOne(User);

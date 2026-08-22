@@ -1,42 +1,54 @@
-const express = require('express');
-const router = express.Router();
-
+const express = require("express");
 const {
-  getAllUsers,
+  getMe,
+  getUser,
   updateMe,
-  deleteMe
-} = require('../controllers/userController');
+  deleteMe,
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("./../controllers/userController");
+const {} = require("../controllers/authControllers");
 const {
   signup,
   login,
+  logout,
+  forgotPassword,
+  resetPassword,
   protect,
-  forgetPassword,
-  restPassword,
-  updatePassword
-} = require('../controllers/authControllers');
+  updatePassword,
+  restrictTo,
+} = require("../controllers/authControllers");
 
-router.route('/').get(getAllUsers);
+const router = express.Router();
 
-router.route('/signup').post(signup);
-router.route('/login').post(login);
+router.post("/signup", signup);
+router.post("/login", login);
+router.get("/logout", logout);
 
-router.route('/forgetPassword').post(forgetPassword);
-router.route('/restPassword/:token').patch(restPassword);
+router.post("/forgotPassword", forgotPassword);
+router.patch("/resetPassword/:token", resetPassword);
 
-// updating password for logged in users
-router.route('/updatePassword').patch(protect, updatePassword);
+// Protect all routes after this middleware
+router.use(protect);
 
-// updating user data for logged in users
-router.route('/updateMe').patch(protect, updateMe);
+router.patch("/updateMyPassword", updatePassword);
+router.get("/me", getMe, getUser);
+router.patch("/updateMe", updateMe);
+router.delete("/deleteMe", deleteMe);
 
-router.route('/deleteMe').delete(protect, deleteMe);
+router.use(restrictTo("admin"));
 
-//   .post(userController.createUser);
+router
+  .route("/")
+  .get(getAllUsers)
+  .post(createUser);
 
-// router
-//   .route('/:id')
-//   .get(userController.getUser)
-//   .patch(userController.updateUser)
-//   .delete(userController.deleteUser);
+router
+  .route("/:id")
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;
