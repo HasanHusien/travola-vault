@@ -1,46 +1,44 @@
-const mongoose = require('mongoose');
-const Tour = require('./tourModel');
+const mongoose = require("mongoose");
+const Tour = require("./tourModel");
 
 const reviewSchema = mongoose.Schema(
   {
     review: {
       type: String,
-      required: [true, 'this fields is required']
+      required: [true, "this fields is required"],
     },
     rating: {
       type: Number,
       min: 1,
-      max: 5
+      max: 5,
     },
     createdAt: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
 
     // ref to tour
     tour: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Tour',
-      required: [true, 'Review must belong to a tour.']
+      ref: "Tour",
+      required: [true, "Review must belong to a tour."],
     },
 
     // ref to user
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      required: [true, 'Review must belong to a user']
-    }
+      ref: "User",
+      required: [true, "Review must belong to a user"],
+    },
   },
   {
     // make virtual properties appear in my data
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
+    toObject: { virtuals: true },
+  },
 );
 
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
-
-
 
 reviewSchema.pre(/^find/, function(next) {
   // this.populate({
@@ -104,7 +102,6 @@ reviewSchema.post(/^findOneAnd/, async function() {
   await this.r.constructor.calcAverageRatings(this.r.tour);
 });
 
-
-const ReviewModel = mongoose.model('Review', reviewSchema);
+const ReviewModel = mongoose.model("Review", reviewSchema);
 
 module.exports = ReviewModel;
