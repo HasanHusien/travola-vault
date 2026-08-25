@@ -171,17 +171,17 @@ tourSchema.pre(/^find/, function(next) {
 // });
 
 // if we need knew query time
-tourSchema.post("find", function(doc, next) {
-  console.log(`Query took ${Date.now() - this.start} milliseconds`);
-  // console.log(doc);
-  next();
-});
+// tourSchema.post(/^find/, function(doc, next) {
+//   console.log(`Query took ${Date.now() - this.start} milliseconds`);
+//   // console.log(doc);
+//   next();
+// });
 
 // AGGREGATION MIDDLEWARE
-tourSchema.pre("aggregate", function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  next();
-});
+// tourSchema.pre("aggregate", function(next) {
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//   next();
+// });
 
 const Tour = mongoose.model("Tour", tourSchema);
 
