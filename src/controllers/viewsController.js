@@ -1,5 +1,9 @@
-const Tour = require("../models/tourModel");
-const catchAsync = require("../utils/catchAsync");
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+const Tour = require('../models/tourModel');
+const catchAsync = require('../utils/catchAsync');
 
 exports.getOverview = catchAsync(async (req, res) => {
   // 1. get tour data from collection
@@ -7,26 +11,27 @@ exports.getOverview = catchAsync(async (req, res) => {
   // 2. build template
 
   // 3.render that templat using tour data
-  res.status(200).render("overview", {
-    title: "all tours",
-    tours,
+  res.status(200).render('overview', {
+    title: 'all tours',
+    tours
   });
 });
 
 exports.getTour = catchAsync(async (req, res) => {
   // 1. get data from request
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
-    path: "reviews",
-    fields: "review rating user",
+    path: 'reviews',
+    fields: 'review rating user'
   });
 
-
   // 1. build template
-  console.log(tour.reviews);
+  // console.log(tour.reviews);
 
-  res.status(200).render("tour", {
+  res.status(200).render('tour', {
     title: `${tour.name} Tour`,
     tour,
+    mapboxToken: process.env.MAPBOX_ACCESSTOKEN,
+    mapboxStyle: process.env.MAPBOX_STYLE
   });
 });
 // refactor
