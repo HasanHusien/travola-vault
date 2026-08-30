@@ -1,7 +1,3 @@
-const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({ path: path.join(__dirname, '../.env') });
-
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 
@@ -29,11 +25,14 @@ exports.getTour = catchAsync(async (req, res) => {
 
   res.status(200).render('tour', {
     title: `${tour.name} Tour`,
-    tour,
-    mapboxToken: process.env.MAPBOX_ACCESSTOKEN,
-    mapboxStyle: process.env.MAPBOX_STYLE
+    tour
   });
 });
-// refactor
+
+exports.getLoginForm = catchAsync(async (req, res, next) => {
+  res.status(200).render('login', {
+    title: 'log into your account'
+  });
+});
 
 exports.getDetails = (req, res) => {};
