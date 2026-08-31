@@ -432,6 +432,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  /* width: 100%; */
 }
 .section-description > * {
   padding: 0 8vw;
@@ -440,6 +441,7 @@ body {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 50%;
   flex: 0 0 50%;
+  min-width: 50%;
 }
 
 .description-box .description {
@@ -460,7 +462,12 @@ body {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  min-width: 100%;
 }
+.overview-box > div {
+  min-width: 50%;
+}
+
 .overview-box__group:not(:last-child) {
   margin-bottom: 7rem;
 }
