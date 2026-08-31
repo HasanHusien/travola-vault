@@ -73,7 +73,7 @@ app.use('/api', limiter);
 app.use(cors());
 
 // rotes
-app.use('/', viewRouter);
+app.use('/api', viewRouter);
 app.use('/api/tours', tourRouter);
 app.use('/api/users', userRouter);
 app.use('/api/reviews', reviewRouter);

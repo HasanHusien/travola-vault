@@ -11,7 +11,7 @@ function Overview() {
       setTours(data.data.data);
     }
     getTours();
-  },[]);
+  }, []);
 
   return (
     <main className="main">

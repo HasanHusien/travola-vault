@@ -7,7 +7,7 @@ const {
   getLoginForm
 } = require('../controllers/viewsController');
 
-router.get("/", getOverview);
+// router.get("/", getOverview);
 router.get("/tour/:slug", getTour);
 
 router.get('/login',getLoginForm)

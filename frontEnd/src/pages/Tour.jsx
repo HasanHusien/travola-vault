@@ -1,7 +1,24 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import OverviewBox from "../components/OverViewBox";
 import ReviewCard from "../components/ReviewCard";
 
-function Tour({ tour }) {
+function Tour() {
+  const { slug } = useParams();
+  const [tour, setTour] = useState();
+
+  useEffect(() => {
+    async function getTour() {
+      const res = await fetch(`/api/tour/${slug}`);
+
+      const data = await res.json();
+      setTour(data.tour);
+      // setTour(data.tour);
+      console.log(data);
+    }
+    getTour();
+  }, [slug]);
+
   return (
     <>
       <section className="section-header">
@@ -10,14 +27,14 @@ function Tour({ tour }) {
 
           <img
             className="header__hero-img"
-            src={`/img/tours/${tour.imageCover}`}
-            alt={tour.name}
+            src={`/img/tours/${tour?.imageCover}`}
+            alt={tour?.name}
           />
         </div>
 
         <div className="heading-box">
           <h1 className="heading-primary">
-            <span>{`${tour.name} tour`}</span>
+            <span>{`${tour?.name} tour`}</span>
           </h1>
 
           <div className="heading-box__group">
@@ -27,7 +44,7 @@ function Tour({ tour }) {
               </svg>
 
               <span className="heading-box__text">
-                {`${tour.duration} days`}
+                {`${tour?.duration} days`}
               </span>
             </div>
 
@@ -37,7 +54,7 @@ function Tour({ tour }) {
               </svg>
 
               <span className="heading-box__text">
-                {tour.startLocation.description}
+                {tour?.startLocation.description}
               </span>
             </div>
           </div>
@@ -52,7 +69,7 @@ function Tour({ tour }) {
 
               <OverviewBox
                 label="Next date"
-                text={new Date(tour.startDates[0]).toLocaleString("en-us", {
+                text={new Date(tour?.startDates[0]).toLocaleString("en-us", {
                   month: "long",
                   year: "numeric",
                 })}
@@ -61,19 +78,19 @@ function Tour({ tour }) {
 
               <OverviewBox
                 label="Difficulty"
-                text={tour.difficulty}
+                text={tour?.difficulty}
                 icon="trending-up"
               />
 
               <OverviewBox
                 label="Participants"
-                text={`${tour.maxGroupSize} people`}
+                text={`${tour?.maxGroupSize} people`}
                 icon="user"
               />
 
               <OverviewBox
                 label="Rating"
-                text={`${tour.ratingsAverage} / 5`}
+                text={`${tour?.ratingsAverage} / 5`}
                 icon="star"
               />
             </div>
@@ -81,7 +98,7 @@ function Tour({ tour }) {
             <div className="overview-box__group">
               <h2 className="heading-secondary ma-bt-lg">Your tour guides</h2>
 
-              {tour.guides.map((guide) => (
+              {tour?.guides.map((guide) => (
                 <div className="overview-box__detail" key={guide._id}>
                   <img
                     className="overview-box__img"
@@ -105,10 +122,10 @@ function Tour({ tour }) {
 
           <div className="description-box">
             <h2 className="heading-secondary ma-bt-lg">
-              {`About ${tour.name} tour`}
+              {`About ${tour?.name} tour`}
             </h2>
 
-            {tour.description.split("\n").map((paragraph, index) => (
+            {tour?.description.split("\n").map((paragraph, index) => (
               <p className="description__text" key={index}>
                 {paragraph}
               </p>
@@ -119,7 +136,7 @@ function Tour({ tour }) {
 
       {/* Pictures */}
       <section className="section-pictures">
-        {tour.images.map((image, index) => (
+        {tour?.images.map((image, index) => (
           <div className="picture-box" key={image}>
             <img
               className={`picture-box__img picture-box__img--${index + 1}`}
@@ -132,13 +149,13 @@ function Tour({ tour }) {
 
       {/* Map */}
       <section className="section-map">
-        <div id="map" data-locations={JSON.stringify(tour.locations)} />
+        <div id="map" data-locations={JSON.stringify(tour?.locations)} />
       </section>
 
       {/* Reviews */}
       <section className="section-reviews">
         <div className="reviews">
-          {tour.reviews.map((review) => (
+          {tour?.reviews.map((review) => (
             <ReviewCard key={review._id} review={review} />
           ))}
         </div>
