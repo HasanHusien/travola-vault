@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import OverviewBox from "../components/OverViewBox";
 import ReviewCard from "../components/ReviewCard";
+import Map from "../components/Map";
 
 function Tour() {
   const { slug } = useParams();
@@ -13,7 +14,6 @@ function Tour() {
 
       const data = await res.json();
       setTour(data.tour);
-      // setTour(data.tour);
       console.log(data);
     }
     getTour();
@@ -134,7 +134,6 @@ function Tour() {
         </div>
       </section>
 
-      {/* Pictures */}
       <section className="section-pictures">
         {tour?.images.map((image, index) => (
           <div className="picture-box" key={image}>
@@ -147,12 +146,12 @@ function Tour() {
         ))}
       </section>
 
-      {/* Map */}
       <section className="section-map">
-        <div id="map" data-locations={JSON.stringify(tour?.locations)} />
+        {/* <div id="map" data-locations={JSON.stringify(tour?.locations)} /> */}
+
+        <Map id="map" locations={tour?.locations} />
       </section>
 
-      {/* Reviews */}
       <section className="section-reviews">
         <div className="reviews">
           {tour?.reviews.map((review) => (
@@ -161,7 +160,6 @@ function Tour() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="section-cta">
         <div className="cta">
           <div className="cta__img cta__img--logo">
