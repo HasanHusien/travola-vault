@@ -1,8 +1,22 @@
-function Overview({ tours }) {
+import { useState, useEffect } from "react";
+
+function Overview() {
+  const [tours, setTours] = useState();
+
+  useEffect(() => {
+    async function getTours() {
+      const res = await fetch("/api/tours");
+      const data = await res.json();
+      // setTours(data.data.tours)
+      setTours(data.data.data);
+    }
+    getTours();
+  },[]);
+
   return (
     <main className="main">
       <div className="card-container">
-        {tours.map((tour) => (
+        {tours?.map((tour) => (
           <div className="card" key={tour._id}>
             <div className="card__header">
               <div className="card__picture">

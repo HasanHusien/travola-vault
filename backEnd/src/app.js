@@ -2,6 +2,8 @@ const path = require('path');
 const AppError = require('./utils/appError');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
+
 
 const app = express();
 
@@ -19,9 +21,10 @@ const viewRouter = require('./routes/viewRoutes');
 
 const globalErrorHandler = require('./controllers/errorController');
 
+
 // fro pug path
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
 
 // for public path
 app.use(express.static(path.join(__dirname, 'public')));
@@ -66,6 +69,8 @@ const limiter = rateLimit({
 });
 // to see rate limit look at Headers
 app.use('/api', limiter);
+
+app.use(cors());
 
 // rotes
 app.use('/', viewRouter);
