@@ -1,17 +1,25 @@
-import { useState, useEffect } from "react";
+import { useTours } from "../react_query/useTours";
+
+import Error from "../components/Error";
 
 function Overview() {
-  const [tours, setTours] = useState();
+  const { data, isLoading, error } = useTours();
 
-  useEffect(() => {
-    async function getTours() {
-      const res = await fetch("/api/tours");
-      const data = await res.json();
-      // setTours(data.data.tours)
-      setTours(data.data.data);
-    }
-    getTours();
-  }, []);
+  const tours = data?.tours || [];
+  // console.log(data);
+
+  // const [tours, setTours] = useState([]);
+  // useEffect(() => {
+  //   async function getTours() {
+  //     const res = await fetch("/api/tours");
+  //     const data = await res.json();
+  //      setTours(data.tours)
+  //   }
+  //   getTours();
+  // }, []);
+
+  if (isLoading) return <h1>Loading....</h1>;
+  if (error) return <Error />;
 
   return (
     <main className="main">
