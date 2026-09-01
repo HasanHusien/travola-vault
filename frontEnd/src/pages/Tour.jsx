@@ -1,25 +1,18 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useTour } from "../react_query/useTour";
 import OverviewBox from "../components/OverViewBox";
 import ReviewCard from "../components/ReviewCard";
 import Map from "../components/Map";
+import Error from "../components/Error";
 
 function Tour() {
   const { slug } = useParams();
-  const [tour, setTour] = useState();
+  const { data, isLoading, error } = useTour(slug);
+  const tour = data?.tour || [];
 
-  useEffect(() => {
-    async function getTour() {
-      const res = await fetch(`/api/tour/${slug}`);
-
-      const data = await res.json();
-      setTour(data.tour);
-      console.log(data);
-    }
-    getTour();
-  }, [slug]);
-
-  if (!tour) return null;
+  if (isLoading) return <h1>Loading...</h1>;
+  if (error) return <Error />
 
   return (
     <>
@@ -56,7 +49,7 @@ function Tour() {
               </svg>
 
               <span className="heading-box__text">
-                {tour?.startLocation.description}
+                {tour?.startLocation?.description}
               </span>
             </div>
           </div>

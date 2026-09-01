@@ -1,12 +1,9 @@
 import { useTours } from "../react_query/useTours";
-
 import Error from "../components/Error";
 
 function Overview() {
   const { data, isLoading, error } = useTours();
-
-  const tours = data?.tours || [];
-  // console.log(data);
+  const tours = data?.tours  || [];
 
   // const [tours, setTours] = useState([]);
   // useEffect(() => {

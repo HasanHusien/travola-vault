@@ -68,7 +68,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
-app.use('/api', limiter);
+// app.use('/api', limiter);
 
 app.use(cors());
 
