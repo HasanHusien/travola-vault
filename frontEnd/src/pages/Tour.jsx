@@ -19,6 +19,8 @@ function Tour() {
     getTour();
   }, [slug]);
 
+  if (!tour) return null;
+
   return (
     <>
       <section className="section-header">
@@ -149,7 +151,7 @@ function Tour() {
       <section className="section-map">
         {/* <div id="map" data-locations={JSON.stringify(tour?.locations)} /> */}
 
-        <Map id="map" locations={tour?.locations} />
+        <Map locations={tour?.locations} />
       </section>
 
       <section className="section-reviews">
