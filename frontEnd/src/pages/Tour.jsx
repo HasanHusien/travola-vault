@@ -143,7 +143,6 @@ function Tour() {
 
       <section className="section-map">
         {/* <div id="map" data-locations={JSON.stringify(tour?.locations)} /> */}
-
         <Map locations={tour?.locations} />
       </section>
 

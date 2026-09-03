@@ -1,10 +1,27 @@
+import { useForm } from "react-hook-form";
+import { getLogin } from "../../services/apiLogin";
+
 function Login() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    watch,
+  } = useForm();
+
+  function onSubmit({ email, password }) {
+    console.log(email, password);
+
+    getLogin( {email, password} );
+  }
+  // console.log(watch("email"));
+
   return (
     <main className="main">
       <div className="login-form">
         <h2 className="heading-secondary ma-bt-lg">Log into your account</h2>
 
-        <form className="form form--login">
+        <form className="form form--login" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__group">
             <label className="form__label" htmlFor="email">
               Email address
@@ -15,7 +32,7 @@ function Login() {
               className="form__input"
               type="email"
               placeholder="you@example.com"
-              required
+              {...register("email", { required: true })}
             />
           </div>
 
@@ -29,8 +46,8 @@ function Login() {
               className="form__input"
               type="password"
               placeholder="••••••••"
-              required
-              minLength="8"
+              {...register("password", { required: true })}
+              // minLength="8"
             />
           </div>
 
