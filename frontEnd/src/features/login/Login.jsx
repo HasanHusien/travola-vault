@@ -10,8 +10,6 @@ function Login() {
   } = useForm();
 
   function onSubmit({ email, password }) {
-    console.log(email, password);
-
     getLogin( {email, password} );
   }
   // console.log(watch("email"));
