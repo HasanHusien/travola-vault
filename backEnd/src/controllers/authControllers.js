@@ -1,17 +1,17 @@
-const crypto = require("crypto");
-const AppError = require("../utils/appError");
+const crypto = require('crypto');
+const AppError = require('../utils/appError');
 
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const UserModel = require("../models/userModel");
-const catchAsync = require("../utils/catchAsync");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const UserModel = require('../models/userModel');
+const catchAsync = require('../utils/catchAsync');
 
-const sendEmail = require("../utils/email");
-const { promisify } = require("util");
+const sendEmail = require('../utils/email');
+const { promisify } = require('util');
 
-const signToken = (id) => {
+const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRESIN,
+    expiresIn: process.env.JWT_EXPIRESIN
   });
 };
 
@@ -21,26 +21,26 @@ const createSendToken = (user, statusCode, res) => {
   const convertToDays = 24 * 60 * 60 * 1000;
 
   // cookie name, data, options
-  res.cookie("jwt", token, {
+  res.cookie('jwt', token, {
     // time for allowing access
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRSIN * convertToDays,
+      Date.now() + process.env.JWT_COOKIE_EXPIRSIN * convertToDays
     ),
     // more safe for not modify from browser
     httpOnly: true,
     // only send cookie when using https no http
-    secure: process.env.NODE_ENV === "production" ? true : false,
+    secure: process.env.NODE_ENV === 'production' ? true : false
   });
 
   // hide password data when send res
   user.password = undefined;
 
   res.status(statusCode).json({
-    status: "success",
+    status: 'success',
     token,
     data: {
-      user,
-    },
+      user
+    }
   });
 };
 
@@ -53,7 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     photo: req.body.photo,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    passwordConfirm: req.body.passwordConfirm
   });
 
   createSendToken(newUser, 201, res);
@@ -80,16 +80,16 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 1. check if email and password exist
   if (!password || !email) {
-    return next(new AppError("please provide email and password", 400));
+    return next(new AppError('please provide email and password', 400));
   }
 
   // 2.check if user exist & and password correct
   // the way to get password
-  const user = await UserModel.findOne({ email }).select("+password");
+  const user = await UserModel.findOne({ email }).select('+password');
 
   // const checkCorrect = await user.correctPassword(password, user.password);
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    return next(new AppError('Incorrect email or password', 401));
   }
 
   // 3. if everything os ok, send token to client
@@ -105,11 +105,11 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "loggedout", {
+  res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
+    httpOnly: true
   });
-  res.status(200).json({ status: "success" });
+  res.status(200).json({ status: 'success' });
 };
 
 // protect routes for only logged in users allow access to data (middleware)
@@ -121,14 +121,18 @@ exports.protect = catchAsync(async (req, res, next) => {
   // its call these names in this process and send in header
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split(" ")[1];
+    token = req.headers.authorization.split(' ')[1];
+  }
+  // very important step for cookie
+  else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
     return next(
-      new AppError("user not logged in please log in to access", 401),
+      new AppError('user not logged in please log in to access', 401)
     );
   }
   // 2) verification token %% promisify: for convert to promise
@@ -140,15 +144,15 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (!currentUser)
     return next(
       new AppError(
-        "the user belonging to this token does no longer  exist",
-        401,
-      ),
+        'the user belonging to this token does no longer  exist',
+        401
+      )
     );
 
   // 4) check if user changed password after token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("password has been changed, please login again", 401),
+      new AppError('password has been changed, please login again', 401)
     );
   }
 
@@ -164,20 +168,20 @@ exports.restrictTo = (...roles) => {
 
     if (!roles.includes(req.user.role)) {
       return next(
-        new AppError("You do not have permission to perform this action", 403),
+        new AppError('You do not have permission to perform this action', 403)
       );
     }
     next();
   };
 };
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  console.log("forgetPassword called");
+  console.log('forgetPassword called');
 
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new AppError("please provide an correct email address", 404));
+    return next(new AppError('please provide an correct email address', 404));
   }
 
   // 2. generate the random rest token
@@ -187,7 +191,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3. send it to users email
   const restUrl = `${req.protocol}://${req.get(
-    "host",
+    'host'
   )}/api/users/resetPassword/${restToken}`;
 
   // very common message pattern
@@ -197,13 +201,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: "your password rest token (valid 10 min)",
-      message,
+      subject: 'your password rest token (valid 10 min)',
+      message
     });
 
     res.status(200).json({
-      status: "success",
-      message: "token send to email!",
+      status: 'success',
+      message: 'token send to email!'
     });
   } catch (err) {
     console.error(err);
@@ -213,10 +217,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     return next(
-      new AppError(
-        "there was error sending email. please try again later",
-        500,
-      ),
+      new AppError('there was error sending email. please try again later', 500)
     );
   }
 });
@@ -226,21 +227,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // note: req.params.token cause in route /:token
   const hashedToken = crypto
-    .createHash("sha256")
+    .createHash('sha256')
     .update(req.params.token)
-    .digest("hex");
+    .digest('hex');
 
   // password and expired time
   const user = await UserModel.findOne({
     passwordResetToken: hashedToken,
     passwordRestExpires: {
-      $gt: Date.now(),
-    },
+      $gt: Date.now()
+    }
   });
 
   // 1) if token has not expired, and there is a user, set the new password
   if (!user) {
-    return next(new AppError("Token is invalid or token has Expired", 400));
+    return next(new AppError('Token is invalid or token has Expired', 400));
   }
 
   // rest password and modify restToken and restExpired
@@ -266,14 +267,14 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-  console.log("update password called");
+  console.log('update password called');
 
   // 1) getting user from collection
-  const user = await UserModel.findById(req.user.id).select("+password");
+  const user = await UserModel.findById(req.user.id).select('+password');
 
   // 2)checking if posted password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-    return next(new AppError("Your current password is wrong", 401));
+    return next(new AppError('Your current password is wrong', 401));
   }
 
   // 3) it so, update password

@@ -71,8 +71,10 @@ const limiter = rateLimit({
 // app.use('/api', limiter);
 
 app.use(cors());
-app.use((req, res, next) => {
+
+app.use('/',(req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));
+  // print at console directly
   console.log(req.cookies);
   next();
 });
