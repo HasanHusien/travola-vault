@@ -14,18 +14,22 @@ function Login() {
 
   const { setUser } = useUser();
   const navigate = useNavigate();
-  
+
   async function getUser({ email, password }) {
-    const res = await axios.post("/api/users/login", { email, password });
+    try {
+      const res = await axios.post("/api/users/login", { email, password });
+      // console.log(res.data.status);
+      setUser(res.data?.data?.user);
+      if (email && password) {
+        console.log(res.data.status);
 
-    // console.log(res.data.status);
-    setUser(res.data?.data?.user);
-
-    if (email && password) {
-      if (res.data.status === "success") {
-        toast.success("Logged in successfully");
-        navigate("/");
+        if (res.data.status === "success") {
+          toast.success("Logged in successfully");
+          navigate("/");
+        }
       }
+    } catch {
+      toast.error("something went wrong, email or password is Incorrect");
     }
   }
 
@@ -64,7 +68,7 @@ function Login() {
               className="form__input"
               type="password"
               placeholder="••••••••"
-              {...register("password", { required: true })}
+              {...register("password", { required: true, min: 8 })}
               // minLength="8"
             />
           </div>

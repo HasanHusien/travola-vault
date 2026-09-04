@@ -7,7 +7,7 @@ export async function login({ email, password }) {
       password,
     });
 
-    // return res;
+    return res;
     // console.log(res.locals);
   } catch (err) {
     // from axios docs response.data
