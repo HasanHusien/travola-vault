@@ -9,9 +9,7 @@ export function useLogin() {
   } = useMutation({
     mutationKey: ["user"],
     mutationFn: ({ email, password }) => loginApi({ email, password }),
-    onSuccess: (user) => {
-      console.log(user);
-    },
+    onSuccess: () => {},
   });
 
   return { login, isLoading, error };

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useUser } from "../../contexts/userContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 // import { getLogin } from "../../services/apiUser";
 
 function Login() {
@@ -11,14 +13,20 @@ function Login() {
   } = useForm();
 
   const { setUser } = useUser();
+  const navigate = useNavigate();
   
   async function getUser({ email, password }) {
     const res = await axios.post("/api/users/login", { email, password });
-    
-    // console.log(res.data.data.user);
-    setUser(res.data?.data?.user)
 
-    // console.log(user)
+    // console.log(res.data.status);
+    setUser(res.data?.data?.user);
+
+    if (email && password) {
+      if (res.data.status === "success") {
+        toast.success("Logged in successfully");
+        navigate("/");
+      }
+    }
   }
 
   function onSubmit({ email, password }) {
