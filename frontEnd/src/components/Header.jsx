@@ -1,5 +1,8 @@
+import { useUser } from "../contexts/userContext";
+
 function Header() {
-  const user = undefined;
+  const {user} = useUser();
+  console.log(user)
   return (
     <header className="header">
       <nav className="nav nav--tours">
@@ -20,10 +23,10 @@ function Header() {
             <a className="nav__el" href="/me">
               <img
                 className="nav__user-img"
-                src={`/img/users/${user.photo}`}
-                alt={`Photo of ${user.name}`}
+                src={`/img/users/${user?.photo}`}
+                alt={`Photo of ${user?.name}`}
               />
-              <span>{user.name.split(" ")[0]}</span>
+              <span>{user?.name.split(" ")[0]}</span>
             </a>
           </>
         ) : (

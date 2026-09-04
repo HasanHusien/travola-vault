@@ -1,19 +1,31 @@
 import { useForm } from "react-hook-form";
-import { getLogin } from "../../services/apiLogin";
+import axios from "axios";
+import { useUser } from "../../contexts/userContext";
+// import { getLogin } from "../../services/apiUser";
 
 function Login() {
   const {
     handleSubmit,
     register,
     formState: { errors },
-    watch,
   } = useForm();
 
-  function onSubmit({ email, password }) {
-    getLogin( {email, password} );
-  }
-  // console.log(watch("email"));
+  const { setUser } = useUser();
+  
+  async function getUser({ email, password }) {
+    const res = await axios.post("/api/users/login", { email, password });
+    
+    // console.log(res.data.data.user);
+    setUser(res.data?.data?.user)
 
+    // console.log(user)
+  }
+
+  function onSubmit({ email, password }) {
+    getUser({ email, password });
+  }
+
+  // console.log(watch("email"));
   return (
     <main className="main">
       <div className="login-form">

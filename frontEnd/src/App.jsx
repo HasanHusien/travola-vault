@@ -6,6 +6,7 @@ import AppLayout from "./pages/AppLayout";
 import Overview from "./pages/OverView";
 import Tour from "./pages/Tour";
 import Login from "./features/login/Login";
+import { UserProvider } from "./contexts/userContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,18 +18,20 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Overview />} />
-            <Route path="/tour/:slug" element={<Tour />} />
-            <Route path="/login" element={<Login />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={true} />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route index element={<Overview />} />
+              <Route path="/tour/:slug" element={<Tour />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </UserProvider>
   );
 }
 
