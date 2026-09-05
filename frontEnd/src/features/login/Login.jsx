@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useUser } from "../../contexts/userContext";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import toast from "react-hot-toast";
 // import { getLogin } from "../../services/apiUser";
@@ -9,13 +10,13 @@ function Login() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
 
   const { setUser } = useUser();
   const navigate = useNavigate();
 
-  async function getUser({ email, password }) {
+  async function login({ email, password }) {
     try {
       const res = await axios.post("/api/users/login", { email, password });
       // console.log(res.data.status);
@@ -34,7 +35,7 @@ function Login() {
   }
 
   function onSubmit({ email, password }) {
-    getUser({ email, password });
+    login({ email, password });
   }
 
   // console.log(watch("email"));
