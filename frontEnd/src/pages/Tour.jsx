@@ -6,6 +6,8 @@ import ReviewCard from "../components/ReviewCard";
 import Map from "../components/Map";
 import Error from "../components/Error";
 import Spinner from "../components/Spinner";
+
+// update later as feature
 function Tour() {
   const { slug } = useParams();
   const { data, isLoading, error } = useTour(slug);

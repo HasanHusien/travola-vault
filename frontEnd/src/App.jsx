@@ -9,6 +9,7 @@ import AppLayout from "./pages/AppLayout";
 import Overview from "./pages/OverView";
 import Tour from "./pages/Tour";
 import Login from "./features/auth/Login";
+import Account from "./pages/Account";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route index element={<Overview />} />
               <Route path="/tour/:slug" element={<Tour />} />
+              <Route path="/me" element={<Account />} />
               <Route path="/login" element={<Login />} />
             </Route>
           </Routes>
