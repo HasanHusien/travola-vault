@@ -13,7 +13,7 @@ function Tour() {
   const tour = data?.tour || [];
 
   if (isLoading) return <Spinner />;
-  if (error) return <Error />;
+  if (error) return <Error msg={error.message} />;
 
   return (
     <>

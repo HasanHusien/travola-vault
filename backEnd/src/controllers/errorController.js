@@ -29,6 +29,10 @@ const handleExpiredError = () =>
   new AppError('Yuor token has been expired, please login again');
 
 const sendErrorDev = (err, res) => {
+
+  
+
+
   res.status(err.statusCode).json({
     status: err.status,
     message: err.message,

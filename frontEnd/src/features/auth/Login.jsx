@@ -15,7 +15,6 @@ function Login() {
 
   function onSubmit({ email, password }) {
     login({ email, password });
-    
   }
 
   // if (error) return <Error />;
