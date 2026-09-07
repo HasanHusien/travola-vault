@@ -1,4 +1,9 @@
+import { useUser } from '../auth/useUser';
+
 function UpdateData() {
+  const { user } = useUser();
+  // console.log(user?.photo);
+
   return (
     <div className="user-view__form-container">
       <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
@@ -13,7 +18,7 @@ function UpdateData() {
             id="name"
             className="form__input"
             type="text"
-            defaultValue="Jonas Schmedtmann"
+            defaultValue={user?.name}
             required
           />
         </div>
@@ -27,13 +32,17 @@ function UpdateData() {
             id="email"
             className="form__input"
             type="email"
-            defaultValue="admin@natours.io"
+            defaultValue={user?.email}
             required
           />
         </div>
 
         <div className="form__group form__photo-upload">
-          <img className="form__user-photo" src="img/user.jpg" alt="User" />
+          <img
+            className="form__user-photo"
+            src={`/img/users/${user?.photo}`}
+            alt="User"
+          />
 
           <a className="btn-text" href="#">
             Choose new photo
@@ -50,4 +59,4 @@ function UpdateData() {
   );
 }
 
-export default UpdateData
+export default UpdateData;

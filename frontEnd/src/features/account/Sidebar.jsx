@@ -43,7 +43,7 @@ function Sidebar() {
         </li>
       </ul>
 
-      {user.role === 'admin' && (
+      {user?.role === 'admin' && (
         <div className="admin-nav">
           <h5 className="admin-nav__heading">Admin</h5>
 

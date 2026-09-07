@@ -5,7 +5,7 @@ function IsLoggedInProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem("isLoggedIn") === "true";
   });
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
   return (
     <isLoggedInContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       {children}
