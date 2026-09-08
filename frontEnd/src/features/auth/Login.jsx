@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { useLogin } from "./useLogin";
+import { useForm } from 'react-hook-form';
+import { useLogin } from './useLogin';
 
 // import { useIsLoggedIn } from "../../contexts/isLoggedInContext";
 
@@ -16,7 +16,6 @@ function Login() {
     login({ email, password });
   }
 
-
   return (
     <main className="main">
       <div className="login-form">
@@ -32,8 +31,9 @@ function Login() {
               id="email"
               className="form__input"
               type="email"
+              defaultValue="hakpb7@gmail.com"
               placeholder="you@example.com"
-              {...register("email", { required: true })}
+              {...register('email', { required: true })}
             />
           </div>
 
@@ -46,8 +46,9 @@ function Login() {
               id="password"
               className="form__input"
               type="password"
+              defaultValue="pass12345"
               placeholder="••••••••"
-              {...register("password", { required: true, min: 8 })}
+              {...register('password', { required: true, min: 8 })}
               // minLength="8"
             />
           </div>

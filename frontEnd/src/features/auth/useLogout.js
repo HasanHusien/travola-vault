@@ -12,8 +12,8 @@ export function useLogout() {
 
     onSuccess: () => {
       queryClient.removeQueries();
-      window.location.replace('/');
-      // navigate("/", { replace: true });
+      window.location.replace('/login');
+      // navigate('/login');
     },
   });
 
