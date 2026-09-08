@@ -1,14 +1,18 @@
 import { useUser } from '../auth/useUser';
 
 function UpdateData() {
-  const { user } = useUser();
+  const { data: user } = useUser();
   // console.log(user?.photo);
 
   return (
     <div className="user-view__form-container">
       <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
 
-      <form className="form form-user-data">
+      <form
+        className="form form-user-data"
+        action="submit-user-data"
+        method="post"
+      >
         <div className="form__group">
           <label className="form__label" htmlFor="name">
             Name
@@ -18,6 +22,7 @@ function UpdateData() {
             id="name"
             className="form__input"
             type="text"
+            name="name"
             defaultValue={user?.name}
             required
           />
@@ -32,6 +37,7 @@ function UpdateData() {
             id="email"
             className="form__input"
             type="email"
+            name="email"
             defaultValue={user?.email}
             required
           />
