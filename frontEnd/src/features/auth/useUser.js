@@ -5,17 +5,11 @@ import { getCurrentUser } from '../../services/apiAuth';
 export function useUser() {
   // const { isLoggedIn } = useIsLoggedIn();
 
-  function placeholder() {
-    return;
-  }
-
   const { data, isLoading, error } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
     onSuccess: () => {},
   });
 
-  // console.log(data);
-  // console.log(data);
   return { data, isLoading, error };
 }

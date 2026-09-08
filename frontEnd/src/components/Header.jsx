@@ -4,10 +4,10 @@ import { useTours } from '../react_query/useTours';
 // import { useTour } from '../react_query/useTour';
 
 function Header() {
-  const { data: user } = useUser();
-  const { isLoading } = useTours();
+  const { data: user, isLoading } = useUser();
+  const { isLoading: isLoading2 } = useTours();
 
-  if (isLoading) return null;
+  if (isLoading2) return null;
 
   return (
     <header className="header">

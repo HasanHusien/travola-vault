@@ -42,21 +42,21 @@ exports.getLoginForm = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUserData = catchAsync(async (req, res, next) => {
-  // const updatedUser = await UserModel.findByIdAndUpdate(
-  //   req.user.id,
-  //   {
-  //     name: req.body.name,
-  //     email: req.body.email
-  //   },
-  //   {
-  //     new: true,
-  //     runValidator: true
-  //   }
-  // );
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    req.user.id,
+    {
+      name: req.body.name,
+      email: req.body.email
+    },
+    {
+      new: true,
+      runValidator: true
+    }
+  );
 
   console.log('data is: ', req.body);
 
-  // res.status(200).json({
-  //   data: updatedUser
-  // });
+  res.status(200).json({
+    data: updatedUser
+  });
 });
