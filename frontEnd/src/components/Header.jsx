@@ -1,15 +1,12 @@
-import { useUser } from "../features/auth/useUser";
-import { useTours } from "../react_query/useTours";
-import { useLogout } from "../features/auth/useLogout";
+import Logout from '../features/auth/Logout';
+import { useUser } from '../features/auth/useUser';
+import { useTours } from '../react_query/useTours';
 
 function Header() {
   const { data: user } = useUser();
-  const { isLoading: isLoading3 } = useTours();
-  const { logout, isLoading } = useLogout();
+  const { isLoading } = useTours();
 
-  // console.log(user);
-
-  if (isLoading3) return null;
+  if (isLoading) return null;
 
   return (
     <header className="header">
@@ -25,24 +22,7 @@ function Header() {
 
       <nav className="nav nav--user">
         {user ? (
-          <>
-            <button
-              className="nav__el nav__el--logout"
-              disabled={isLoading}
-              onClick={logout}
-            >
-              Log out
-            </button>
-
-            <a className="nav__el" href="/me">
-              <img
-                className="nav__user-img"
-                src={`/img/users/${user?.photo}`}
-                alt={`Photo of ${user?.name}`}
-              />
-              <span>{user?.name.split(" ")[0]}</span>
-            </a>
-          </>
+          <Logout />
         ) : (
           <>
             <a className="nav__el" href="/login">

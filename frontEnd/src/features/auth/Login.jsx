@@ -11,15 +11,12 @@ function Login() {
   } = useForm();
 
   const { login, isLoading, error } = useLogin();
-  // const { setIsLoggedIn } = useIsLoggedIn();
 
   function onSubmit({ email, password }) {
     login({ email, password });
   }
 
-  // if (error) return <Error />;
 
-  // console.log(watch("email"));
   return (
     <main className="main">
       <div className="login-form">

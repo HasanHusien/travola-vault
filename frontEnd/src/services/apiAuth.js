@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios from 'axios';
 
 export async function login({ email, password }) {
   // using axios library
-  const data = await axios.post("/api/users/login", {
+  const data = await axios.post('/api/users/login', {
     email,
     password,
   });
 
-  if (!data) console.error("Error fail to fetching");
+  if (!data) console.error('Error fail to fetching');
   return data;
 
   // const res = await fetch("/ap/users/login", {
@@ -19,20 +19,28 @@ export async function login({ email, password }) {
 }
 
 export async function logout() {
-  const res = await axios.get("/api/users/logout");
+  const res = await axios.get('/api/users/logout');
 
   console.log(res);
   return res;
 }
 
 export async function getCurrentUser() {
-  const data = await axios.get("/api/users/me", {
-    withCredentials: true,
-  });
+  try {
+    const data = await axios.get('/api/users/me', {
+      withCredentials: true,
+    });
 
-  if (!data) console.error("Error when getting data");
+    return data?.data?.data?.user;
+  } catch (err) {
+    // when user in not logged in
+    if (err.response.status === 401) {
+      return null;
+    }
 
-  return data?.data?.data?.user || [];
+    // other error should be handled
+    throw err;
+  }
 }
 
 // let dispatcher = null;
