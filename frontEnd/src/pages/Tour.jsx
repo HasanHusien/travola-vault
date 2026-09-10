@@ -1,4 +1,3 @@
-// import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useTour } from '../reactQuery/useTour';
 import OverviewBox from '../components/OverViewBox';
