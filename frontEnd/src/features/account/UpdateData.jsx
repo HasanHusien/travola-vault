@@ -1,18 +1,23 @@
 import { useUser } from '../auth/useUser';
 import { useForm } from 'react-hook-form';
 import { useUpdateUserData } from './useUpdateUserData';
+import toast from 'react-hot-toast';
 
 function UpdateData() {
   const { data: user } = useUser();
   const { register, handleSubmit } = useForm();
-  const { updateUserData, isLoading } = useUpdateUserData();
+  const { updateUserData } = useUpdateUserData();
 
   // console.log(user?.photo);
   function onSubmit({ name, email }) {
-    updateUserData({
-      name: name || user.name,
-      email: email || user.email,
-    });
+    if (name !== user.name || email !== user.email) {
+      updateUserData({
+        name: name || user.name,
+        email: email || user.email,
+      });
+    } else {
+      toast.success('every up to date');
+    }
   }
 
   return (
