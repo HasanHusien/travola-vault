@@ -43,6 +43,15 @@ export async function getCurrentUser() {
   }
 }
 
+export async function updateUserData({ name, email }) {
+  await axios.post('/api/update-user-data', {
+    name,
+    email,
+  });
+
+  return;
+}
+
 // let dispatcher = null;
 
 // // Rendered via React

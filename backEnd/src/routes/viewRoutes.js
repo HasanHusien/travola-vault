@@ -13,5 +13,7 @@ router.use(isLoggedIn);
 router.get('/login', getLoginForm);
 router.get('/tour/:slug', getTour);
 
-router.post('/submit-user-data',updateUserData)
+// router.post('/submit-user-data',updateUserData)
+router.post('/update-user-data',updateUserData)
+
 module.exports = router;

@@ -57,6 +57,7 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
   console.log('data is: ', req.body);
 
   res.status(200).json({
-    data: updatedUser
+    title: 'Your account',
+    user: updatedUser
   });
 });

@@ -1,8 +1,19 @@
 import { useUser } from '../auth/useUser';
+import { useForm } from 'react-hook-form';
+import { useUpdateUserData } from './useUpdateUserData';
 
 function UpdateData() {
   const { data: user } = useUser();
+  const { register, handleSubmit } = useForm();
+  const { updateUserData, isLoading } = useUpdateUserData();
+
   // console.log(user?.photo);
+  function onSubmit({ name, email }) {
+    updateUserData({
+      name: name || user.name,
+      email: email || user.email,
+    });
+  }
 
   return (
     <div className="user-view__form-container">
@@ -10,8 +21,9 @@ function UpdateData() {
 
       <form
         className="form form-user-data"
-        action="submit-user-data"
-        method="post"
+        onSubmit={handleSubmit(onSubmit)}
+        // action="submit-user-data"
+        // method="post"
       >
         <div className="form__group">
           <label className="form__label" htmlFor="name">
@@ -24,7 +36,7 @@ function UpdateData() {
             type="text"
             name="name"
             defaultValue={user?.name}
-            required
+            {...register('name', { required: true })}
           />
         </div>
 
@@ -39,7 +51,7 @@ function UpdateData() {
             type="email"
             name="email"
             defaultValue={user?.email}
-            required
+            {...register('email', { required: true })}
           />
         </div>
 
