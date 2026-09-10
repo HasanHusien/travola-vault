@@ -1,10 +1,10 @@
 import Logout from '../features/auth/Logout';
 import { useUser } from '../features/auth/useUser';
-import { useTours } from '../react_query/useTours';
+import { useTours } from '../reactQuery/useTours';
 // import { useTour } from '../react_query/useTour';
 
 function Header() {
-  const { data: user, isLoading } = useUser();
+  const { data: user } = useUser();
   const { isLoading: isLoading2 } = useTours();
 
   if (isLoading2) return null;

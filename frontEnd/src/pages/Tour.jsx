@@ -1,11 +1,11 @@
 // import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useTour } from "../react_query/useTour";
-import OverviewBox from "../components/OverViewBox";
-import ReviewCard from "../components/ReviewCard";
-import Map from "../components/Map";
-import Error from "../components/Error";
-import Spinner from "../components/Spinner";
+import { useParams } from 'react-router-dom';
+import { useTour } from '../reactQuery/useTour';
+import OverviewBox from '../components/OverViewBox';
+import ReviewCard from '../components/ReviewCard';
+import Map from '../components/Map';
+import Error from '../components/Error';
+import Spinner from '../components/Spinner';
 
 // update later as feature
 function Tour() {
@@ -67,9 +67,9 @@ function Tour() {
 
               <OverviewBox
                 label="Next date"
-                text={new Date(tour?.startDates[0]).toLocaleString("en-us", {
-                  month: "long",
-                  year: "numeric",
+                text={new Date(tour?.startDates[0]).toLocaleString('en-us', {
+                  month: 'long',
+                  year: 'numeric',
                 })}
                 icon="calendar"
               />
@@ -104,11 +104,11 @@ function Tour() {
                     alt={guide.name}
                   />
 
-                  {guide.role === "lead-guide" && (
+                  {guide.role === 'lead-guide' && (
                     <span className="overview-box__label">Lead guide</span>
                   )}
 
-                  {guide.role === "guide" && (
+                  {guide.role === 'guide' && (
                     <span className="overview-box__label">Tour guide</span>
                   )}
 
@@ -123,7 +123,7 @@ function Tour() {
               {`About ${tour?.name} tour`}
             </h2>
 
-            {tour?.description.split("\n").map((paragraph, index) => (
+            {tour?.description.split('\n').map((paragraph, index) => (
               <p className="description__text" key={index}>
                 {paragraph}
               </p>
