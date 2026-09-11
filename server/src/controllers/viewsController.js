@@ -1,8 +1,39 @@
 const Tour = require('../models/tourModel');
+const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const UserModel = require('../models/userModel');
 
+// Middleware for uploading files
+// How use multer in general
+const multer = require('multer');
+const multerStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'public/img/users');
+  },
+  filename: (req, file, callback) => {
+    const extension = file.mimetype.split('/')[1];
+    callback(null, `yser-${req.user.id}-${Date.now()}.${extension}`);
+  }
+});
+
+// for filter or pass only images
+const multerFilter = (req, file, callback) => {
+  if (file.mimetype.startsWith('image')) {
+    callback(null, true);
+  } else {
+    callback(
+      new AppError('Not an image! please upload only images', 400),
+      false
+    );
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+exports.uploadUserPhoto = upload.single('photo');
 
 // exports.getOverview = catchAsync(async (req, res) => {
 //   // 1. get tour data from collection
@@ -15,7 +46,6 @@ const UserModel = require('../models/userModel');
 //     tours
 //   });
 // });
-
 exports.getTour = catchAsync(async (req, res, next) => {
   // 1. get data from request
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({
