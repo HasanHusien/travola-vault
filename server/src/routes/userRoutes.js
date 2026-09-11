@@ -21,6 +21,8 @@ const {
   restrictTo
 } = require('../controllers/authControllers');
 
+
+
 const router = express.Router();
 
 router.post('/signup', signup);

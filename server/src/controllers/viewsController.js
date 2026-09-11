@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const UserModel = require('../models/userModel');
 
+
 // exports.getOverview = catchAsync(async (req, res) => {
 //   // 1. get tour data from collection
 //   const tours = await Tour.find();
@@ -54,7 +55,7 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
     }
   );
 
-  console.log('data is: ', req.body);
+  // console.log('data is: ', req.body);
 
   res.status(200).json({
     title: 'Your account',
