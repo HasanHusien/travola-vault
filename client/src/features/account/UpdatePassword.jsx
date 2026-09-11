@@ -1,9 +1,23 @@
+import { useForm } from 'react-hook-form';
+import { useUpdatePassword } from './useUpdatePassword';
+
 function UpdatePassword() {
+  const { register, handleSubmit, reset } = useForm();
+  const { updatePassword } = useUpdatePassword();
+
+  function onSubmit({ passwordCurrent, password, passwordConfirm }) {
+    updatePassword({ passwordCurrent, password, passwordConfirm });
+    reset();
+  }
+
   return (
     <div className="user-view__form-container">
       <h2 className="heading-secondary ma-bt-md">Password change</h2>
 
-      <form className="form form-user-settings">
+      <form
+        className="form form-user-settings"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="form__group">
           <label className="form__label" htmlFor="password-current">
             Current password
@@ -15,7 +29,7 @@ function UpdatePassword() {
             type="password"
             placeholder="••••••••"
             minLength="8"
-            required
+            {...register('passwordCurrent', { required: true })}
           />
         </div>
 
@@ -30,7 +44,7 @@ function UpdatePassword() {
             type="password"
             placeholder="••••••••"
             minLength="8"
-            required
+            {...register('password', { required: true })}
           />
         </div>
 
@@ -45,7 +59,7 @@ function UpdatePassword() {
             type="password"
             placeholder="••••••••"
             minLength="8"
-            required
+            {...register('passwordConfirm', { required: true })}
           />
         </div>
 

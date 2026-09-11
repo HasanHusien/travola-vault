@@ -52,6 +52,20 @@ export async function updateUserData({ name, email }) {
   return;
 }
 
+export async function updateUserPassword({
+  passwordCurrent,
+  password,
+  passwordConfirm,
+}) {
+  await axios.patch('/api/users/updatePassword', {
+    passwordCurrent,
+    password,
+    passwordConfirm,
+  });
+
+  return;
+}
+
 // let dispatcher = null;
 
 // // Rendered via React
