@@ -1,7 +1,9 @@
-const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const factory = require('./handlerFactory');
+const catchAsync = require('../utils/catchAsync');
 const UserModel = require('../models/userModel');
+const factory = require('./handlerFactory');
+
+const { filterObject } = require('../utils/filterObject');
 
 // Middleware for uploading files
 // How use multer in general
@@ -49,7 +51,6 @@ exports.getMe = catchAsync(async (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
-
   if (req.body.password || req.body.passwordConfirm) {
     return next(
       new AppError(
@@ -59,16 +60,16 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  // 2) Filtered out unwanted fields names that are not allowed to be updated
-  // const filteredBody = filterObj(req.body, 'name', 'email');
+  // 2) too simple, its only for filter correct fields (filterObject)
+  const filteredBody = filterObject(req.body, 'name', 'email');
+
+  // only add photo property, that equal req.file.filename
+  if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document
   const updatedUser = await UserModel.findByIdAndUpdate(
     req.user.id,
-    {
-      name: req.body.name,
-      email: req.body.email
-    },
+    filteredBody,
     {
       new: true,
       runValidators: true

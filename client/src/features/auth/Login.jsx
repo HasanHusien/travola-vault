@@ -1,8 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useLogin } from './useLogin';
 
-// import { useIsLoggedIn } from "../../contexts/isLoggedInContext";
-
 function Login() {
   const {
     handleSubmit,
@@ -10,7 +8,7 @@ function Login() {
     // formState: { errors },
   } = useForm();
 
-  const { login, isLoading, error } = useLogin();
+  const { login, isLoading } = useLogin();
 
   function onSubmit({ email, password }) {
     login({ email, password });
@@ -31,7 +29,7 @@ function Login() {
               id="email"
               className="form__input"
               type="email"
-              defaultValue="hakpb7@gmail.com"
+              defaultValue="monica@examle.com"
               placeholder="you@example.com"
               {...register('email', { required: true })}
             />
