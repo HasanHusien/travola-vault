@@ -43,10 +43,11 @@ export async function getCurrentUser() {
   }
 }
 
-export async function updateUserData({ name, email }) {
+export async function updateUserData({ name, email, photo }) {
   await axios.patch('/api/users/updateMe', {
     name,
     email,
+    photo,
   });
 
   return;

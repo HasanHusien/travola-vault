@@ -9,11 +9,21 @@ function UpdateData() {
   const { updateUserData } = useUpdateUserData();
 
   // console.log(user?.photo);
-  function onSubmit({ name, email }) {
-    if (name !== user.name || email !== user.email) {
+  function onSubmit({ name, email, photo }) {
+    if (photo[0]?.name !== user.photo) {
+      console.log(photo[0]?.name);
+      // console.log(user.photo);
+    }
+
+    if (
+      name !== user.name ||
+      email !== user.email ||
+      photo[0]?.name !== user.photo
+    ) {
       updateUserData({
         name: name || user.name,
         email: email || user.email,
+        photo: photo[0]?.name || user.photo,
       });
     } else {
       toast.success('every up to date');
@@ -67,9 +77,15 @@ function UpdateData() {
             alt="User"
           />
 
-          <a className="btn-text" href="#">
-            Choose new photo
-          </a>
+          <input
+            className="form__upload"
+            type="file"
+            accept="image/*"
+            name="photo"
+            id="photo"
+            {...register('photo', { required: true })}
+          />
+          <label htmlFor="photo">Choose new photo</label>
         </div>
 
         <div className="form__group right">
