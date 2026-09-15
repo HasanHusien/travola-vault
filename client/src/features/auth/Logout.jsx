@@ -2,9 +2,10 @@ import { useLogout } from './useLogout';
 import { useUser } from './useUser';
 
 function Logout() {
-  const {data: user } = useUser();
+  const { data: user } = useUser();
   const { logout, isLoading } = useLogout();
 
+  console.log(user?.photo);
   return (
     <>
       <button
@@ -18,7 +19,7 @@ function Logout() {
       <a className="nav__el" href="/me">
         <img
           className="nav__user-img"
-          src={`/img/users/${user?.photo}`}
+          src="/img/users/images.jpeg"
           alt={`Photo of ${user?.name}`}
         />
         <span>{user?.name.split(' ')[0]}</span>

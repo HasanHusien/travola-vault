@@ -7,8 +7,10 @@ function UpdateData() {
   const { data: user } = useUser();
   const { register, handleSubmit } = useForm();
 
+  console.log(user?.photo);
+
   const { updateUserData } = useUpdateUserData();
-  // console.log(user);
+  console.log(user);
 
   function onSubmit({ name, email, photo }) {
     const newPhoto = photo?.[0];

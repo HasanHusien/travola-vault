@@ -72,6 +72,7 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   const filePath = path.join(
     process.cwd(),
     '..',
+    'client',
     'public',
     'img',
     'users',

@@ -26,7 +26,8 @@ const globalErrorHandler = require('./controllers/errorController');
 // app.set('views', path.join(__dirname, 'views'));
 
 // for public path
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/client/public')));
+// app.use(express.static(path.join(process.cwd(), 'public')));
 
 // setting HTTP Headers
 // app.use(helmet());
