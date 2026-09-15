@@ -1,4 +1,5 @@
 const AppError = require('../utils/appError');
+const path = require('path');
 const catchAsync = require('../utils/catchAsync');
 const UserModel = require('../models/userModel');
 const factory = require('./handlerFactory');
@@ -42,19 +43,55 @@ const upload = multer({
 });
 
 exports.uploadUserPhoto = upload.single('photo');
-exports.resizeUserPhoto = (req, res, next) => {
+
+// exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+//   console.log('REQ.FILE:', req.file);
+
+//   if (!req.file) return next();
+
+//   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+
+//   await sharp(req.file.buffer)
+//     .resize(500, 500)
+//     .toFormat('jpeg')
+//     .jpeg({ quality: 90 })
+//     .toFile(`public/img/users/${req.file.filename}`);
+
+//   console.log('IMAGE SAVED:', req.file.filename);
+
+//   next();
+// });
+
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  console.log('REQ.FILE:', req.file);
+
   if (!req.file) return next();
 
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-  sharp(req.file.buffer)
-    .resize(500, 500)
+  const filePath = path.join(
+    process.cwd(),
+    '..',
+    'public',
+    'img',
+    'users',
+    req.file.filename
+  );
+
+  console.log('FILE PATH:', filePath);
+
+  await sharp(req.file.buffer)
+    .resize(500, 500, {
+      fit: 'cover'
+    })
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(filePath);
+
+  console.log('IMAGE SAVED:', req.file.filename);
 
   next();
-};
+});
 
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await UserModel.findById(req.user.id);

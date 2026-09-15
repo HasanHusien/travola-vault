@@ -43,14 +43,13 @@ export async function getCurrentUser() {
   }
 }
 
-export async function updateUserData({ name, email, photo }) {
-  await axios.patch('/api/users/updateMe', {
-    name,
-    email,
-    photo,
+export async function updateUserData(formData) {
+  const res = await axios.patch('/api/users/updateMe', formData, {
+    withCredentials: true,
   });
+  console.log(res.data);
 
-  return;
+  return res?.data;
 }
 
 export async function updateUserPassword({

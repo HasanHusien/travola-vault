@@ -204,7 +204,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  console.log('forgetPassword called');
+  // console.log('forgetPassword called');
 
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });

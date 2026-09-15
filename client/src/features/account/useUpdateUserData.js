@@ -8,7 +8,7 @@ export function useUpdateUserData() {
     isLoading,
     error,
   } = useMutation({
-    mutationFn: ({ name, email }) => updateUserDataApi({ name, email }),
+    mutationFn: updateUserDataApi,
 
     onSuccess: () => toast.success('Data updated successfully'),
     onError: () =>

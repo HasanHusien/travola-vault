@@ -6,29 +6,52 @@ import toast from 'react-hot-toast';
 function UpdateData() {
   const { data: user } = useUser();
   const { register, handleSubmit } = useForm();
+
   const { updateUserData } = useUpdateUserData();
+  // console.log(user);
 
-  // console.log(user?.photo);
   function onSubmit({ name, email, photo }) {
-    if (photo[0]?.name !== user.photo) {
-      console.log(photo[0]?.name);
-      // console.log(user.photo);
+    const newPhoto = photo?.[0];
+
+    const nameChanged = name !== user.name;
+    const emailChanged = email !== user.email;
+    const photoChanged = !!newPhoto;
+
+    if (!nameChanged && !emailChanged && !photoChanged) {
+      toast.success('Everything is up to date');
+      return;
     }
 
-    if (
-      name !== user.name ||
-      email !== user.email ||
-      photo[0]?.name !== user.photo
-    ) {
-      updateUserData({
-        name: name || user.name,
-        email: email || user.email,
-        photo: photo[0]?.name || user.photo,
-      });
-    } else {
-      toast.success('every up to date');
+    const formData = new FormData();
+
+    if (nameChanged) {
+      formData.append('name', name);
     }
+
+    if (emailChanged) {
+      formData.append('email', email);
+    }
+
+    if (photoChanged) {
+      formData.append('photo', newPhoto);
+    }
+
+    updateUserData(formData);
   }
+  // function onSubmit({ name, email, photo }) {
+  //   // console.log(photo[0]?.name);
+  //   // console.log(photo);
+
+  //   if (name !== user.name || email !== user.email || photo[0] !== user.photo) {
+  //     updateUserData({
+  //       name: name || user.name,
+  //       email: email || user.email,
+  //       photo: photo[0] || user.photo,
+  //     });
+  //   } else {
+  //     toast.success('every up to date');
+  //   }
+  // }
 
   return (
     <div className="user-view__form-container">
@@ -51,7 +74,7 @@ function UpdateData() {
             type="text"
             name="name"
             defaultValue={user?.name}
-            {...register('name', { required: true })}
+            {...register('name')}
           />
         </div>
 
@@ -66,7 +89,7 @@ function UpdateData() {
             type="email"
             name="email"
             defaultValue={user?.email}
-            {...register('email', { required: true })}
+            {...register('email')}
           />
         </div>
 
@@ -83,7 +106,7 @@ function UpdateData() {
             accept="image/*"
             name="photo"
             id="photo"
-            {...register('photo', { required: true })}
+            {...register('photo')}
           />
           <label htmlFor="photo">Choose new photo</label>
         </div>

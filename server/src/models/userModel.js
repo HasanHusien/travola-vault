@@ -110,7 +110,7 @@ userSchema.methods.createPasswordRestToken = function() {
     .update(restToken)
     .digest('hex');
 
-  console.log({ restToken }, this.passwordResetToken);
+  // console.log({ restToken }, this.passwordResetToken);
 
   // 10 minutes
   this.passwordRestExpires = Date.now() + 10 * 60 * 1000;

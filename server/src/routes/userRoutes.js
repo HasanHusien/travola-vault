@@ -35,9 +35,13 @@ router.patch('/resetPassword/:token', resetPassword);
 // Protect all routes after this middleware
 router.use(protect);
 
+// userController.uploadUserPhoto,
+// userController.resizeUserPhoto,
+// userController.updateMe;
+
 router.patch('/updatePassword', updatePassword);
 router.get('/me', protect, getMe);
-router.patch('/updateMe', resizeUserPhoto, uploadUserPhoto, updateMe);
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe);
 router.delete('/deleteMe', deleteMe);
 
 router.use(restrictTo('admin'));
