@@ -1,13 +1,13 @@
+const { filterObject } = require('../utils/filterObject');
 const fs = require('fs');
 const path = require('path');
+const AppError = require('../utils/appError');
 const multer = require('multer');
 const sharp = require('sharp');
 
-const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const UserModel = require('../models/userModel');
 const factory = require('./handlerFactory');
-const { filterObject } = require('../utils/filterObject');
 
 const usersDir = path.join(__dirname, '..', '..', 'public', 'img', 'users');
 fs.mkdirSync(usersDir, { recursive: true });
