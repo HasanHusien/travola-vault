@@ -1,0 +1,18 @@
+const express = require('express');
+const router = express.Router();
+
+
+
+const {
+  getTour,
+  updateUserData
+} = require('../controllers/viewsController');
+const { isLoggedIn } = require('../controllers/authControllers');
+
+router.use(isLoggedIn);
+router.get('/tour/:slug', getTour);
+
+// router.post('/submit-user-data',updateUserData)
+// router.post('/update-user-data', updateUserData);
+
+module.exports = router;

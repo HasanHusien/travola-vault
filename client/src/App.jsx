@@ -1,0 +1,62 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import { Toaster } from 'react-hot-toast';
+import { IsLoggedInProvider } from './contexts/isLoggedInContext';
+
+import AppLayout from './pages/AppLayout';
+import Overview from './pages/OverView';
+import Tour from './pages/Tour';
+import Login from './features/auth/Login';
+import Account from './pages/Account';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
+
+function App() {
+  return (
+    <IsLoggedInProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={true} />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route index element={<Overview />} />
+              <Route path="/tour/:slug" element={<Tour />} />
+              <Route path="/me" element={<Account />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+          </Routes>
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: '8px' }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: '16px',
+                maxWidth: '500px',
+                padding: '16px 24px',
+                // backgroundColor: '#55c57a',
+                // color: '#fff',
+              },
+            }}
+          />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </IsLoggedInProvider>
+  );
+}
+
+export default App;

@@ -1,0 +1,5 @@
+.env 
+node_modules
+
+# user uploads (keep default and seeded photos)
+server/public/img/users/user-*-*.jpeg
