@@ -12,6 +12,7 @@ function UpdateData() {
 
   const selectedPhoto = watch('photo')?.[0];
 
+  // using memoization for performance
   const previewUrl = useMemo(() => {
     // URL.createObjectURL() used for make URL for img %% more faster
     // blob:http://localhost:3000/8f3c2a1b-9e4d-4c7a-b2f1-6d9e8a7b5c4d

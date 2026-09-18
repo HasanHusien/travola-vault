@@ -29,7 +29,7 @@ function Login() {
               id="email"
               className="form__input"
               type="email"
-              defaultValue="monica@examle.com"
+              defaultValue="hakpb7@gmail.com"
               placeholder="you@example.com"
               {...register('email', { required: true })}
             />
