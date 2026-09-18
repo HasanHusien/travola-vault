@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useTour } from '../reactQuery/useTour';
+import { userPhotoUrl } from '../utils/userPhoto';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
-import { userPhotoUrl } from '../utils/userPhoto';
 
 // update later as feature
 function Tour() {

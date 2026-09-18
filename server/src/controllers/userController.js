@@ -10,7 +10,6 @@ const factory = require('./handlerFactory');
 const { filterObject } = require('../utils/filterObject');
 
 const usersDir = path.join(__dirname, '..', '..', 'public', 'img', 'users');
-
 fs.mkdirSync(usersDir, { recursive: true });
 
 const multerStorage = multer.memoryStorage();
@@ -76,8 +75,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
+  // filterObject only for filter unwanted fields
   const filteredBody = filterObject(req.body, 'name', 'email');
-
   if (req.file) filteredBody.photo = req.file.filename;
 
   const updatedUser = await UserModel.findByIdAndUpdate(

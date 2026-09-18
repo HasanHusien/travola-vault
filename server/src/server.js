@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 process.on('uncaughtException', err => {
   console.log('Uncaught Exception shuting down...');
   console.log(err.name, err.message);
-  console.log(err)
+  console.log(err);
 
   process.exit(1);
 });
@@ -16,7 +16,6 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const app = require('./app');
 const port = process.env.PORT || 8000;
 const DB = process.env.DATABASE;
-
 
 // DB connections
 mongoose
@@ -34,10 +33,7 @@ mongoose
   });
 
 const server = app.listen(port, () => {
-  console.log(
-    `Running on port ${port}`,
-    ': 127.0.0.1:8000/api/tours || 127.0.0.1:8000/api/users '
-  );
+  console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api');
 });
 
 // catch async code, uncached promise error

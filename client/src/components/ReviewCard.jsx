@@ -1,6 +1,6 @@
 import { userPhotoUrl } from '../utils/userPhoto';
 
-const ReviewCard = ({ review }) => {
+function ReviewCard({ review }) {
   return (
     <div className="reviews__card">
       <div className="reviews__avatar">
@@ -21,8 +21,8 @@ const ReviewCard = ({ review }) => {
             key={star}
             className={`reviews__star ${
               review.rating >= star
-                ? "reviews__star--active"
-                : "reviews__star--inactive"
+                ? 'reviews__star--active'
+                : 'reviews__star--inactive'
             }`}
           >
             <use href="/img/icons.svg#icon-star" />
@@ -31,6 +31,6 @@ const ReviewCard = ({ review }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ReviewCard;
