@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Button = styled.button`
   background: #55c57a;
@@ -35,13 +35,13 @@ const Box = styled.div`
   }
 
   & p {
-    font-family: "Sono";
+    font-family: 'Sono';
     margin-bottom: 3.2rem;
     color: gray;
     font-size: 14px;
   }
 `;
-function ErrorFallback({ error, resetErrorBoundary }) {
+function ErrorFallback({ resetErrorBoundary }) {
   return (
     <StyledErrorFallback>
       <Box>
