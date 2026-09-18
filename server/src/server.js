@@ -33,7 +33,7 @@ mongoose
   });
 
 const server = app.listen(port, () => {
-  console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api');
+  console.log(`Running on port ${port}`, ': 127.0.0.1:8000/api/');
 });
 
 // catch async code, uncached promise error

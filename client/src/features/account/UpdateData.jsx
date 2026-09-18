@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import { useUser } from '../auth/useUser';
 import { useUpdateUserData } from './useUpdateUserData';
 import { userPhotoUrl } from '../../utils/userPhoto';
+import toast from 'react-hot-toast';
 
 function UpdateData() {
   const { data: user } = useUser();
@@ -11,17 +11,21 @@ function UpdateData() {
   const { updateUserData, isLoading } = useUpdateUserData();
 
   const selectedPhoto = watch('photo')?.[0];
-  
+
   const previewUrl = useMemo(() => {
+    // URL.createObjectURL() used for make URL for img %% more faster
+    // blob:http://localhost:3000/8f3c2a1b-9e4d-4c7a-b2f1-6d9e8a7b5c4d
     if (selectedPhoto) return URL.createObjectURL(selectedPhoto);
     return userPhotoUrl(user?.photo);
   }, [selectedPhoto, user?.photo]);
 
+  // removing previous URL for protect from MEMORY LEAK
   useEffect(() => {
-    if (!selectedPhoto) return undefined;
+    if (!selectedPhoto) return;
     return () => URL.revokeObjectURL(previewUrl);
   }, [selectedPhoto, previewUrl]);
 
+  // file form by current user data
   useEffect(() => {
     if (!user) return;
     reset({
@@ -41,6 +45,7 @@ function UpdateData() {
       return;
     }
 
+    // using FormData cause there is files (photo)
     const formData = new FormData();
     if (nameChanged) formData.append('name', name);
     if (emailChanged) formData.append('email', email);
