@@ -9,6 +9,7 @@ const catchAsync = require('../utils/catchAsync');
 const UserModel = require('../models/userModel');
 const factory = require('./handlerFactory');
 
+// update later
 const usersDir = path.join(__dirname, '..', '..', 'public', 'img', 'users');
 fs.mkdirSync(usersDir, { recursive: true });
 

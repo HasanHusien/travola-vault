@@ -10,7 +10,9 @@ const {
   createTour,
   getTour,
   deleteTour,
-  updateTour
+  updateTour,
+  uploadTourImages,
+  resizeTourImages
 } = require('../controllers/tourController');
 const { protect, restrictTo } = require('../controllers/authControllers');
 
@@ -22,9 +24,7 @@ const router = express.Router();
 // GET /tour/234fad4/reviews
 
 router.use('/:tourId/reviews', reviewRouter);
-
 router.route('/top-5-cheap').get(aliasTopTours, getAllTours);
-
 router.route('/tour-stats').get(getTourStats);
 router
   .route('/monthly-plan/:year')
@@ -46,7 +46,13 @@ router
 router
   .route('/:id')
   .get(getTour)
-  .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
-  .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
+  .patch(
+    protect,
+    restrictTo('admin', 'lead-guide'),
+    uploadTourImages,
+    resizeTourImages,
+    updateTour
+  )
+  .delete(protect, deleteTour);
 
 module.exports = router;
