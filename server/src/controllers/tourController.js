@@ -10,8 +10,8 @@ const sharp = require('sharp');
 const multerStorage = multer.memoryStorage();
 
 // update later
-const imageDir = path.join(__dirname, '..', '..', 'public', 'img', 'tours');
-fs.mkdirSync(imageDir, { recursive: true });
+const imagesDir = path.join(__dirname, '..', '..', 'public', 'img', 'tours');
+fs.mkdirSync(imagesDir, { recursive: true });
 
 const multerFilter = (req, file, callback) => {
   if (file.mimetype.startsWith('image')) {
@@ -44,13 +44,28 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1. cover image
-  const imageCoverFilename = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
 
   await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(path.join(imageDir, imageCoverFilename));
+    .toFile(path.join(imagesDir, req.body.imageCover));
+
+  // 2. images
+  req.body.images = [];
+
+  req.files.images.foreach(async (file, i) => {
+    const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+
+    await sharp(req.files.imageCover[0].buffer)
+      .resize(2000, 1333)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(path.join(imagesDir, filename));
+
+    req.body.images.push(filename);
+  });
 
   next();
 });
