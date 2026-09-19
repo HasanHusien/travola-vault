@@ -2,10 +2,16 @@ const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
+const fs = require('fs');
+
 const multer = require('multer');
 const sharp = require('sharp');
 
 const multerStorage = multer.memoryStorage();
+
+// update later
+const imageDir = path.join(__dirname, '..', '..', 'public', 'img', 'tours');
+fs.mkdirSync(imageDir, { recursive: true });
 
 const multerFilter = (req, file, callback) => {
   if (file.mimetype.startsWith('image')) {
@@ -32,10 +38,22 @@ exports.uploadTourImages = upload.fields([
 // upload.single('image') req.file
 // upload.array('images') req.files
 
-exports.resizeTourImages = (req, res, next) => {
+exports.resizeTourImages = catchAsync(async (req, res, next) => {
   console.log(req.files);
+
+  if (!req.files.imageCover || !req.files.images) return next();
+
+  // 1. cover image
+  const imageCoverFilename = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+
+  await sharp(req.files.imageCover[0].buffer)
+    .resize(2000, 1333)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(path.join(imageDir, imageCoverFilename));
+
   next();
-};
+});
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
