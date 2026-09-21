@@ -1,8 +1,10 @@
 const nodemailer = require('nodemailer');
-const catchAsync = require('./catchAsync');
+const pug = require('pug');
+
+// This package use for convert html to string
+const htmlToText = require('html-to-text');
 
 // new Email (user,url).sendWelcome()
-
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
@@ -11,7 +13,7 @@ module.exports = class Email {
     this.from = `Hassan Hussien <${process.env.EMAIL_FORM}>`;
   }
 
-  createTransport() {
+  newTransport() {
     if (process.env.NODE_ENV === 'production') {
       // later
       return 1;
@@ -27,20 +29,31 @@ module.exports = class Email {
     });
   }
 
-  // sending
+  async send(template, subject) {
+    // 1. Render the page %% change later (NOT pug.js)
+    const html = pug.renderFile(
+      `${__dirname}/../views/emails/${template}.pug`,
+      {
+        firstName: this.firstName,
+        url: this.url,
+        subject
+      }
+    );
+
+    // 2. Define email options
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: htmlToText.fromString(html)
+    };
+
+    // 3. Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendWelcome() {
+    await this.send('Welcome', 'Welcome to our family');
+  }
 };
-
-const sendEmail = catchAsync(async options => {
-  // 1) create transporter
-
-  // 2) define email options
-  const mailOptions = {
-    from: 'Hassan Hussien <hakpb7@gmail.com>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message
-    // html:
-  };
-  // 3) sent the email
-  await transporter.sendMail(mailOptions);
-});
