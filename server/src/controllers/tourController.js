@@ -52,20 +52,22 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
     .jpeg({ quality: 90 })
     .toFile(path.join(imagesDir, req.body.imageCover));
 
-  // 2. images
+  // 2. images (below the map)
   req.body.images = [];
 
-  req.files.images.foreach(async (file, i) => {
-    const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+  await Promise.all(
+    req.files.images.map(async (file, i) => {
+      const filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
-    await sharp(req.files.imageCover[0].buffer)
-      .resize(2000, 1333)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(path.join(imagesDir, filename));
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(path.join(imagesDir, filename));
 
-    req.body.images.push(filename);
-  });
+      req.body.images.push(filename);
+    })
+  );
 
   next();
 });
