@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 const { promisify } = require('util');
 
 const signToken = id => {
@@ -48,14 +48,19 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   // make it like this for don't add other prop as role
   // more secure then req.body
-  const newUser = await UserModel.create({
-    name: req.body.name,
-    email: req.body.email,
-    photo: req.body.photo,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
-  });
 
+  // const newUser = await UserModel.create({
+  //   name: req.body.name,
+  //   email: req.body.email,
+  //   photo: req.body.photo,
+  //   password: req.body.password,
+  //   passwordConfirm: req.body.passwordConfirm
+  // });
+  const newUser = await UserModel.create(req.body);
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  console.log(url);
+
+  await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, res);
 
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])
@@ -228,11 +233,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
    passwordConfirm to: ${restUrl}\nif you didn't forget your password please ignore this message.`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'your password rest token (valid 10 min)',
-      message
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'your password rest token (valid 10 min)',
+    //   message
+    // });
 
     res.status(200).json({
       status: 'success',

@@ -1,6 +1,6 @@
 const express = require("express");
 
-const {} = require("../controllers/tourController");
+// const {} = require("../controllers/tourController");
 const { protect, restrictTo } = require("../controllers/authControllers");
 
 const {
