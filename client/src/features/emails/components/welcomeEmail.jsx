@@ -52,5 +52,4 @@ function WelcomeEmail() {
     </>
   );
 }
-
 export default WelcomeEmail;

@@ -9,12 +9,6 @@ function EmailTemplate() {
         <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Welcome to our family</title>
 
-        <style>
-          {`
-            /* Put your email styles here */
-            
-          `}
-        </style>
       </head>
 
       <body>
@@ -31,8 +25,6 @@ function EmailTemplate() {
 
               <td className="container">
                 <div className="content">
-                  {/* START CENTERED WHITE CONTAINER */}
-
                   <table
                     className="main"
                     role="presentation"
