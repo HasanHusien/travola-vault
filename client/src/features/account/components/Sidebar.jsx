@@ -1,4 +1,4 @@
-import { useUser } from '../auth/useUser';
+import { useUser } from '../queries/useUser';
 
 function Sidebar() {
   const { user } = useUser();

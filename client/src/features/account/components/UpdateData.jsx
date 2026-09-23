@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useUser } from '../auth/useUser';
-import { useUpdateUserData } from './useUpdateUserData';
-import { userPhotoUrl } from '../../utils/userPhoto';
+import { useUser } from '../queries/useUser';
+import { useUpdateUserData } from '../queries/useUpdateUserData';
+import { userPhotoUrl } from '../../../utils/userPhoto';
 import toast from 'react-hot-toast';
 
 function UpdateData() {

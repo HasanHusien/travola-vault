@@ -1,6 +1,6 @@
-import { useLogout } from './useLogout';
-import { useUser } from './useUser';
-import { userPhotoUrl } from '../../utils/userPhoto';
+import { useLogout } from '../queries/useLogout';
+import { useUser } from '../../account/queries/useUser';
+import { userPhotoUrl } from '../../../utils/userPhoto';
 
 function Logout() {
   const { data: user } = useUser();

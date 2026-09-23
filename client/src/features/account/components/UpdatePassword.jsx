@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useUpdatePassword } from './useUpdatePassword';
+import { useUpdatePassword } from '../queries/useUpdatePassword';
 
 function UpdatePassword() {
   const { register, handleSubmit, reset } = useForm();
