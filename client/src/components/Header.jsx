@@ -1,6 +1,6 @@
-import Logout from '../features/auth/Logout';
-import { useUser } from '../features/auth/useUser';
-import { useTours } from '../reactQuery/useTours';
+import Logout from '../features/auth/components/Logout';
+import { useUser } from '../features/account/queries/useUser';
+import { useTours } from '../queries/useTours';
 // import { useTour } from '../react_query/useTour';
 
 function Header() {
