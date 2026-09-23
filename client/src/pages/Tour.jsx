@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useTour } from '../reactQuery/useTour';
+import { useTour } from '../queries/useTour';
 import { userPhotoUrl } from '../utils/userPhoto';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';

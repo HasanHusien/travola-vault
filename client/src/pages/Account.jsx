@@ -1,12 +1,9 @@
-import Sidebar from "../features/account/Sidebar";
-import UpdateData from "../features/account/UpdateData";
-import UpdatePassword from "../features/account/UpdatePassword";
-
+import Sidebar from '../features/account/components/Sidebar';
+import UpdateData from '../features/account/components/UpdateData';
+import UpdatePassword from '../features/account/components/UpdatePassword';
 
 // UserSettings
 function Account() {
-
-
   return (
     <main className="main">
       <div className="user-view">

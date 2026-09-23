@@ -1,4 +1,4 @@
-import { useTours } from '../reactQuery/useTours';
+import { useTours } from '../queries/useTours';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
 

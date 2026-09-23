@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTour } from "../services/apiTour";
+import { getTour } from "../services/api";
 
 export function useTour(slug) {
   // console.log(slug)
