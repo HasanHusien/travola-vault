@@ -3,8 +3,7 @@ const React = require('react');
 const { render } = require('@react-email/components');
 const { convert } = require('html-to-text');
 
-// const WelcomeEmail = require('../views/emails/WelcomeEmail');
-
+const WelcomeEmail = require('../views/emails/WelcomeEmail');
 // console.log(process.env.EMAIL_FROM);
 
 module.exports = class Email {
@@ -28,11 +27,6 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    // Import JSX component
-    const { default: WelcomeEmail } = await import(
-      '../views/emails/WelcomeEmail.jsx'
-    );
-
     const html = await render(
       React.createElement(WelcomeEmail, {
         firstName: this.firstName,

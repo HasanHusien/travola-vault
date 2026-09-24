@@ -1,4 +1,6 @@
-import {
+const React = require('react');
+
+const {
   Html,
   Head,
   Body,
@@ -6,9 +8,9 @@ import {
   Section,
   Text,
   Link
-} from '@react-email/components';
+} = require('@react-email/components');
 
-export default function EmailLayout({ children }) {
+function EmailLayout({ children }) {
   return (
     <Html>
       <Head />
@@ -29,3 +31,5 @@ export default function EmailLayout({ children }) {
     </Html>
   );
 }
+
+module.exports = EmailLayout;
