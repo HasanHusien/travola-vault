@@ -1,27 +1,25 @@
 const nodemailer = require('nodemailer');
-const pug = require('pug');
-
-// This package use for convert html to string
+const React = require('react');
+const { render } = require('@react-email/components');
 const { convert } = require('html-to-text');
 
-// new Email (user,url).sendWelcome()
+// const WelcomeEmail = require('../views/emails/WelcomeEmail');
+
+// console.log(process.env.EMAIL_FROM);
+
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Hassan Hussien <${process.env.EMAIL_FORM}>`;
+
+    this.from = `Hassan Hussien <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
-      // later
-      return 1;
-    }
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
-
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD
@@ -29,31 +27,27 @@ module.exports = class Email {
     });
   }
 
-  async send(template, subject) {
-    // 1. Render the page %% change later (NOT pug.js)
-    const html = pug.renderFile(
-      `${__dirname}/../views/emails/${template}.pug`,
-      {
-        firstName: this.firstName,
-        url: this.url,
-        subject
-      }
+  async sendWelcome() {
+    // Import JSX component
+    const { default: WelcomeEmail } = await import(
+      '../views/emails/WelcomeEmail.jsx'
     );
 
-    // 2. Define email options
+    const html = await render(
+      React.createElement(WelcomeEmail, {
+        firstName: this.firstName,
+        url: this.url
+      })
+    );
+
     const mailOptions = {
       from: this.from,
       to: this.to,
-      subject,
+      subject: 'Welcome to our family',
       html,
       text: convert(html)
     };
 
-    // 3. Create a transport and send email
     await this.newTransport().sendMail(mailOptions);
-  }
-
-  async sendWelcome() {
-    await this.send('Welcome', 'Welcome to our family');
   }
 };

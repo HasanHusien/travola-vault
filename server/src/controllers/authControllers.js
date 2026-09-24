@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const AppError = require('../utils/appError');
 
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -58,7 +57,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   // });
   const newUser = await UserModel.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
 
   await new Email(newUser, url).sendWelcome();
   createSendToken(newUser, 201, res);
