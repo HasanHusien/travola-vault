@@ -56,7 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //   passwordConfirm: req.body.passwordConfirm
   // });
   const newUser = await UserModel.create(req.body);
-  const url = `${req.protocol}://${req.get('host')}/me`;
+  const url = `${req.protocol}://${req.get('host')}/api/users/me`;
   // console.log(url);
 
   await sendWelcomeEmail(newUser, url);
