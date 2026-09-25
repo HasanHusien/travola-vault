@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '../../../services/apiAuth';
+import { getCurrentUser } from '../api/api';
 
 export function useUser() {
   const { data, isLoading, error } = useQuery({

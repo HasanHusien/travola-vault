@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
-const Email = require('../utils/email');
+const { sendWelcomeEmail } = require('../utils/email');
 const { promisify } = require('util');
 
 const signToken = id => {
@@ -59,7 +59,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/me`;
   // console.log(url);
 
-  await new Email(newUser, url).sendWelcome();
+  await sendWelcomeEmail(newUser, url);
   createSendToken(newUser, 201, res);
 
   // uses: jwt.sign(payload, secretOrPrivateKey, [options, callback])

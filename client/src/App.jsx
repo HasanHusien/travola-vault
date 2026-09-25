@@ -8,7 +8,7 @@ import { IsLoggedInProvider } from './contexts/isLoggedInContext';
 import AppLayout from './pages/AppLayout';
 import Overview from './pages/OverView';
 import Tour from './pages/Tour';
-import Login from './features/auth/Login';
+import Login from './features/auth/components/Login';
 import Account from './pages/Account';
 
 const queryClient = new QueryClient({
