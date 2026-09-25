@@ -4,10 +4,10 @@
   "description": "node, express and mongoDB",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "tsx src/server.js",
     "dev": "nodemon --exec tsx src/server.js",
-    "debug": "node --inspect src/server.js",
-    "start:prod": "NODE_ENV=production node src/server.js"
+    "debug": "tsx --inspect src/server.js",
+    "start:prod": "NODE_ENV=production tsx src/server.js"
   },
   "author": "hassan",
   "license": "ISC",
