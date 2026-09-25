@@ -1,3 +1,4 @@
+// require('./design.css');
 const React = require('react');
 const {
   Html,
@@ -10,6 +11,7 @@ const {
   Link
 } = require('@react-email/components');
 
+// fast css
 const colors = {
   bg: '#f6f6f6',
   white: '#ffffff',
