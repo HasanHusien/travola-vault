@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 
-const { sendWelcomeEmail } = require('../utils/email');
+const { sendWelcomeEmail, sendResetPasswordEmail } = require('../utils/email');
 const { promisify } = require('util');
 
 const signToken = id => {
@@ -227,16 +227,14 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     'host'
   )}/api/users/resetPassword/${restToken}`;
 
-  // very common message pattern
-  const message = `Forget your password? Submit a patch request with new password and
-   passwordConfirm to: ${restUrl}\nif you didn't forget your password please ignore this message.`;
-
   try {
     // await sendEmail({
     //   email: user.email,
     //   subject: 'your password rest token (valid 10 min)',
     //   message
     // });
+
+    await sendResetPasswordEmail(user, restUrl);
 
     res.status(200).json({
       status: 'success',
