@@ -6,7 +6,17 @@ const { convert } = require('html-to-text');
 const WelcomeEmail = require('../views/emails/WelcomeEmail.jsx');
 const ResetPassword = require('../views/emails/ResetPassword.jsx');
 
+// using sendgrid (SMTP) real sending emails
 const transporter = nodemailer.createTransport({
+  service: 'SendGrid',
+  auth: {
+    user: process.env.SENDGRID_USERNAME,
+    pass: process.env.SENDGRID_PASSWORD
+  }
+});
+
+// using mailtrap (SMTP) for development
+const transporterMailtrap = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: Number(process.env.EMAIL_PORT) || 2525,
   secure: Number(process.env.EMAIL_PORT) === 465,
