@@ -7,14 +7,22 @@ import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
+import { bookTour } from '../features/booking/api/api';
 
 // update later as feature
 function Tour() {
   const { slug } = useParams();
   const { data, isLoading, error } = useTour(slug);
   const { data: user } = useUser();
+  const { tourId } = useParams();
 
   const tour = data?.tour || [];
+
+  const handleBooking = (e) => {
+    const { tourId } = e.currentTarget.dataset;
+
+    bookTour(tourId);
+  };
 
   if (isLoading) return <Spinner />;
   if (error) return <Error msg={error.message} />;
@@ -185,7 +193,12 @@ function Tour() {
             </p>
 
             {user ? (
-              <button className="btn btn--green span-all-rows">
+              <button
+                className="btn btn--green span-all-rows"
+                  data-tour-id={tour._id}
+
+                onClick={handleBooking}
+              >
                 Book tour now!
               </button>
             ) : (
