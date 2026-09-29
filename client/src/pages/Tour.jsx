@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
+import { useUser } from '../features/account/queries/useUser';
 import { userPhotoUrl } from '../utils/userPhoto';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';
@@ -11,6 +12,7 @@ import Spinner from '../components/Spinner';
 function Tour() {
   const { slug } = useParams();
   const { data, isLoading, error } = useTour(slug);
+  const { data: user } = useUser();
 
   const tour = data?.tour || [];
 
@@ -182,9 +184,15 @@ function Tour() {
               10 days. 1 adventure. Infinite memories. Make it yours today!
             </p>
 
-            <button className="btn btn--green span-all-rows">
-              Book tour now!
-            </button>
+            {user ? (
+              <button className="btn btn--green span-all-rows">
+                Book tour now!
+              </button>
+            ) : (
+              <a href="/login" className="btn btn--green span-all-rows">
+                Login for Book tour
+              </a>
+            )}
           </div>
         </div>
       </section>

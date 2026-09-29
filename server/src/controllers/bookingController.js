@@ -4,10 +4,10 @@ const catchAsync = require('../utils/catchAsync');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1. Get currently booking tour
-  const tour = await Tour.findById(trq.params.tourId);
+  const tour = await Tour.findById(req.params.tourId);
 
-  // 2. Create checkout session
-  const session = await stripe.checkout.session.create({
+  // 2. Create checkout session %%  stripe setup
+  const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     success_url: `${req.protocol}://${req.get('host')}/`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
