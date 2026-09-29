@@ -18,6 +18,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -82,7 +83,7 @@ app.use(
 app.use('/', (req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));
   // print at console directly
-  console.log(req.cookies);
+  // console.log(req.cookies);
   next();
 });
 
@@ -91,6 +92,7 @@ app.use('/api', viewRouter);
 app.use('/api/tours', tourRouter);
 app.use('/api/users', userRouter);
 app.use('/api/reviews', reviewRouter);
+app.use('/api/booking', bookingRouter);
 
 // all eq all http method & '*' eq all not declared route
 app.all('*', (req, res, next) => {
