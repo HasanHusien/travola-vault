@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-
-
-const {
-  getTour,
-  updateUserData
-} = require('../controllers/viewsController');
+const { getTour, updateUserData } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authControllers');
 
 router.use(isLoggedIn);
