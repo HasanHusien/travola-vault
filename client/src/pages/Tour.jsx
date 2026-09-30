@@ -2,26 +2,24 @@ import { useParams } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
 import { useUser } from '../features/account/queries/useUser';
 import { userPhotoUrl } from '../utils/userPhoto';
+import { bookTour } from '../features/booking/api/api';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
-import { bookTour } from '../features/booking/api/api';
 
 // update later as feature
 function Tour() {
   const { slug } = useParams();
   const { data, isLoading, error } = useTour(slug);
   const { data: user } = useUser();
-  const { tourId } = useParams();
 
   const tour = data?.tour || [];
 
   const handleBooking = (e) => {
-    const { tourId } = e.currentTarget.dataset;
-
-    bookTour(tourId);
+    e.target.textContent = 'Processing...';
+    bookTour(tour?.id);
   };
 
   if (isLoading) return <Spinner />;
@@ -195,8 +193,7 @@ function Tour() {
             {user ? (
               <button
                 className="btn btn--green span-all-rows"
-                  data-tour-id={tour._id}
-
+                data-tour-id={tour._id}
                 onClick={handleBooking}
               >
                 Book tour now!
