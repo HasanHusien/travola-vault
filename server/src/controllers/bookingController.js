@@ -3,6 +3,8 @@ const Booking = require('../models/bookingModel');
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 
+const factory = require('./handlerFactory');
+
 // How payment be in BACKEND with STRIPE
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1. Get currently booking tour
@@ -55,3 +57,9 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
 
   res.redirect(req.originalUrl.split('?')[0]);
 });
+
+exports.getBooking = factory.getOne(Booking);
+exports.getAllBooking = factory.getAll(Booking);
+exports.createBooking = factory.createOne(Booking);
+exports.updateBooking = factory.updateOne(Booking);
+exports.deleteBooking = factory.deleteOne(Booking);
