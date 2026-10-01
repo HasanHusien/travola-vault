@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-// import Error from '../components/Error';
-// import Spinner from '../components/Spinner';
+import { useEffect, useState } from 'react';
 
+// UPDATE LATER
 function BookedTours() {
+  // const { data, isLoading, error } = useBookedTours();
   // const tours = data?.tours || [];
 
   const [tours, setTours] = useState([]);

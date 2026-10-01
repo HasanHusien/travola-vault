@@ -2,11 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getBookedTours } from '../api/api';
 
 export function useBookedTours() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryFn: getBookedTours,
     queryKey: ['booking'],
   });
-
-  return { data, isLoading };
+console.log(data)
+  return { data, isLoading, error };
 }
-
