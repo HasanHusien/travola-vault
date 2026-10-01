@@ -39,12 +39,3 @@ export async function bookTour(tourId) {
   }
 }
 
-export async function getBookedTours() {
-  try {
-    const res = await axios.get('/api/my-tours');
-    console.log(res);
-    
-  } catch (err) {
-    console.log(err?.response?.data);
-  }
-}

@@ -1,4 +1,3 @@
-import { bookTour } from '../../../services/api';
 import { useUser } from '../queries/useUser';
 
 function Sidebar() {
@@ -17,7 +16,7 @@ function Sidebar() {
         </li>
 
         <li>
-          <a href="#" onClick={bookTour}>
+          <a href="my-tours" >
             <svg>
               <use href="img/icons.svg#icon-briefcase" />
             </svg>

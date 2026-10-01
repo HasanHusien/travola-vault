@@ -15,6 +15,7 @@ const {
   resizeTourImages
 } = require('../controllers/tourController');
 const { protect, restrictTo } = require('../controllers/authControllers');
+const { createBookingCheckout } = require('../controllers/bookingController');
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.route('/distances/:latlng/unit/:unit').get(getDistances);
 
 router
   .route('/')
-  .get(getAllTours)
+  .get(createBookingCheckout, getAllTours)
   .post(protect, restrictTo('admin', 'lead-guide'), createTour);
 
 router
