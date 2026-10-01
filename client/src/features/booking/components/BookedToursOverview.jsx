@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Error from '../../../components/Error';
 
 // UPDATE LATER
 function BookedTours() {
@@ -15,6 +16,7 @@ function BookedTours() {
     getTours();
   }, []);
 
+  if (!tours) return <Error msg={'No tours booked yet!'} />;
   // if (isLoading) return <Spinner />;
   // if (error) return <Error />;
 
