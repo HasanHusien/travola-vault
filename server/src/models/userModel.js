@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'please provide a password!'],
     minlength: 8,
-    select: false // make not show in search or find db data
+    // make not show in search or find db data
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -130,12 +131,5 @@ userSchema.methods.updatePassword = function(password) {
 };
 
 const UserModel = mongoose.model('User', userSchema);
-module.exports = UserModel;
 
-// {
-//   "name":"hassan hussien",
-//   "email":"dev.@test.io",
-//   "role":"admin",
-//   "password":"pass12345",
-//   "passwordConfirm":"pass12345"
-// }
+module.exports = UserModel;
