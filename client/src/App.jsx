@@ -11,6 +11,7 @@ import Tour from './pages/Tour';
 import Login from './features/auth/components/Login';
 import Account from './pages/Account';
 import Booking from './pages/Booking';
+import Signup from './features/auth/components/Signup';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +34,7 @@ function App() {
 
               <Route path="/me" element={<Account />} />
               <Route path="my-tours" element={<Booking />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
             </Route>
           </Routes>

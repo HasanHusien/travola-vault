@@ -1,16 +1,32 @@
+// using axios library
 import axios from 'axios';
-
 axios.defaults.withCredentials = true;
 
-export async function login({ email, password }) {
-  // using axios library
-  const data = await axios.post('/api/users/login', {
-    email,
-    password,
-  });
+export async function signup({ name, email, password, passwordConfirm }) {
+  try {
+    await axios.post('/api/users/signup', {
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
 
-  if (!data) console.error('Error fail to fetching');
-  return data;
+    return;
+  } catch (err) {
+    console.log(err?.response?.data);
+  }
+}
+
+export async function login({ email, password }) {
+  try {
+    const data = await axios.post('/api/users/login', {
+      email,
+      password,
+    });
+    return data;
+  } catch (err) {
+    console.log(err?.response?.data);
+  }
 
   // const res = await fetch("/ap/users/login", {
   //   method: "POST",
@@ -21,8 +37,7 @@ export async function login({ email, password }) {
 }
 
 export async function logout() {
-  const res = await axios.get('/api/users/logout');
+  await axios.get('/api/users/logout');
 
-  console.log(res);
-  return res;
+  return;
 }

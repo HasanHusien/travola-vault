@@ -15,7 +15,7 @@ export function useLogin() {
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (data) => {
       // console.log(data.data.data.user);
-      queryClient.setQueryData(['user'], data.data.data.user);
+      queryClient.setQueryData(['user'], data?.data?.data?.user);
       toast.success('logged in successfully');
       navigate('/', { replace: true });
       // window.location.replace("/");

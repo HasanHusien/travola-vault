@@ -30,7 +30,7 @@ function Header() {
               Log in
             </a>
 
-            <a className="nav__el nav__el--cta" href="#">
+            <a className="nav__el nav__el--cta" href="/signup">
               Sign up
             </a>
           </>
