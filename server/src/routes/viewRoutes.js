@@ -3,7 +3,6 @@ const router = express.Router();
 
 const {
   getTour,
-  updateUserData,
   getMyTours
 } = require('../controllers/viewsController');
 const { isLoggedIn, protect } = require('../controllers/authControllers');
