@@ -22,7 +22,7 @@ export async function getTours() {
   }
 }
 
-export async function bookTour( tourId ) {
+export async function bookTour(tourId) {
   try {
     // 1) Get checkout session from API
     const session = await axios.get(`/api/booking/checkout-session/${tourId}`);
@@ -34,6 +34,16 @@ export async function bookTour( tourId ) {
     // await stripe.redirectToCheckout({
     //   sessionId: session.data.session.id,
     // });
+  } catch (err) {
+    console.log(err?.response?.data);
+  }
+}
+
+export async function getBookedTours() {
+  try {
+    const res = await axios.get('/api/my-tours');
+    console.log(res);
+    
   } catch (err) {
     console.log(err?.response?.data);
   }
