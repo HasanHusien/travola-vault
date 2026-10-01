@@ -1,5 +1,3 @@
-// require('./design.css');
-const React = require('react');
 const {
   Html,
   Head,

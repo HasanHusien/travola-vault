@@ -1,4 +1,3 @@
-const React = require('react');
 const { Text, Button } = require('@react-email/components');
 const EmailLayout = require('./EmailLayout.jsx');
 

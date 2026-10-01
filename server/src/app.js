@@ -22,15 +22,11 @@ const bookingRouter = require('./routes/bookingRoutes');
 
 const globalErrorHandler = require('./controllers/errorController');
 
-// fro pug path
-// app.set('view engine', 'pug');
-// app.set('views', path.join(__dirname, 'views'));
-
 // uploaded + static images live in server/public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // setting HTTP Headers
-// app.use(helmet());
+app.use(helmet());
 
 // add more secure for sorting (using hpp middleware)
 app.use(
@@ -48,6 +44,7 @@ app.use(
 
 // json parser middleware && setting limit for req.body data
 app.use(express.json({ limit: '10kb' }));
+
 // parse data coming from req or Form
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
@@ -61,9 +58,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(mongoSanitize());
 
 // data sanitization against XSS attacks
-// app.use(xss());
+app.use(xss());
 
-// using express-rate-limit package
 // rate limiting algorithm (middleware) for protect from attacks
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
@@ -71,7 +67,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
-// app.use('/api', limiter);
+app.use('/api', limiter);
 
 app.use(
   cors({
@@ -82,12 +78,10 @@ app.use(
 
 app.use('/', (req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));
-  // print at console directly
-  // console.log(req.cookies);
   next();
 });
 
-// rotes
+// ROUTES
 app.use('/api', viewRouter);
 app.use('/api/tours', tourRouter);
 app.use('/api/users', userRouter);

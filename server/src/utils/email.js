@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
 const React = require('react');
+const nodemailer = require('nodemailer');
 const { render } = require('@react-email/components');
 const { convert } = require('html-to-text');
 
