@@ -1,9 +1,7 @@
 import BookedToursOverview from '../features/booking/components/BookedToursOverview';
 
 function Booking() {
-  return <BookedToursOverview />
-   
-  
+  return <BookedToursOverview />;
 }
 
-export default Booking
+export default Booking;

@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -33,12 +33,13 @@ function Map({ locations = [] }) {
         center={center}
         zoom={6}
         scrollWheelZoom={true}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
+
         {points.map((location) => (
           <Marker
             key={location._id || location.day}
@@ -46,7 +47,7 @@ function Map({ locations = [] }) {
           >
             <Popup>
               <span>
-                {location.day ? `Day ${location.day}: ` : ""}
+                {location.day ? `Day ${location.day}: ` : ''}
                 {location.description}
               </span>
             </Popup>
@@ -60,7 +61,7 @@ function Map({ locations = [] }) {
 
 function FitLocations({ points }) {
   const map = useMap();
-  const pointsKey = points.map((loc) => loc.coordinates.join(",")).join("|");
+  const pointsKey = points.map((loc) => loc.coordinates.join(',')).join('|');
 
   useEffect(() => {
     if (!points.length) return;
