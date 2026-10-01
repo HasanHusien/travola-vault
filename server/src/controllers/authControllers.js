@@ -187,7 +187,6 @@ exports.restrictTo = (...roles) => {
   };
 };
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  // console.log('forgetPassword called');
 
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });
@@ -268,7 +267,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-  console.log('update password called');
 
   // 1) getting user from collection
   const user = await UserModel.findById(req.user.id).select('+password');

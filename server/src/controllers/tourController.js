@@ -1,13 +1,13 @@
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
+
 const path = require('path');
 const AppError = require('../utils/appError');
 const fs = require('fs');
 
 const multer = require('multer');
 const sharp = require('sharp');
-
 const multerStorage = multer.memoryStorage();
 
 // update later
@@ -39,9 +39,13 @@ exports.uploadTourImages = upload.fields([
 // upload.single('image') req.file
 // upload.array('images') req.files
 
-exports.resizeTourImages = catchAsync(async (req, res, next) => {
-  console.log(req.files);
+exports.getAllTours = factory.getAll(Tour);
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+exports.createTour = factory.createOne(Tour);
+exports.updateTour = factory.updateOne(Tour);
+exports.deleteTour = factory.deleteOne(Tour);
 
+exports.resizeTourImages = catchAsync(async (req, res, next) => {
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1. cover image
@@ -80,12 +84,6 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = factory.getAll(Tour);
-exports.getTour = factory.getOne(Tour, { path: 'reviews' });
-exports.createTour = factory.createOne(Tour);
-exports.updateTour = factory.updateOne(Tour);
-exports.deleteTour = factory.deleteOne(Tour);
-
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
     {
@@ -105,9 +103,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     {
       $sort: { avgPrice: 1 }
     }
-    // {
-    //   $match: { _id: { $ne: 'EASY' } }
-    // }
   ]);
 
   res.status(200).json({

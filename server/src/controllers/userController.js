@@ -41,6 +41,11 @@ exports.uploadUserPhoto = (req, res, next) => {
   });
 };
 
+exports.getUser = factory.getOne(UserModel);
+exports.getAllUsers = factory.getAll(UserModel);
+exports.updateUser = factory.updateOne(UserModel);
+exports.deleteUser = factory.deleteOne(UserModel);
+
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
@@ -112,9 +117,3 @@ exports.createUser = (req, res) => {
     message: 'This route is not defined! Please use /signup instead'
   });
 };
-
-exports.getUser = factory.getOne(UserModel);
-exports.getAllUsers = factory.getAll(UserModel);
-
-exports.updateUser = factory.updateOne(UserModel);
-exports.deleteUser = factory.deleteOne(UserModel);
