@@ -1,9 +1,10 @@
-const path = require('path');
 const AppError = require('./utils/appError');
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const app = express();
 
@@ -42,6 +43,9 @@ app.use(
   })
 );
 
+// compress all response
+app.use(compression());
+
 // json parser middleware && setting limit for req.body data
 app.use(express.json({ limit: '10kb' }));
 
@@ -63,15 +67,15 @@ app.use(xss());
 // rate limiting algorithm (middleware) for protect from attacks
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
-  max: 80, // 80 try
+  max: 100, // 100 try
   message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
-// app.use('/api', limiter);
+app.use('/api', limiter);
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: true,
     credentials: true
   })
 );
