@@ -26,6 +26,15 @@ const globalErrorHandler = require('./controllers/errorController');
 // uploaded + static images live in server/public
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// access all origin (*)
+app.use(
+  cors({
+    origin: true,
+    credentials: true
+  })
+);
+app.options('*', cors());
+
 // setting HTTP Headers
 app.use(helmet());
 
@@ -67,18 +76,11 @@ app.use(xss());
 // rate limiting algorithm (middleware) for protect from attacks
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
-  max: 100, // 100 try
+  max: 120, // 120 try
   message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
 app.use('/api', limiter);
-
-app.use(
-  cors({
-    origin: true,
-    credentials: true
-  })
-);
 
 app.use('/', (req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));

@@ -11,8 +11,10 @@ export async function getTour(slug) {
   }
 }
 
+// from deploy api with
 export async function getTours() {
   try {
+    // https://app-6ac02f7d.deploy.meerasolution.com
     const res = await fetch('/api/tours');
     const data = await res.json();
 
@@ -38,4 +40,3 @@ export async function bookTour(tourId) {
     console.log(err?.response?.data);
   }
 }
-
