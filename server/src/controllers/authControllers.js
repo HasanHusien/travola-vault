@@ -45,7 +45,6 @@ const createSendToken = (user, statusCode, res) => {
 
 // signup
 exports.signup = catchAsync(async (req, res, next) => {
-
   const newUser = await UserModel.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/api/users/me`;
 
@@ -87,7 +86,6 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 3. if everything os ok, send token to client
   createSendToken(user, 200, res);
-
 });
 
 // send empty jwt (same name)
@@ -165,7 +163,6 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
       return next();
     }
 
-  
     // res.locals.user = currentUser;
     req.user = currentUser;
     return next();
@@ -187,7 +184,6 @@ exports.restrictTo = (...roles) => {
   };
 };
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-
   // 1. get user based on posted email
   const user = await UserModel.findOne({ email: req.body.email });
 
@@ -261,13 +257,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-
   // log user in, send token
   createSendToken(user, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-
   // 1) getting user from collection
   const user = await UserModel.findById(req.user.id).select('+password');
 

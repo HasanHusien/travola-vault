@@ -15,7 +15,9 @@ export async function getTour(slug) {
 export async function getTours() {
   try {
     // https://app-6ac02f7d.deploy.meerasolution.com
-    const res = await fetch('/api/tours');
+    const res = await fetch(
+      ' https://app-6ac02f7d.deploy.meerasolution.com/api/tours',
+    );
     const data = await res.json();
 
     return data;

@@ -3,7 +3,7 @@ import { useUser } from '../../account/queries/useUser';
 import { userPhotoUrl } from '../../../utils/userPhoto';
 
 function Logout() {
-  const { user } = useUser();
+  const { data: user } = useUser();
   const { logout, isLoading } = useLogout();
 
   return (

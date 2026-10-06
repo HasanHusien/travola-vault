@@ -4,7 +4,7 @@ import { useTours } from '../queries/useTours';
 // import { useTour } from '../react_query/useTour';
 
 function Header() {
-  const { user } = useUser();
+  const { data: user } = useUser();
   const { isLoading: isLoading2 } = useTours();
 
   if (isLoading2) return null;
