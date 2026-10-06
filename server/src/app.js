@@ -80,7 +80,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, Please try again in an hour!'
 });
 // to see rate limit look at Headers
-app.use('/api', limiter);
+// app.use('/api', limiter);
 
 app.use('/', (req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));
