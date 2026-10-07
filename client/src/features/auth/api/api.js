@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 export async function signup({ name, email, password, passwordConfirm }) {
   try {
-    await axios.post('/api/users/signup', {
+    await axios.post('api/users/signup', {
       name,
       email,
       password,
@@ -19,7 +19,7 @@ export async function signup({ name, email, password, passwordConfirm }) {
 
 export async function login({ email, password }) {
   try {
-    const data = await axios.post('/api/users/login', {
+    const data = await axios.post('api/users/login', {
       email,
       password,
     });
@@ -37,7 +37,7 @@ export async function login({ email, password }) {
 }
 
 export async function logout() {
-  await axios.get('/api/users/logout');
+  await axios.get('api/users/logout');
 
   return;
 }

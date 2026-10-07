@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function getCurrentUser() {
   try {
-    const data = await axios.get('/api/users/me');
+    const data = await axios.get('api/users/me');
 
     return data?.data?.data?.user;
   } catch (err) {
@@ -15,7 +15,7 @@ export async function getCurrentUser() {
 }
 
 export async function updateUserData(formData) {
-  const res = await axios.patch('/api/users/updateMe', formData);
+  const res = await axios.patch('api/users/updateMe', formData);
   return res?.data;
 }
 
@@ -24,7 +24,7 @@ export async function updateUserPassword({
   password,
   passwordConfirm,
 }) {
-  await axios.patch('/api/users/updatePassword', {
+  await axios.patch('api/users/updatePassword', {
     passwordCurrent,
     password,
     passwordConfirm,
