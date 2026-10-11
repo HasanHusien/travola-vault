@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTour } from "../services/api";
+import { useQuery } from '@tanstack/react-query';
+import { getTour } from '../services/api';
 
 export function useTour(slug) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["tour"],
+    queryKey: ['tour'],
     queryFn: () => getTour(slug),
-
+    onSettled: () => console.log(data, slug),
   });
 
   return { data, isLoading, error };

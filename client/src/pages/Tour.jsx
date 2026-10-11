@@ -16,6 +16,8 @@ function Tour() {
   const { data: user } = useUser();
   const { bookTour, isLoading: isBooking } = useBookTour();
 
+  // console.log(data);
+  // console.log(slug);
   const tour = data?.tour || [];
 
   if (isLoading) return <Spinner />;

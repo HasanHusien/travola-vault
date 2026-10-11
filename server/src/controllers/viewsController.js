@@ -3,6 +3,7 @@ const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+// through SLUG
 exports.getTour = catchAsync(async (req, res, next) => {
   // 1. get data from request
   const tour = await Tour.findOne({ slug: req.params.slug }).populate({

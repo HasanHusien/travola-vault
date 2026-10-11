@@ -1,10 +1,14 @@
 import axios from 'axios';
 export async function getTour(slug) {
   try {
-    const res = await fetch(`api/tour/${slug}`);
-    const data = await res.json();
+    // const res = await fetch(`api/tour/${slug}`);
+    // const data = await res.json();
+
+    const data = await axios.get(`api/tour/${slug}`)
 
     // console.log(data);
+    console.log(data);
+    console.log(slug);
     return data;
   } catch (err) {
     console.error(err.message);
@@ -14,8 +18,7 @@ export async function getTour(slug) {
 // from deploy api with
 export async function getTours() {
   try {
-    // https://app-6ac02f7d.deploy.meerasolution.com
-    const res = await fetch(' api/tours');
+    const res = await fetch('api/tours');
     const data = await res.json();
 
     return data;
@@ -29,7 +32,6 @@ export async function bookTour(tourId) {
     // 1) Get checkout session from API
     const session = await axios.get(`api/booking/checkout-session/${tourId}`);
     // console.log(session);
-
     // 2) Create checkout form + chanre credit card
     window.location.href = session.data.session.url;
 

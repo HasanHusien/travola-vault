@@ -7,7 +7,7 @@ export function useTours() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tours', isLoggedOut],
     queryFn: getTours,
-    refetchOnMount: true,
+    // refetchOnMount: true,
   });
   return { data, isLoading, error };
 }

@@ -11,10 +11,12 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:8000',
+        // target: 'https://app-6ac5a070.deploy.meerasolution.com',
         changeOrigin: true,
       },
       '/img/users': {
         target: 'http://127.0.0.1:8000',
+        // target: 'https://app-6ac5a070.deploy.meerasolution.com',
         changeOrigin: true,
       },
     },
