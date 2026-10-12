@@ -1,17 +1,17 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
+
 export async function getTour(slug) {
   try {
     // const res = await fetch(`api/tour/${slug}`);
     // const data = await res.json();
 
-    const data = await axios.get(`api/tour/${slug}`)
-
-    // console.log(data);
-    console.log(data);
-    console.log(slug);
+    const data = await axios.get(`api/tour/${slug}`);
     return data;
   } catch (err) {
-    console.error(err.message);
+    console.log('Request URL:', err.config?.url);
+    console.log('Status:', err.response?.status);
+    console.log('Error:', err.response?.data || err.message);
   }
 }
 
@@ -23,7 +23,7 @@ export async function getTours() {
 
     return data;
   } catch (err) {
-    console.error(err.message);
+    console.error(err?.response?.data);
   }
 }
 

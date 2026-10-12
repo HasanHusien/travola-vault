@@ -1,17 +1,17 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { ErrorBoundary } from "react-error-boundary";
-import "./styles/index.css";
-import App from "./App.jsx";
-import ErrorFallback from "./components/ErrorFallback.jsx";
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { ErrorBoundary } from 'react-error-boundary';
+import './styles/index.css';
+import App from './App.jsx';
+import ErrorFallback from './components/ErrorFallback.jsx';
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ErrorBoundary
+    {/* <ErrorBoundary
       FallbackComponent={ErrorFallback}
       onReset={() => window.location.replace("/")}
     >
-      <App />
-    </ErrorBoundary>
+    </ErrorBoundary> */}
+    <App />
   </StrictMode>,
 );

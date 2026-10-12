@@ -16,6 +16,9 @@ exports.getTour = catchAsync(async (req, res, next) => {
     return next(new AppError('there was not tour with that name'));
   }
 
+  console.log('tour slug is called');
+  console.log(tour);
+
   res.status(200).json({
     title: `${tour.name} Tour`,
     tour

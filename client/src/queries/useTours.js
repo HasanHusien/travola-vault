@@ -3,9 +3,9 @@ import { getTours } from '../services/api';
 
 export function useTours() {
   const isLoggedOut = localStorage.getItem('isLoggedOut') === 'true';
-
+  //
   const { data, isLoading, error } = useQuery({
-    queryKey: ['tours', isLoggedOut],
+    queryKey: ['tours'],
     queryFn: getTours,
     // refetchOnMount: true,
   });

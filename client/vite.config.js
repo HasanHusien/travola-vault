@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   // publicDir: path.resolve('../public'),
-
+  // 127.0.0.1:
   server: {
     proxy: {
       '/api': {

@@ -2,12 +2,12 @@ import { useParams } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
 import { useUser } from '../features/account/queries/useUser';
 import { userPhotoUrl } from '../utils/userPhoto';
+import { useBookTour } from '../queries/useBookTour';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
-import { useBookTour } from '../queries/useBookTour';
 
 // update later as feature
 function Tour() {
@@ -16,9 +16,7 @@ function Tour() {
   const { data: user } = useUser();
   const { bookTour, isLoading: isBooking } = useBookTour();
 
-  // console.log(data);
-  // console.log(slug);
-  const tour = data?.tour || [];
+  const tour = data?.tour;
 
   if (isLoading) return <Spinner />;
   if (error) return <Error msg={error.message} />;
@@ -73,7 +71,7 @@ function Tour() {
 
               <OverviewBox
                 label="Next date"
-                text={new Date(tour?.startDates[0]).toLocaleString('en-us', {
+                text={new Date(tour?.startDates[0])?.toLocaleString('en-us', {
                   month: 'long',
                   year: 'numeric',
                 })}
@@ -103,22 +101,22 @@ function Tour() {
               <h2 className="heading-secondary ma-bt-lg">Your tour guides</h2>
 
               {tour?.guides.map((guide) => (
-                <div className="overview-box__detail" key={guide._id}>
+                <div className="overview-box__detail" key={guide?._id}>
                   <img
                     className="overview-box__img"
-                    src={userPhotoUrl(guide.photo)}
-                    alt={guide.name}
+                    src={userPhotoUrl(guide?.photo)}
+                    alt={guide?.name}
                   />
 
-                  {guide.role === 'lead-guide' && (
+                  {guide?.role === 'lead-guide' && (
                     <span className="overview-box__label">Lead guide</span>
                   )}
 
-                  {guide.role === 'guide' && (
+                  {guide?.role === 'guide' && (
                     <span className="overview-box__label">Tour guide</span>
                   )}
 
-                  <span className="overview-box__text">{guide.name}</span>
+                  <span className="overview-box__text">{guide?.name}</span>
                 </div>
               ))}
             </div>
@@ -139,7 +137,7 @@ function Tour() {
       </section>
 
       <section className="section-pictures">
-        {tour?.images.map((image, index) => (
+        {tour?.images?.map((image, index) => (
           <div className="picture-box" key={image}>
             <img
               className={`picture-box__img picture-box__img--${index + 1}`}
@@ -157,7 +155,7 @@ function Tour() {
 
       <section className="section-reviews">
         <div className="reviews">
-          {tour?.reviews.map((review) => (
+          {tour?.reviews?.map((review) => (
             <ReviewCard key={review._id} review={review} />
           ))}
         </div>
