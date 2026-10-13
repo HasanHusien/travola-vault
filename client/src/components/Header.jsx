@@ -1,17 +1,11 @@
 import Logout from '../features/auth/components/Logout';
 import { useUser } from '../features/account/queries/useUser';
 import { useTours } from '../queries/useTours';
-import { useLogin } from '../features/auth/queries/useLogin';
-// import { useTour } from '../react_query/useTour';
 
 function Header() {
   const { data: user } = useUser();
-  // const { data } = useLogin();
-  // const user = data?.data?.user;
-  // console.log(data);
 
   const { isLoading: isLoading2 } = useTours();
-
   if (isLoading2) return null;
 
   return (

@@ -23,8 +23,8 @@ export async function login({ email, password }) {
       email,
       password,
     });
-    console.log(data)
-    return data;
+    // console.log(data?.data?.data?.user);
+    return data?.data?.data?.user;
   } catch (err) {
     console.log(err?.response?.data);
   }

@@ -8,8 +8,8 @@ export async function getCurrentUser() {
     return data?.data?.data?.user;
   } catch (err) {
     console.log(err.response?.data || err.message);
-    console.log('Request URL:', err.config?.url);
-    console.log('Status', err.response?.status);
+    // console.log('Request URL:', err.config?.url);
+    // console.log('Status', err.response?.status);
   }
 }
 
