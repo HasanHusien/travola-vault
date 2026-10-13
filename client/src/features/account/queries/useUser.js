@@ -6,8 +6,10 @@ export function useUser() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
-    enabled: !isLoggedOut,
+    // enabled: !isLoggedOut,
+    // refetchOnMount: true,
   });
+  console.log(data);
 
   return { data, isLoading, error };
 }

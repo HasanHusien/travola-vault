@@ -3,14 +3,13 @@ import axios from 'axios';
 export async function getCurrentUser() {
   try {
     const data = await axios.get('api/users/me');
+    // console.log('Response', data.data.data.user);
 
     return data?.data?.data?.user;
   } catch (err) {
-    if (err.response?.status === 401) {
-      return null;
-    }
-
-    throw err;
+    console.log(err.response?.data || err.message);
+    console.log('Request URL:', err.config?.url);
+    console.log('Status', err.response?.status);
   }
 }
 

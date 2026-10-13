@@ -9,6 +9,7 @@ export function useLogin() {
 
   const {
     mutate: login,
+    data,
     isLoading,
     error,
   } = useMutation({
@@ -25,5 +26,5 @@ export function useLogin() {
     },
   });
 
-  return { login, isLoading, error };
+  return { login,data, isLoading, error };
 }
