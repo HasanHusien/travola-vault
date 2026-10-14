@@ -3,7 +3,6 @@ axios.defaults.withCredentials = true;
 
 export async function getTour(slug) {
   try {
-
     const data = await axios.get(`api/tour/${slug}`);
     return data;
   } catch (err) {
@@ -28,7 +27,7 @@ export async function bookTour(tourId) {
   try {
     // 1) Get checkout session from API
     const session = await axios.get(`api/booking/checkout-session/${tourId}`);
-    
+
     // 2) Create checkout form + chanre credit card
     window.location.href = session.data.session.url;
 

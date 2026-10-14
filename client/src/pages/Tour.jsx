@@ -8,19 +8,16 @@ import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
-import { useState } from 'react';
 
 // update later as feature
 function Tour() {
   const { slug } = useParams();
-  const { data, isLoading, error } = useTour();
-
-  const { data: user } = useUser();
+  const { user } = useUser();
+  const { data, isLoading, error } = useTour(slug);
   const { bookTour, isLoading: isBooking } = useBookTour();
 
-  const [tour] = useState(data?.tour);
+  const tour = data?.tour;
 
-  console.log(user);
   if (isLoading) return <Spinner />;
   if (error) return <Error msg={error.message} />;
 
