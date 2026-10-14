@@ -1,11 +1,14 @@
 import { useTours } from '../queries/useTours';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
+import { useNavigate } from 'react-router-dom';
+import { useTour } from '../queries/useTour';
 
 function Overview() {
   const { data, isLoading, error } = useTours();
+  const { getTour } = useTour();
   const tours = data?.tours;
-
+  const navigate = useNavigate();
   // const [tours, setTours] = useState([]);
   // useEffect(() => {
   //   async function getTours() {
@@ -15,6 +18,11 @@ function Overview() {
   //   }
   //   getTours();
   // }, []);
+
+  function handleSlug(tour) {
+    getTour((getter) => getter(tour));
+    navigate(`/tour/${tour.slug}`);
+  }
 
   if (isLoading) return <Spinner />;
   if (error) return <Error />;
@@ -96,12 +104,13 @@ function Overview() {
                 </span>
               </p>
 
-              <a
+              <button
                 className="btn btn--green btn--small"
-                href={`/tour/${tour.slug}`}
+                // href={`/tour/${tour.slug}`}
+                onClick={() => handleSlug(tour)}
               >
                 Details
-              </a>
+              </button>
             </div>
           </div>
         ))}

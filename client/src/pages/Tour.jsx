@@ -1,25 +1,27 @@
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
 import { useUser } from '../features/account/queries/useUser';
 import { userPhotoUrl } from '../utils/userPhoto';
-import { useBookTour } from '../queries/useBookTour';
+// import { useBookTour } from '../queries/useBookTour';
 import OverviewBox from '../components/OverViewBox';
 import ReviewCard from '../components/ReviewCard';
 import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
+import { useEffect } from 'react';
 
 // update later as feature
 function Tour() {
-  const { slug } = useParams();
-  const { user } = useUser();
-  const { data, isLoading, error } = useTour(slug);
-  const { bookTour, isLoading: isBooking } = useBookTour();
+  // const { slug } = useParams();
+  // const { user } = useUser();
+  // const { data: tour, isLoading, error } = useTour();
+  // const { bookTour, isLoading: isBooking } = useBookTour();
+  // const tour = data?.tour;
+  // if (isLoading) return <Spinner />;
+  // if (error) return <Error msg={error.message} />;
 
-  const tour = data?.tour;
-
-  if (isLoading) return <Spinner />;
-  if (error) return <Error msg={error.message} />;
+  let isLoading = false;
+  useEffect(() => {});
 
   return (
     <>
@@ -189,9 +191,10 @@ function Tour() {
             {user ? (
               <button
                 className="btn btn--green span-all-rows"
-                onClick={() => bookTour(tour?.id)}
+                // onClick={() => bookTour(tour?.id)}
               >
-                {isBooking ? 'Processing' : 'Book tour now!'}
+                {/* {isBooking ? 'Processing' : 'Book tour now!'} */}
+                {isLoading ? 'Processing' : 'Book tour now!'}
               </button>
             ) : (
               <a href="/login" className="btn btn--green span-all-rows">

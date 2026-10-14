@@ -17,7 +17,7 @@ export function useLogin() {
       queryClient.setQueryData(['user'], user);
       toast.success('logged in successfully');
       navigate('/', { replace: true });
-      localStorage.removeItem('isLoggedOut');
+      // localStorage.removeItem('isLoggedOut');
     },
     onError: () => {
       toast.error('Incorrect email or password ');

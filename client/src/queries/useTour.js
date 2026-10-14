@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { getTour as getTourApi } from '../services/api';
 
 // export function useTour() {
@@ -15,12 +15,17 @@ import { getTour as getTourApi } from '../services/api';
 //   return { data, getTour, isLoading, error };
 // }
 
-export function useTour(slug) {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['tour', slug],
-    queryFn: () => getTourApi(slug),
-    enabled: !!slug,
+export function useTour() {
+  const {
+    data,
+    mutate: getTour,
+    isLoading,
+    error,
+  } = useMutation({
+    mutationKey: ['tour'],
+    mutationFn: (slug) => getTourApi(slug),
+    // enabled: !!slug,
   });
 
-  return { data, isLoading, error };
+  return { data, getTour, isLoading, error };
 }
