@@ -4,6 +4,7 @@ import { useUser } from '../features/account/queries/useUser';
 function Header() {
   const { user } = useUser();
 
+
   return (
     <header className="header">
       <nav className="nav nav--tours">
