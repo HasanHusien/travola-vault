@@ -1,23 +1,15 @@
-import { useTours } from '../queries/useTours';
+// import { useTours } from '../queries/useTours';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
+import { useTours } from '../queries/useTours';
 
 function Overview() {
   const { data, isLoading, error } = useTours();
   const { getTour } = useTour();
   const tours = data?.tours;
   const navigate = useNavigate();
-  // const [tours, setTours] = useState([]);
-  // useEffect(() => {
-  //   async function getTours() {
-  //     const res = await fetch("/api/tours");
-  //     const data = await res.json();
-  //      setTours(data.tours)
-  //   }
-  //   getTours();
-  // }, []);
 
   function handleSlug(tour) {
     getTour((getter) => getter(tour));
