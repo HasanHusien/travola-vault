@@ -1,12 +1,8 @@
 import Logout from '../features/auth/components/Logout';
 import { useUser } from '../features/account/queries/useUser';
-import { useTours } from '../queries/useTours';
 
 function Header() {
   const { user } = useUser();
-
-  const { isLoading: isLoading2 } = useTours();
-  if (isLoading2) return null;
 
   return (
     <header className="header">

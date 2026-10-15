@@ -59,7 +59,7 @@ app.use(compression());
 app.use(express.json({ limit: '10kb' }));
 
 // parse data coming from req or Form
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+// app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // morgan middleware
@@ -84,6 +84,12 @@ const limiter = rateLimit({
 
 app.use('/', (req, res, next) => {
   console.log((req.requestTime = new Date().toISOString()));
+  next();
+});
+
+// for browser cashe 
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store');
   next();
 });
 

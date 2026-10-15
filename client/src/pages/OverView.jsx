@@ -1,20 +1,10 @@
-// import { useTours } from '../queries/useTours';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
-import { useNavigate } from 'react-router-dom';
-import { useTour } from '../queries/useTour';
 import { useTours } from '../queries/useTours';
 
 function Overview() {
   const { data, isLoading, error } = useTours();
-  const { getTour } = useTour();
   const tours = data?.tours;
-  const navigate = useNavigate();
-
-  function handleSlug(tour) {
-    getTour((getter) => getter(tour));
-    navigate(`/tour/${tour.slug}`);
-  }
 
   if (isLoading) return <Spinner />;
   if (error) return <Error />;
@@ -96,13 +86,12 @@ function Overview() {
                 </span>
               </p>
 
-              <button
+              <a
                 className="btn btn--green btn--small"
-                // href={`/tour/${tour.slug}`}
-                onClick={() => handleSlug(tour)}
+                href={`/tour/${tour.slug}`}
               >
                 Details
-              </button>
+              </a>
             </div>
           </div>
         ))}

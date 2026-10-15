@@ -1,21 +1,30 @@
 import axios from 'axios';
 
+// cash handler
+const api = axios.create({
+  baseURL: '/api',
+  withCredentials: true,
+  headers: {
+    'Cache-Control': 'no-cache',
+    Pragma: 'no-cache',
+  },
+});
+
 export async function getCurrentUser() {
   try {
-    const data = await axios.get('api/users/me');
-    // console.log('Response', data.data.data.user);
-
-    return data?.data?.data?.user;
+    // GET /api/users/me
+    const res = await api.get('/users/me');
+    return res.data.data.user;
   } catch (err) {
-    console.log(err.response?.data || err.message);
-    // console.log('Request URL:', err.config?.url);
-    // console.log('Status', err.response?.status);
+    // for not make many req and won't save null in cash
+    if (err.response?.status === 401) return null;
+    throw err;
   }
 }
 
 export async function updateUserData(formData) {
-  const res = await axios.patch('api/users/updateMe', formData);
-  return res?.data;
+  const res = await api.patch('/users/updateMe', formData);
+  return res.data;
 }
 
 export async function updateUserPassword({
@@ -23,43 +32,9 @@ export async function updateUserPassword({
   password,
   passwordConfirm,
 }) {
-  await axios.patch('api/users/updatePassword', {
+  await api.patch('/users/updatePassword', {
     passwordCurrent,
     password,
     passwordConfirm,
   });
-
-  return;
 }
-
-// let dispatcher = null;
-
-// // Rendered via React
-// function MyComponent() {
-//   const [state, setState] = useState(1);
-
-//   useEffect(() => {
-//     // set the global var to this components setState
-//     dispatcher = setState;
-//     return () => {
-//       // on unmount, reset the global var to null
-//       dispatcher = null;
-//     };
-//   }, [setState]);
-
-//   return (
-//     <div className="App">
-//       <div>Count: {state}</div>
-//     </div>
-//   );
-// }
-
-// // Rendered outside of React
-// const elem = document.getElementById("button");
-// let clickCount = 1;
-// elem.onclick = () => {
-//   if (dispatcher) {
-//     // call the global var which is the React component's setState()
-//     dispatcher(++clickCount);
-//   }
-// };

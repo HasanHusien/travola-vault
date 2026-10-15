@@ -1,31 +1,16 @@
-import { useMutation } from '@tanstack/react-query';
-import { getTour as getTourApi } from '../services/api';
-
-// export function useTour() {
-//   const {
-//     data,
-//     isLoading,
-//     mutate: getTour,
-//     error,
-//   } = useMutation({
-//     mutationKey: ['tour'],
-//     mutationFn: (slug) => getTourApi(slug),
-//   });
-
-//   return { data, getTour, isLoading, error };
-// }
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getTour } from '../services/api';
 
 export function useTour() {
-  const {
-    data,
-    mutate: getTour,
-    isLoading,
-    error,
-  } = useMutation({
-    mutationKey: ['tour'],
-    mutationFn: (slug) => getTourApi(slug),
-    // enabled: !!slug,
+  const { slug } = useParams();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['tour', slug],
+    queryFn: () => getTour(slug),
+    enabled: Boolean(slug),
+    staleTime: 60 * 1000,
   });
 
-  return { data, getTour, isLoading, error };
+  return { data, isLoading, error };
 }

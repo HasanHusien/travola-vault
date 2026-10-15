@@ -1,4 +1,3 @@
-// import { useParams } from 'react-router-dom';
 import { useTour } from '../queries/useTour';
 import { useUser } from '../features/account/queries/useUser';
 import { userPhotoUrl } from '../utils/userPhoto';
@@ -9,12 +8,11 @@ import Map from '../components/Map';
 import Error from '../components/Error';
 import Spinner from '../components/Spinner';
 
-// update later as feature
 function Tour() {
-  // const { slug } = useParams();
   const { user } = useUser();
   const { data: tour, isLoading, error } = useTour();
   const { bookTour, isLoading: isBooking } = useBookTour();
+  
   if (isLoading) return <Spinner />;
   if (error) return <Error msg={error.message} />;
 
@@ -68,10 +66,14 @@ function Tour() {
 
               <OverviewBox
                 label="Next date"
-                text={new Date(tour?.startDates[0])?.toLocaleString('en-us', {
-                  month: 'long',
-                  year: 'numeric',
-                })}
+                text={
+                  tour?.startDates?.[0]
+                    ? new Date(tour.startDates[0]).toLocaleString('en-us', {
+                        month: 'long',
+                        year: 'numeric',
+                      })
+                    : ''
+                }
                 icon="calendar"
               />
 
@@ -97,7 +99,7 @@ function Tour() {
             <div className="overview-box__group">
               <h2 className="heading-secondary ma-bt-lg">Your tour guides</h2>
 
-              {tour?.guides.map((guide) => (
+              {tour?.guides?.map((guide) => (
                 <div className="overview-box__detail" key={guide?._id}>
                   <img
                     className="overview-box__img"
@@ -124,7 +126,7 @@ function Tour() {
               {`About ${tour?.name} tour`}
             </h2>
 
-            {tour?.description.split('\n').map((paragraph, index) => (
+            {tour?.description?.split('\n').map((paragraph, index) => (
               <p className="description__text" key={index}>
                 {paragraph}
               </p>
@@ -189,7 +191,6 @@ function Tour() {
                 onClick={() => bookTour(tour?.id)}
               >
                 {isBooking ? 'Processing' : 'Book tour now!'}
-                {isLoading ? 'Processing' : 'Book tour now!'}
               </button>
             ) : (
               <a href="/login" className="btn btn--green span-all-rows">

@@ -3,9 +3,10 @@ import { getBookedTours } from '../api/api';
 
 export function useBookedTours() {
   const { data, isLoading, error } = useQuery({
-    queryFn: getBookedTours,
     queryKey: ['booking'],
+    queryFn: getBookedTours,
+    staleTime: 60 * 1000,
   });
-console.log(data)
+
   return { data, isLoading, error };
 }

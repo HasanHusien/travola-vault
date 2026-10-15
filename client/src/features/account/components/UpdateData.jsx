@@ -6,7 +6,7 @@ import { userPhotoUrl } from '../../../utils/userPhoto';
 import toast from 'react-hot-toast';
 
 function UpdateData() {
-  const { data: user } = useUser();
+  const {  user } = useUser();
   const { register, handleSubmit, watch, reset } = useForm();
   const { updateUserData, isLoading } = useUpdateUserData();
 

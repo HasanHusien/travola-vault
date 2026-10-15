@@ -1,24 +1,14 @@
-import { useEffect, useState } from 'react';
 import Error from '../../../components/Error';
+import Spinner from '../../../components/Spinner';
+import { useBookedTours } from '../queries/useBookedTours';
 
-// UPDATE LATER
 function BookedTours() {
-  // const { data, isLoading, error } = useBookedTours();
-  // const tours = data?.tours || [];
+  const { data, isLoading, error } = useBookedTours();
+  const tours = data?.tours;
 
-  const [tours, setTours] = useState([]);
-  useEffect(() => {
-    async function getTours() {
-      const res = await fetch('/api/my-tours');
-      const data = await res.json();
-      setTours(data.tours);
-    }
-    getTours();
-  }, []);
-
-  if (!tours) return <Error msg={'No tours booked yet!'} />;
-  // if (isLoading) return <Spinner />;
-  // if (error) return <Error />;
+  if (isLoading) return <Spinner />;
+  if (error) return <Error msg={error.message} />;
+  if (!tours.length) return <Error msg={'No tours booked yet!'} />;
 
   return (
     <main className="main">

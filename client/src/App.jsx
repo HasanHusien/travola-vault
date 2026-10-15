@@ -16,7 +16,9 @@ import Signup from './features/auth/components/Signup';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0,
+      staleTime: 60 * 1000,
+      refetchOnWindowFocus: false,
+      retry: 1,
     },
   },
 });
@@ -33,7 +35,7 @@ function App() {
               <Route path="/tour/:slug" element={<Tour />} />
 
               <Route path="/me" element={<Account />} />
-              <Route path="my-tours" element={<Booking />} />
+              <Route path="/my-tours" element={<Booking />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
             </Route>

@@ -2,11 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getCurrentUser } from '../api/api';
 
 export function useUser() {
-  // const isLoggedOut = localStorage.getItem('isLoggedOut') === 'true';
-  // const queryClient = useQueryClient();
-  // const currentUser = queryClient.getQueryData(['user']);
-  // console.log(currentUser);
-
   const {
     data: user,
     isLoading,
@@ -14,8 +9,9 @@ export function useUser() {
   } = useQuery({
     queryKey: ['user'],
     queryFn: getCurrentUser,
-    // enabled: !isLoggedOut,
-    // refetchOnMount: true,
+    // don't ask again if res return no data
+    retry: false,
+    staleTime: 60 * 1000,
   });
 
   return { user, isLoading, error };
